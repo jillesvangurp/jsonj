@@ -23,8 +23,11 @@ package org.jsonj.tools;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
@@ -35,6 +38,7 @@ import org.jsonj.JsonType;
  * Utility class to serialize Json.
  */
 public class JsonSerializer {
+
 
 	/**
 	 * @param json
@@ -53,7 +57,7 @@ public class JsonSerializer {
 		StringWriter sw = new StringWriter();
 		BufferedWriter bw = new BufferedWriter(sw);
 		try {
-			write(bw,json,pretty, 0);
+			write(bw,json,pretty);
 		} catch (IOException e) {
 			throw new IllegalStateException("cannot serialize json to a string", e);
 		} finally {
@@ -74,7 +78,16 @@ public class JsonSerializer {
 	 * @throws IOException
 	 */
 	public static void write(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
-		write(new BufferedWriter(out), json, pretty, 0);
+		BufferedWriter bw = new BufferedWriter(out);
+		write(bw, json, pretty, 0);
+		if(pretty) {
+			out.write('\n');
+		}
+		bw.flush();
+	}
+
+	public static void write(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
+		write(new OutputStreamWriter(out, Charset.forName("UTF-8")), json, pretty);
 	}
 
 	private static void write(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
