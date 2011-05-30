@@ -22,6 +22,7 @@
 package org.jsonj.tools;
 
 import static org.jsonj.tools.JsonBuilder.array;
+import static org.jsonj.tools.JsonBuilder.nullValue;
 import static org.jsonj.tools.JsonBuilder.object;
 import static org.jsonj.tools.JsonBuilder.primitive;
 
@@ -67,7 +68,15 @@ public class JsonParserTest {
 				{primitive(42.0)},
 				{primitive("foo")},
 				{array("1")},
-				{array("1","2")}
+				{array("1","2")},
+				{object()
+					.put("its", "just a hash map")
+					.put("and", array(primitive("adding"), primitive("stuff"), object().put("is", "easy").get(), array("another array")))
+					.put("numbers", 42)
+					.put("including_this_one", 42.0)
+					.put("booleanstoo", true)
+					.put("nulls_if_you_insist", nullValue())
+					.put("arrays_are_easy", array("1", "2", "etc", "varargs are nice")).get()}
 		};
 	}
 
