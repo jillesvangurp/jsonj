@@ -4,7 +4,7 @@
 	<groupId>org.jsonj</groupId>
 	<artifactId>jsonj</artifactId>
 	<name>Json Java</name>
-	<version>0.1</version>
+	<version>0.2</version>
 	<description>A framework for working with json in Java the &quot;proper&quot; way. No mappings or model classes, it's all just lovely json, but in Java.</description>
 	<developers>
 		<developer>
