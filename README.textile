@@ -2,6 +2,10 @@ h1. Introduction
 
 Jsonj is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
 
+h1. What's with the name
+
+It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java" or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, jsonj it is.
+
 h1. Why another framework?
 
 There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
@@ -17,7 +21,7 @@ However, from having used one of them extensively (GSon), I have learned that th
 
 h1. For who is this framework intended
 
-Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn't wish to write model classes in Java to hide the fact that json is being used. If like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language, this framework is for you.
+Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn't wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
 h1. What is offered in the framework
 
@@ -33,13 +37,9 @@ Not much. I've put the code on github. I may end up using it in my day job. And 
 
 h1. How to build jsonj
 
-mvn clean install should do the trick with maven 3.x (and probably 2.x as well). I'm not a big maven fan but this is a relatively trivial project and it's just easier this way.
+@mvn clean install@ should do the trick with maven 3.x (and probably 2.x as well). I'm not a big maven fan but this is a relatively trivial project and it's just easier this way.
 
-h1. What's with the name
-
-It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java" or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, jsonj it is.
-
-h1. Where can you find documentation
+h1. Where is the documentation?
 
 Look at the javadoc and the tests. For now that will be it.
 
@@ -47,7 +47,7 @@ h1. License
 
 The license is the MIT license. The rationale for this is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the copyright notice).
 
-h1. Credit where credit is due
+h1. Acknowledgements
 
 # I've been greatly influenced by the classes representing the json primitives in the GSon framework. If only they implemented Map and List and weren't final. But lovely framework and would use it again.
 # I spend quite a bit of time figuring out a way of parsing Json that didn't involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for jsonj in under two hours with a custom content handler. It seems to work and alledgedly json-simple is pretty fast as well.
