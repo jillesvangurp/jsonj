@@ -27,13 +27,13 @@ import static org.jsonj.tools.JsonBuilder.object;
 import static org.jsonj.tools.JsonBuilder.primitive;
 import static org.jsonj.tools.JsonSerializer.serialize;
 import static org.jsonj.tools.JsonSerializer.write;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import org.jsonj.tools.JsonParser;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -61,31 +61,31 @@ public class ShowOffTheFramework {
 			.put("array",
 				array("1", "2", "etc", "varargs are nice")).get();
 
-		Assert.assertTrue(object instanceof LinkedHashMap, "JsonObject actually extends LinkedHashMap");
+		assertTrue(object instanceof LinkedHashMap, "JsonObject actually extends LinkedHashMap");
 
 		// get with varargs, a natural evolution for Map
-		Assert.assertTrue(object.get("a","b","c").asPrimitive().asBoolean(), "extract stuff from a nested object");
-		Assert.assertTrue(object.getBoolean("a","b","c"), "or like this");
-		Assert.assertTrue(object.getInt("a","b","d") == 42, "or an integer");
-		Assert.assertTrue(object.getString("a","b","e").equals("hi!"), "or a string");
+		assertTrue(object.get("a","b","c").asPrimitive().asBoolean(), "extract stuff from a nested object");
+		assertTrue(object.getBoolean("a","b","c"), "or like this");
+		assertTrue(object.getInt("a","b","d") == 42, "or an integer");
+		assertTrue(object.getString("a","b","e").equals("hi!"), "or a string");
 
-		Assert.assertTrue(object.getArray("array").isArray(), "works for arrays as well");
-		Assert.assertTrue(object.getObject("a","b").isObject(), "and objects");
+		assertTrue(object.getArray("array").isArray(), "works for arrays as well");
+		assertTrue(object.getObject("a","b").isObject(), "and objects");
 
 		// builders are nice, but still feels kind of repetitive
 		JsonObject anotherObject = object.getOrCreateObject("1","2","3","4");
 		anotherObject.put("5", "xxx");
-		Assert.assertTrue(object.getString("1","2","3","4","5").equals("xxx"),"yep, we just added a string value 5 levels deep");
+		assertTrue(object.getString("1","2","3","4","5").equals("xxx"),"yep, we just added a string value 5 levels deep");
 		JsonArray anotherArray = object.getOrCreateArray("5","4","3","2","1");
 		anotherArray.add("xxx");
-		Assert.assertTrue(object.getArray("5","4","3","2","1").contains("xxx"),"naturally works for arrays too");
+		assertTrue(object.getArray("5","4","3","2","1").contains("xxx"),"naturally works for arrays too");
 
 		// Lets do some other stuff
-		Assert.assertTrue(object.equals(object),
+		assertTrue(object.equals(object),
 			"equals is implemented as a deep equals");
-		Assert.assertTrue(array("a", "b").equals(array("b", "a")),
+		assertTrue(array("a", "b").equals(array("b", "a")),
 			"mostly you shouldn't care about the order of stuff in json");
-		Assert.assertTrue(
+		assertTrue(
 			object().put("a", 1).put("b", 2).get()
 			.equals(
 				object().put("b", 2).put("a", 1).get()),
@@ -93,15 +93,13 @@ public class ShowOffTheFramework {
 
 		// Arrays are lists
 		JsonArray array = array("foo", "bar");
-		Assert.assertTrue(array instanceof LinkedList, "JsonArray extends LinkedList");
-		Assert.assertTrue(array.get(1) == array.get("bar"), "returns the same object");
-		Assert.assertTrue(array.contains("foo"), "obviously");
-		Assert.assertTrue(array.contains(primitive("foo")), "but this works as well");
+		assertTrue(array instanceof LinkedList, "JsonArray extends LinkedList");
+		assertTrue(array.get(1) == array.get("bar"), "returns the same object");
+		assertTrue(array.contains("foo"), "obviously");
+		assertTrue(array.contains(primitive("foo")), "but this works as well");
 
 		// serialize like this
 		String serialized = serialize(object);
-
-		System.out.println(serialized);
 
 		// parse it
 		JsonElement json = jsonParser.parse(serialized);
