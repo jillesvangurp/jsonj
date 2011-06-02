@@ -1,3 +1,4 @@
+
 /**
  * Copyright (c) 2011, Jilles van Gurp
  *
@@ -30,6 +31,10 @@ import java.util.Set;
 import org.jsonj.exceptions.JsonTypeMismatchException;
 import org.jsonj.tools.JsonSerializer;
 
+/**
+ * Representation of json objects. This class extends LinkedHashMap and may be used as such. In addition a lot of convenience is provided in the form of
+ * methods you are likely to need when working with json objects programmatically.
+ */
 public class JsonObject extends LinkedHashMap<String, JsonElement> implements JsonElement {
 	private static final long serialVersionUID = 2183487305816320684L;
 
@@ -58,18 +63,13 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return JsonSerializer.serialize(this, false);
 	}
 
-	public JsonElement put(final String key, final String value) {
-		return super.put(key, primitive(value));
-	}
-
-	public JsonElement put(final String key, final Boolean value) {
-		return super.put(key, primitive(value));
-	}
-
-	public JsonElement put(final String key, final Number value) {
-		return super.put(key, primitive(value));
-	}
-
+	/**
+	 * Variant of put that can take a Object instead of a primitive. The normal put inherited from LinkedHashMap only takes JsonElement instances.
+	 * @param key
+	 * @param value any object that is accepted by the JsonPrimitive constructor.
+	 * @return the JsonElement that was added.
+	 * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
+	 */
 	public JsonElement put(final String key, final Object value) {
 		return super.put(key, primitive(value));
 	}
@@ -90,7 +90,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	}
 
 	/**
-	 * Get a json element at a particular path in an object.
+	 * Get a json element at a particular path in an object structure.
 	 * @param labels list of field names that describe the location to a particular json node.
 	 * @return a json element at a particular path in an object.
 	 */
@@ -113,6 +113,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return null;
 	}
 
+	/**
+	 * Get a value at a particular path in an object structure.
+	 * @param labels
+	 * @return value or null if it doesn't exist at the specified path
+	 */
 	public String getString(final String...labels) {
 		JsonElement jsonElement = get(labels);
 		if(jsonElement == null) {
@@ -122,6 +127,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 	}
 
+	/**
+	 * Get a value at a particular path in an object structure.
+	 * @param labels
+	 * @return value or null if it doesn't exist at the specified path
+	 */
 	public Boolean getBoolean(final String...labels) {
 		JsonElement jsonElement = get(labels);
 		if(jsonElement == null) {
@@ -131,6 +141,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 	}
 
+	/**
+	 * Get a value at a particular path in an object structure.
+	 * @param labels
+	 * @return value or null if it doesn't exist at the specified path
+	 */
 	public Integer getInt(final String...labels) {
 		JsonElement jsonElement = get(labels);
 		if(jsonElement == null) {
@@ -140,6 +155,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 	}
 
+	/**
+	 * Get a value at a particular path in an object structure.
+	 * @param labels
+	 * @return value or null if it doesn't exist at the specified path
+	 */
 	public Double getDouble(final String...labels) {
 		JsonElement jsonElement = get(labels);
 		if(jsonElement == null) {
@@ -149,6 +169,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 	}
 
+	/**
+	 * Get a JsonObject at a particular path in an object structure.
+	 * @param labels
+	 * @return value or null if it doesn't exist at the specified path
+	 */
 	public JsonObject getObject(final String...labels) {
 		JsonElement jsonElement = get(labels);
 		if(jsonElement == null) {
@@ -158,6 +183,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 	}
 
+	/**
+	 * Get a JsonArray at a particular path in an object structure.
+	 * @param labels
+	 * @return value or null if it doesn't exist at the specified path
+	 */
 	public JsonArray getArray(final String...labels) {
 		JsonElement jsonElement = get(labels);
 		if(jsonElement == null) {
@@ -167,6 +197,12 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 	}
 
+	/**
+	 * Get or create a JsonArray at a particular path in an object structure. Any object on the path will be created as well if missing.
+	 * @param labels
+	 * @return the created JsonArray
+	 * @throws JsonTypeMismatchException if an element is present at the path that is not a JsonArray
+	 */
 	public JsonArray getOrCreateArray(final String...labels) {
 		JsonObject parent=this;
 		JsonElement decendent;
@@ -191,6 +227,12 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return null;
 	}
 
+	/**
+	 * Get or create a JsonObject at a particular path in an object structure. Any object on the path will be created as well if missing.
+	 * @param labels
+	 * @return the created JsonObject
+	 * @throws JsonTypeMismatchException if an element is present at the path that is not a JsonObject
+	 */
 	public JsonObject getOrCreateObject(final String...labels) {
 		JsonObject parent=this;
 		JsonElement decendent;

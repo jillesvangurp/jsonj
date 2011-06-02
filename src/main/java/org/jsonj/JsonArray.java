@@ -27,20 +27,34 @@ import java.util.LinkedList;
 
 import org.jsonj.exceptions.JsonTypeMismatchException;
 
+/**
+ * Representation of json arrays that extends LinkedList.
+ */
 public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	private static final long serialVersionUID = -1269731858619421388L;
 
+	/**
+	 * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
+	 * @param s
+	 */
 	public void add(final String s) {
 		add(primitive(s));
 	}
 
+	/**
+	 * Variant of add that adds multiple strings.
+	 * @param strings
+	 */
 	public void add(final String...strings) {
 		for (String s : strings) {
 			add(primitive(s));
 		}
 	}
 
-	public void add(final JsonElement...elements) {
+	/**
+	 * Variant of add that adds multiple JsonElements.
+	 * @param elements
+	 */	public void add(final JsonElement...elements) {
 		for (JsonElement element : elements) {
 			add(primitive(element));
 		}
@@ -74,6 +88,11 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		return null;
 	}
 
+	/**
+	 * Variant of contains that checks if the array contains something that can be extracted with JsonElement get(final String label).
+	 * @param label
+	 * @return true if the array contains the element
+	 */
 	public boolean contains(final String label) {
 		return get(label) != null;
 	}

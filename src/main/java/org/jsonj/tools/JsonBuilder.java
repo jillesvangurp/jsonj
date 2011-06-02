@@ -27,15 +27,24 @@ import org.jsonj.JsonObject;
 import org.jsonj.JsonPrimitive;
 
 /**
- * Builder class for json objects. If you plan to work a lot with jsonj, you'll
+ * Builder class for json objects. If you plan to work a lot with jsonj, you will
  * want to import this statically, for example by adding this class to your
  * eclipse Favorites list.
  */
+/**
+ * @author jilles
+ *
+ */
 public class JsonBuilder {
-	final JsonObject object;
+	private final JsonObject object;
 
 	private JsonBuilder() {
+		// use the static methods
 		object = new JsonObject();
+	}
+
+	private JsonBuilder(final JsonObject object) {
+		this.object = object;
 	}
 
 	/**
@@ -45,26 +54,56 @@ public class JsonBuilder {
 		return object;
 	}
 
+	/**
+	 * Add an element to the object.
+	 * @param key
+	 * @param e
+	 * @return the builder
+	 */
 	public JsonBuilder put(final String key, final JsonElement e) {
 		object.put(key, e);
 		return this;
 	}
 
+	/**
+	 * Add a string value to the object.
+	 * @param key
+	 * @param s
+	 * @return the builder
+	 */
 	public JsonBuilder put(final String key, final String s) {
 		object.put(key, primitive(s));
 		return this;
 	}
 
+	/**
+	 * Add a boolean value to the object.
+	 * @param key
+	 * @param b
+	 * @return the builder
+	 */
 	public JsonBuilder put(final String key, final boolean b) {
 		object.put(key, primitive(b));
 		return this;
 	}
 
+	/**
+	 * Add a number to the object.
+	 * @param key
+	 * @param n
+	 * @return the builder
+	 */
 	public JsonBuilder put(final String key, final Number n) {
 		object.put(key, primitive(n));
 		return this;
 	}
 
+	/**
+	 * Add a JsonArray to the object with the string values added.
+	 * @param key
+	 * @param values values that go in the array
+	 * @return the builder
+	 */
 	public JsonBuilder putArray(final String key, final String...values) {
 		JsonArray jjArray = new JsonArray();
 		for (String string : values) {
@@ -74,6 +113,12 @@ public class JsonBuilder {
 		return this;
 	}
 
+	/**
+	 * Add a JsonArray to the object with the number values added.
+	 * @param key
+	 * @param values values that go in the array
+	 * @return the builder
+	 */
 	public JsonBuilder putArray(final String key, final Number...values) {
 		JsonArray jjArray = new JsonArray();
 		for (Number number : values) {
@@ -83,10 +128,24 @@ public class JsonBuilder {
 		return this;
 	}
 
+	/**
+	 * @return JsonBuilder that may be used to construct a json object.
+	 */
 	public static JsonBuilder object() {
 		return new JsonBuilder();
 	}
 
+	/**
+	 * Modify an existing JsonObject with a builder.
+	 * @param object
+	 */
+	public static JsonBuilder object(final JsonObject object) {
+		return new JsonBuilder(object);
+	}
+
+	/**
+	 * @return an empty JsonArray
+	 */
 	public static JsonArray array() {
 		return new JsonArray();
 	}
@@ -115,20 +174,36 @@ public class JsonBuilder {
 		return jjArray;
 	}
 
-	public static JsonPrimitive primitive(final boolean b) {
-		return new JsonPrimitive(b);
+	/**
+	 * @param value
+	 * @return a JsonPrimitive with the value
+	 */
+	public static JsonPrimitive primitive(final boolean value) {
+		return new JsonPrimitive(value);
 	}
 
-	public static JsonPrimitive primitive(final String s) {
-		return new JsonPrimitive(s);
+	/**
+	 * @param value
+	 * @return a JsonPrimitive with the value
+	 */
+	public static JsonPrimitive primitive(final String value) {
+		return new JsonPrimitive(value);
 	}
 
-	public static JsonPrimitive primitive(final Number n) {
-		return new JsonPrimitive(n);
+	/**
+	 * @param value
+	 * @return a JsonPrimitive with the value
+	 */
+	public static JsonPrimitive primitive(final Number value) {
+		return new JsonPrimitive(value);
 	}
 
-	public static JsonPrimitive primitive(final Object n) {
-		return new JsonPrimitive(n);
+	/**
+	 * @param value
+	 * @return a JsonPrimitive with the value
+	 */
+	public static JsonPrimitive primitive(final Object value) {
+		return new JsonPrimitive(value);
 	}
 
 	/**
