@@ -25,6 +25,7 @@ import static org.jsonj.tools.JsonBuilder.array;
 import static org.jsonj.tools.JsonBuilder.object;
 import static org.jsonj.tools.JsonBuilder.primitive;
 
+import org.jsonj.exceptions.JsonTypeMismatchException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -74,4 +75,42 @@ public class JsonObjectTest {
 				object().put("b", object().put("c", "d").get()).get()).get();
 		Assert.assertEquals("d", o.get("a", "b", "c").toString());
 	}
+
+	public void shouldCreateArray() {
+		JsonObject object = new JsonObject();
+		JsonArray createdArray = object.getOrCreateArray("a","b","c");
+		createdArray.add("1");
+		Assert.assertTrue(object.getArray("a","b","c").contains("1"), "array should have been added to the object");
+	}
+
+	public void shouldReturnExistingArray() {
+		JsonObject object = object().put("a", object().put("b", array("foo")).get()).get();
+		Assert.assertTrue(object.getOrCreateArray("a","b").contains("foo"));
+	}
+
+	@Test(expectedExceptions=JsonTypeMismatchException.class)
+	public void shouldThrowExceptionOnElementThatIsNotAnArray() {
+		JsonObject object = object().put("a", object().put("b", 42).get()).get();
+		object.getOrCreateArray("a","b");
+	}
+
+	public void shouldCreateObject() {
+		JsonObject object = new JsonObject();
+		JsonObject createdObject = object.getOrCreateObject("a","b","c");
+		createdObject.put("foo", "bar");
+		Assert.assertTrue(object.getString("a","b","c", "foo").equals("bar"), "object should have been added");
+	}
+
+	public void shouldReturnExistingObject() {
+		JsonObject object = object().put("a", object().put("b", object().put("foo","bar").get()).get()).get();
+		JsonObject orCreateObject = object.getOrCreateObject("a","b");
+		Assert.assertTrue(orCreateObject.getString("foo").equals("bar"), "return the object with foo=bar");
+	}
+
+	@Test(expectedExceptions=JsonTypeMismatchException.class)
+	public void shouldThrowExceptionOnElementThatIsNotAnObject() {
+		JsonObject object = object().put("a", object().put("b", 42).get()).get();
+		object.getOrCreateObject("a","b");
+	}
+
 }

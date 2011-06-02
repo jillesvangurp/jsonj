@@ -113,6 +113,108 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return null;
 	}
 
+	public String getString(final String...labels) {
+		JsonElement jsonElement = get(labels);
+		if(jsonElement == null) {
+			return null;
+		} else {
+			return get(labels).asPrimitive().asString();
+		}
+	}
+
+	public Boolean getBoolean(final String...labels) {
+		JsonElement jsonElement = get(labels);
+		if(jsonElement == null) {
+			return null;
+		} else {
+			return jsonElement.asPrimitive().asBoolean();
+		}
+	}
+
+	public Integer getInt(final String...labels) {
+		JsonElement jsonElement = get(labels);
+		if(jsonElement == null) {
+			return null;
+		} else {
+			return jsonElement.asPrimitive().asInt();
+		}
+	}
+
+	public Double getDouble(final String...labels) {
+		JsonElement jsonElement = get(labels);
+		if(jsonElement == null) {
+			return null;
+		} else {
+			return jsonElement.asPrimitive().asDouble();
+		}
+	}
+
+	public JsonObject getObject(final String...labels) {
+		JsonElement jsonElement = get(labels);
+		if(jsonElement == null) {
+			return null;
+		} else {
+			return jsonElement.asObject();
+		}
+	}
+
+	public JsonArray getArray(final String...labels) {
+		JsonElement jsonElement = get(labels);
+		if(jsonElement == null) {
+			return null;
+		} else {
+			return jsonElement.asArray();
+		}
+	}
+
+	public JsonArray getOrCreateArray(final String...labels) {
+		JsonObject parent=this;
+		JsonElement decendent;
+		int index=0;
+		for (String label : labels) {
+			decendent=parent.get(label);
+			if(decendent == null && index < labels.length-1 && parent.isObject()) {
+				decendent = new JsonObject();
+				parent.put(label, decendent);
+			} else if(index == labels.length-1) {
+				if(decendent == null) {
+					decendent = new JsonArray();
+					parent.put(label, decendent);
+					return decendent.asArray();
+				} else {
+					return decendent.asArray();
+				}
+			}
+			parent = decendent.asObject();
+			index++;
+		}
+		return null;
+	}
+
+	public JsonObject getOrCreateObject(final String...labels) {
+		JsonObject parent=this;
+		JsonElement decendent;
+		int index=0;
+		for (String label : labels) {
+			decendent=parent.get(label);
+			if(decendent == null && index < labels.length-1 && parent.isObject()) {
+				decendent = new JsonObject();
+				parent.put(label, decendent);
+			} else if(index == labels.length-1) {
+				if(decendent == null) {
+					decendent = new JsonObject();
+					parent.put(label, decendent);
+					return decendent.asObject();
+				} else {
+					return decendent.asObject();
+				}
+			}
+			parent = decendent.asObject();
+			index++;
+		}
+		return null;
+	}
+
 	@Override
 	public boolean equals(final Object o) {
 		if(o == null) {

@@ -87,6 +87,10 @@ public class JsonBuilder {
 		return new JsonBuilder();
 	}
 
+	public static JsonArray array() {
+		return new JsonArray();
+	}
+
 	/**
 	 * @param elements
 	 * @return json array with all the elements added

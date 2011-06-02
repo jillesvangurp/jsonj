@@ -21,12 +21,30 @@
  */
 package org.jsonj;
 
+import static org.jsonj.tools.JsonBuilder.primitive;
+
 import java.util.LinkedList;
 
 import org.jsonj.exceptions.JsonTypeMismatchException;
 
 public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	private static final long serialVersionUID = -1269731858619421388L;
+
+	public void add(final String s) {
+		add(primitive(s));
+	}
+
+	public void add(final String...strings) {
+		for (String s : strings) {
+			add(primitive(s));
+		}
+	}
+
+	public void add(final JsonElement...elements) {
+		for (JsonElement element : elements) {
+			add(primitive(element));
+		}
+	}
 
 	/**
 	 * Convenient method providing a few alternate ways of extracting elements
@@ -54,6 +72,10 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		}
 		// the element was not found
 		return null;
+	}
+
+	public boolean contains(final String label) {
+		return get(label) != null;
 	}
 
 	@Override
