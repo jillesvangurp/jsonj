@@ -157,16 +157,10 @@ public class JsonParser {
 					JsonObject container = last.asObject();
 					container.put(e.toString(), value);
 				} else if(last.isArray()) {
-					System.out.println("wtf: " +value +","+ e+"," + last);
+					throw new IllegalStateException("shouldn't happen");
 
 				}
-			} else if(e.isArray()) {
-				e.asArray().add(value);
-			} else {
-				// it's an object
-				System.out.println(e);
 			}
-
 			return true;
 		}
 
@@ -185,26 +179,9 @@ public class JsonParser {
 
 		@Override
 		public boolean endArray() throws ParseException, IOException {
-			if(stack.size()>3) {
-				System.out.println(stack);
+			if(stack.size()>1 && stack.get(stack.size()-2).isArray()) {
 				JsonElement value = stack.pollLast();
-				if(value.isArray()) {
-					JsonElement e = stack.peekLast();
-					if(e.isArray()) {
-						e.asArray().add(value);
-					} else {
-						JsonPrimitive key = e.asPrimitive();
-						JsonElement last = stack.peekLast();
-						if(last.isObject()) {
-							JsonObject container = last.asObject();
-							container.put(key.toString(), value);
-						} else {
-							throw new IllegalStateException("expected object");
-						}
-					}
-				} else {
-					throw new IllegalStateException("expected array");
-				}
+				stack.peekLast().asArray().add(value);
 			}
 			return true;
 		}

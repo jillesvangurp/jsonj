@@ -76,7 +76,8 @@ public class JsonParserTest {
 					.put("including_this_one", 42.0)
 					.put("booleanstoo", true)
 					.put("nulls_if_you_insist", nullValue())
-					.put("arrays_are_easy", array("1", "2", "etc", "varargs are nice")).get()}
+					.put("arrays_are_easy", array("1", "2", "etc", "varargs are nice")).get()},
+				{object().put("o1", object().get()).put("o2", object().put("a1", array()).get()).get()},
 		};
 	}
 
@@ -84,7 +85,7 @@ public class JsonParserTest {
 	public void shouldParse(final JsonElement element) {
 		String input = JsonSerializer.serialize(element, false);
 		JsonElement parsed = jsonParser.parse(input);
-		Assert.assertEquals(input, JsonSerializer.serialize(parsed, false));
+		Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
 	}
 
 	@Test
