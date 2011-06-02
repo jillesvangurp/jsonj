@@ -21,6 +21,12 @@
 		<name>www.jillesvangurp.com</name>
 		<url>http://jillesvangurp.com</url>
 	</organization>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
