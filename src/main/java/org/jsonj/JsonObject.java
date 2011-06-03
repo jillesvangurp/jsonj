@@ -282,8 +282,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 
 	@Override
 	public int hashCode() {
-		// good enough but won't be very helpful if you put lots of json objects in sets
-		return 42;
+		int hashCode=23;
+		Set<Entry<String, JsonElement>> entrySet = entrySet();
+		for (Entry<String, JsonElement> entry : entrySet) {
+			hashCode = hashCode * entry.getKey().hashCode() * entry.getValue().hashCode();
+		}
+		return hashCode;
 	}
-
 }

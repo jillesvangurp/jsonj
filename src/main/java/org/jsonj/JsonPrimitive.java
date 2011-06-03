@@ -167,7 +167,11 @@ public class JsonPrimitive implements JsonElement, Serializable {
 
 	@Override
 	public int hashCode() {
-		// TODO implement sensible hash code method
-		return 1;
+
+		int hashCode = 49*type.hashCode();
+		if(value != null) {
+			hashCode = hashCode * value.hashCode();
+		}
+		return hashCode;
 	}
 }
