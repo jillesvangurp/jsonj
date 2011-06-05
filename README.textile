@@ -2,6 +2,8 @@ h1. Introduction
 
 Jsonj is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
 
+"some example code":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/org/jsonj/ShowOffTheFramework.java
+
 h1. Changelog
 
 * 0.3 Several new methods added in JsonArray and JsonObject; fixed the parser bug where nested arrays and objects were not handled correctly.
