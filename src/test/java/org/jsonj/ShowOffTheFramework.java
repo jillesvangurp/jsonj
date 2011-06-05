@@ -37,7 +37,7 @@ import org.jsonj.tools.JsonParser;
 import org.testng.annotations.Test;
 
 /**
- * Not really a test but a nice place to show off some how to use this.
+ * Not really a test but a nice place to show off how to use the framework.
  */
 @Test
 public class ShowOffTheFramework {
