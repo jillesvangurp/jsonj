@@ -12,14 +12,14 @@ h1. Changelog
 
 h1. What's with the name
 
-It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java" or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, jsonj it is.
+It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java", or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, jsonj it is.
 
 h1. Why another framework?
 
 There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
 # they assume the user has model classes that need to be serialized and deserialized to and from java
-# they use an internal representation of the various json types that is not very friendly to work with if you were to manipulate them directly
-# they don't treat json as a first class entity and merely try to hide the fact that your data is stored as json, in some system you never deal with directly
+# they use an internal representation of the various json types that is not very friendly to work with if you want to manipulate them directly
+# they don't treat json as a first class entity and merely try to hide the fact that your data is stored as json
 # they don't use the Java collections framework
 # they use final classes, so your options to work around any limitations are a bit limited.
 
@@ -33,15 +33,19 @@ Anyone who plans to write a lot of business logic in Java that manipulates json 
 
 h1. What is offered in the framework
 
-# Familiarity: a JsonArray class that extends LinkedList, a JsonObject class that extends LinkedHashMap, JsonPrimitive class that wraps Number, String, Boolean, and null. Also, all these classes implement JsonElement, so you can have type safety. In other words, you will find a very familiar API to work with these types. And it is all serializable, of course.
-# Lots of convenient methods and features. For example, sensible hashCode and equals implementations, convenient ways of extracting data, etc.
+# Familiarity: a JsonArray class that extends LinkedList, a JsonObject class that extends LinkedHashMap, s JsonPrimitive class that wraps Number, String, Boolean, and null. Also, all these classes implement JsonElement, so you can have type safety. In other words, you will find a very familiar API to work with these types.
+# Convenient, json specific extensions to the collections API in JsonArray and JsonObject.
 # A fast, easy to use parser that uses the excellent json-simple framework.
-# A pretty printing serializer.
+# A pretty printing (optional) serializer.
 # A nice builder class that will drastically reduce the usage of the keyword new in your code.
+
+h1. Which version should I use?
+
+The latest. Seriously, the older versions have bugs that I know about and already fixed. Why take the risk?
 
 h1. What can you expect in terms of maintenance and continuity?
 
-Not much. I've put the code on github. I may end up using it in my day job. And if so, I may end up adding more features and doing more maintenance. However, I'm a busy guy and I might just move on and do something else. Feel free to fork, adapt, etc. That's why it is on github. It should be good as is though.
+The code should be fine as is but I don't plan on providing lots of support. That's why it is on github: feel free to fork, clone & own, or do whatever you need to do to make this code work for you.
 
 h1. How to build jsonj
 
@@ -49,11 +53,11 @@ h1. How to build jsonj
 
 h1. Where is the documentation?
 
-Look at the javadoc and the tests. For now that will be it.
+Look at the javadoc and the tests. Particularly "this one here":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/org/jsonj/ShowOffTheFramework.java shows off most of the features this framework has.
 
 h1. License
 
-The license is the MIT license. The rationale for this is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the copyright notice).
+The license is the MIT license, a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
 
 h1. Acknowledgements
 
