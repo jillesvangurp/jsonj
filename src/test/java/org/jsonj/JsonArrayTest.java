@@ -59,7 +59,7 @@ public class JsonArrayTest {
 	}
 
 	@Test(dataProvider="equalPairs")
-	public void shouldBeEqual(final JsonArray left, final JsonArray right) {
+	public void shouldBeEqual(final JsonElement left, final JsonElement right) {
 		Assert.assertTrue(left.equals(left)); // reflexive
 		Assert.assertTrue(right.equals(right)); // reflexive
 		Assert.assertTrue(left.equals(right)); // symmetric
@@ -67,7 +67,7 @@ public class JsonArrayTest {
 	}
 
 	@Test(dataProvider="equalPairs")
-	public void shouldHaveSameHashCode(final JsonArray left, final JsonArray right) {
+	public void shouldHaveSameHashCode(final JsonElement left, final JsonElement right) {
 		Assert.assertEquals(left.hashCode(), right.hashCode());
 	}
 

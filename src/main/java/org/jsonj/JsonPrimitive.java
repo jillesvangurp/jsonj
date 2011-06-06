@@ -60,7 +60,12 @@ public class JsonPrimitive implements JsonElement, Serializable {
 			value = null;
 		} else {
 			type = JsonType.number;
-			value = n;
+			if(n instanceof Integer) {
+				// make sure to handle Integers and Longs consistently with json simple (always a long)
+				value = new Long((Integer)n);
+			} else {
+				value = n;
+			}
 		}
 	}
 
@@ -70,7 +75,12 @@ public class JsonPrimitive implements JsonElement, Serializable {
 			value = null;
 		} else if(object instanceof Number) {
 			type = JsonType.number;
-			value = object;
+			if(object instanceof Integer) {
+				// make sure to handle Integers and Longs consistently with json simple (always a long)
+				value = new Long((Integer)object);
+			} else {
+				value = object;
+			}
 		} else if(object instanceof Boolean) {
 			type = JsonType.bool;
 			value = object;
