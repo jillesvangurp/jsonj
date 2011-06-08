@@ -3,9 +3,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jsonj</groupId>
 	<artifactId>jsonj</artifactId>
-	<name>Json Java</name>
 	<version>0.4-SNAPSHOT</version>
+
+	<name>Json Java</name>
 	<description>A framework for working with json in Java the &quot;proper&quot; way. No mappings or model classes, it's all just lovely json, but in Java.</description>
+	<url>https://github.com/jillesvangurp/jsonj</url>
+
+	<licenses>
+		<license>
+			<name>MIT license</name>
+			<url>https://github.com/jillesvangurp/jsonj/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>git://github.com/jillesvangurp/jsonj.git</url>
+	</scm>
+
 	<developers>
 		<developer>
 			<id>jillesvangurp</id>
@@ -64,6 +79,19 @@
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
 						</goals>
 					</execution>
 				</executions>
