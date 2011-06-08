@@ -39,7 +39,6 @@ import org.jsonj.JsonType;
  */
 public class JsonSerializer {
 
-
 	/**
 	 * @param json
 	 * @return string representation of the json
@@ -55,14 +54,13 @@ public class JsonSerializer {
 	 */
 	public static String serialize(final JsonElement json, final boolean pretty) {
 		StringWriter sw = new StringWriter();
-		BufferedWriter bw = new BufferedWriter(sw);
 		try {
-			write(bw,json,pretty);
+			write(sw,json,pretty);
 		} catch (IOException e) {
 			throw new IllegalStateException("cannot serialize json to a string", e);
 		} finally {
 			try {
-				bw.close();
+				sw.close();
 			} catch (IOException e) {
 				throw new IllegalStateException("cannot serialize json to a string", e);
 			}
