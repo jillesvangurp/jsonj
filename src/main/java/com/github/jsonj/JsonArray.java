@@ -19,13 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj;
 
-import static org.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.LinkedList;
 
-import org.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 /**
  * Representation of json arrays that extends LinkedList.

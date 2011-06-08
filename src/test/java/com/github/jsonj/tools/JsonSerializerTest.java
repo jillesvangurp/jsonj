@@ -19,11 +19,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj.tools;
 
-/**
- * All the types that json has.
- */
-public enum JsonType {
-	object, array, string, bool, number, nullValue
+import static com.github.jsonj.tools.JsonBuilder.object;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.tools.JsonParser;
+import com.github.jsonj.tools.JsonSerializer;
+
+@Test
+public class JsonSerializerTest {
+	private final JsonParser jsonParser = new JsonParser();
+
+	public void shouldDoSerializeParseRoundTrip() {
+		JsonObject original = object().put("a", object().get()).put("b", "test").putArray("c", "1","2","3").get();
+		String json = JsonSerializer.serialize(original, true);
+		String json2 = JsonSerializer.serialize(original, false);
+		// there should be a difference (pretty printing)
+		Assert.assertNotSame(json, json2);
+		// if we parse it back and reprint it they should be identical to each other and the original
+		Assert.assertEquals(
+				JsonSerializer.serialize(jsonParser.parse(json), false),
+				JsonSerializer.serialize(jsonParser.parse(json2), false));
+		Assert.assertEquals(
+				JsonSerializer.serialize(original, false),
+				JsonSerializer.serialize(jsonParser.parse(json2), false));
+	}
 }

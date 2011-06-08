@@ -20,16 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj;
 
-import static org.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.jsonj.exceptions.JsonTypeMismatchException;
-import org.jsonj.tools.JsonSerializer;
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonSerializer;
 
 /**
  * Representation of json objects. This class extends LinkedHashMap and may be used as such. In addition a lot of convenience is provided in the form of

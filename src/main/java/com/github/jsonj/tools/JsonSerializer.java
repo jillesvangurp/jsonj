@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj.tools;
+package com.github.jsonj.tools;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -31,8 +31,8 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.jsonj.JsonElement;
-import org.jsonj.JsonType;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonType;
 
 /**
  * Utility class to serialize Json.

@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj;
 
 import java.io.Serializable;
 
-import org.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 public class JsonPrimitive implements JsonElement, Serializable {
 	private static final long serialVersionUID = 111536854493507209L;

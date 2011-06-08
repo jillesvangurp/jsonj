@@ -19,12 +19,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj.exceptions;
+package com.github.jsonj.tools;
 
-public class JsonTypeMismatchException extends IllegalArgumentException {
-	private static final long serialVersionUID = 3714595790951144032L;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
-	public JsonTypeMismatchException(final String message) {
-		super(message);
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.github.jsonj.JsonPrimitive;
+
+@Test
+public class JsonBuilderTest {
+	public void shouldConstructInteger() {
+		JsonPrimitive p1 = primitive(1234);
+		double d1 = p1.asDouble();
+		JsonPrimitive p2 = primitive(d1);
+		Assert.assertEquals(1234, p2.asInt());
 	}
 }

@@ -19,20 +19,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj.tools;
+package com.github.jsonj;
 
-import static org.jsonj.tools.JsonBuilder.primitive;
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
-import org.jsonj.JsonPrimitive;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+/**
+ * Super type of all Json Objects.
+ */
+public interface JsonElement {
+	/**
+	 * @return the type of this json element
+	 */
+	JsonType type();
 
-@Test
-public class JsonBuilderTest {
-	public void shouldConstructInteger() {
-		JsonPrimitive p1 = primitive(1234);
-		double d1 = p1.asDouble();
-		JsonPrimitive p2 = primitive(d1);
-		Assert.assertEquals(1234, p2.asInt());
-	}
+	/**
+	 * @return a JsonObject
+	 * @throws JsonTypeMismatchException if the element is not an object
+	 */
+	JsonObject asObject();
+
+	/**
+	 * @return a JsonObject
+	 * @throws JsonTypeMismatchException if the element is not an array
+	 */
+	JsonArray asArray();
+
+	/**
+	 * @return a JsonObject
+	 * @throws JsonTypeMismatchException if the element is not a primitive type
+	 */
+	JsonPrimitive asPrimitive();
+
+	boolean isObject();
+	boolean isArray();
+	boolean isPrimitive();
 }

@@ -19,15 +19,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj;
 
-import static org.jsonj.tools.JsonBuilder.array;
-import static org.jsonj.tools.JsonBuilder.object;
-import static org.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.object;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonPrimitive;
 
 public class JsonPrimitiveTest {
 	@DataProvider

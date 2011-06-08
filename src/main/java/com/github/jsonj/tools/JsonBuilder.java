@@ -19,12 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj.tools;
+package com.github.jsonj.tools;
 
-import org.jsonj.JsonArray;
-import org.jsonj.JsonElement;
-import org.jsonj.JsonObject;
-import org.jsonj.JsonPrimitive;
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.JsonPrimitive;
 
 /**
  * Builder class for json objects. If you plan to work a lot with jsonj, you will

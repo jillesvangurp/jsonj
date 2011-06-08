@@ -19,12 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj.tools;
+package com.github.jsonj.tools;
 
-import static org.jsonj.tools.JsonBuilder.array;
-import static org.jsonj.tools.JsonBuilder.nullValue;
-import static org.jsonj.tools.JsonBuilder.object;
-import static org.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
+import static com.github.jsonj.tools.JsonBuilder.object;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.List;
 import java.util.Queue;
@@ -37,12 +37,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.jsonj.JsonArray;
-import org.jsonj.JsonElement;
-import org.jsonj.JsonObject;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.tools.JsonParser;
+import com.github.jsonj.tools.JsonSerializer;
 
 public class JsonParserTest {
 	private final JsonParser jsonParser = new JsonParser();

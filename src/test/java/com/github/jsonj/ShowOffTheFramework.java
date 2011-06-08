@@ -19,20 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj;
 
-import static org.jsonj.tools.JsonBuilder.array;
-import static org.jsonj.tools.JsonBuilder.nullValue;
-import static org.jsonj.tools.JsonBuilder.object;
-import static org.jsonj.tools.JsonBuilder.primitive;
-import static org.jsonj.tools.JsonSerializer.serialize;
-import static org.jsonj.tools.JsonSerializer.write;
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
+import static com.github.jsonj.tools.JsonBuilder.object;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonSerializer.serialize;
+import static com.github.jsonj.tools.JsonSerializer.write;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.jsonj.tools.JsonParser;
 import org.testng.annotations.Test;
+
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.tools.JsonParser;
 
 /**
  * Not really a test but a nice place to show off how to use the framework.

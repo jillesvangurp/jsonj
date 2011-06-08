@@ -19,38 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj;
+package com.github.jsonj.exceptions;
 
-import org.jsonj.exceptions.JsonTypeMismatchException;
+public class JsonTypeMismatchException extends IllegalArgumentException {
+	private static final long serialVersionUID = 3714595790951144032L;
 
-/**
- * Super type of all Json Objects.
- */
-public interface JsonElement {
-	/**
-	 * @return the type of this json element
-	 */
-	JsonType type();
-
-	/**
-	 * @return a JsonObject
-	 * @throws JsonTypeMismatchException if the element is not an object
-	 */
-	JsonObject asObject();
-
-	/**
-	 * @return a JsonObject
-	 * @throws JsonTypeMismatchException if the element is not an array
-	 */
-	JsonArray asArray();
-
-	/**
-	 * @return a JsonObject
-	 * @throws JsonTypeMismatchException if the element is not a primitive type
-	 */
-	JsonPrimitive asPrimitive();
-
-	boolean isObject();
-	boolean isArray();
-	boolean isPrimitive();
+	public JsonTypeMismatchException(final String message) {
+		super(message);
+	}
 }

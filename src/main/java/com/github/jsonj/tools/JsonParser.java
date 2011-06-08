@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.jsonj.tools;
+package com.github.jsonj.tools;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -27,11 +27,12 @@ import java.io.Reader;
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.jsonj.JsonArray;
-import org.jsonj.JsonElement;
-import org.jsonj.JsonObject;
-import org.jsonj.JsonPrimitive;
-import org.jsonj.exceptions.JsonParseException;
+
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.JsonPrimitive;
+import com.github.jsonj.exceptions.JsonParseException;
 
 /**
  * Parser based on json-simple. This class is thread safe so you can safely
