@@ -6,6 +6,7 @@ Jsonj is a framework for working with json in Java the "proper" way. No mappings
 
 h1. Changelog
 
+* 0.4 Bug fixes, changed groupid, documentation.
 * 0.3 Several new methods added in JsonArray and JsonObject; fixed the parser bug where nested arrays and objects were not handled correctly.
 * 0.2 Several bug fixes
 * 0.1 First release
