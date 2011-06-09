@@ -2,7 +2,7 @@ h1. Introduction
 
 Jsonj is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
 
-"some example code":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/org/jsonj/ShowOffTheFramework.java
+"some example code":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java
 
 h1. Changelog
 
@@ -54,7 +54,7 @@ h1. How to build jsonj
 
 h1. Where is the documentation?
 
-Look at the javadoc and the tests. Particularly "this one here":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/org/jsonj/ShowOffTheFramework.java shows off most of the features this framework has.
+Look at the javadoc and the tests. Particularly "this one here":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java shows off most of the features this framework has.
 
 h1. License
 
