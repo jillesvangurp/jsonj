@@ -2,7 +2,11 @@ h1. Introduction
 
 Jsonj is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
 
-"some example code":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java
+Just think about it, the whole point of json is a straightforward serialization and deserialization of native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
+
+The purpose of this framework is to remove some of the barriers. I can't change the language but I can bend the rules a little when it comes to maps and lists. This is exactly what this framework does. This framework simply extends LinkedHashMap and LinkedList to provide default implementations of json dictionaries and lists that implement APIs any java developer will be familiar with. Additionally, some convenience methods have been added to these classes to give you sensible hashcode and equals implementation as well as methods for manipulating the contents of the dictionary and list structures. Finally, a builder class is provided and of course the framework would not be complete without a good parser and pretty printing serializer.
+
+Check out the "example code":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java to get some idea of what this framework is about.
 
 h1. Changelog
 
@@ -33,21 +37,13 @@ h1. For who is this framework intended
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn't wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
-h1. What is offered in the framework
-
-# Familiarity: a JsonArray class that extends LinkedList, a JsonObject class that extends LinkedHashMap, s JsonPrimitive class that wraps Number, String, Boolean, and null. Also, all these classes implement JsonElement, so you can have type safety. In other words, you will find a very familiar API to work with these types.
-# Convenient, json specific extensions to the collections API in JsonArray and JsonObject.
-# A fast, easy to use parser that uses the excellent json-simple framework.
-# A pretty printing (optional) serializer.
-# A nice builder class that will drastically reduce the usage of the keyword new in your code.
-
 h1. Which version should I use?
 
-The latest. Seriously, the older versions have bugs that I know about and already fixed. Why take the risk?
+The latest. Seriously, the older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine. If you prefer non snapshot releases, go for the latest tag. The release process I use is "release frequently and don't keep working stuff unreleased". My QA process is verifying I did not break any tests (in combination with good test coverage).
 
-h1. What can you expect in terms of maintenance and continuity?
+h1. I found a bug, what should I do
 
-The code should be fine as is but I don't plan on providing lots of support. That's why it is on github: feel free to fork, clone & own, or do whatever you need to do to make this code work for you.
+File a bug, or mail/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That's what github is all about.
 
 h1. How to build jsonj
 
@@ -59,7 +55,7 @@ Look at the javadoc and the tests. Particularly "this one here":https://github.c
 
 h1. License
 
-The license is the MIT license, a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
+The license is the "MIT license":http://en.wikipedia.org/wiki/MIT_License, a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
 
 h1. Acknowledgements
 
