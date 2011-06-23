@@ -31,6 +31,8 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonType;
 
@@ -128,7 +130,9 @@ public class JsonSerializer {
 			break;
 		case string:
 			bw.write('"');
-			bw.write(json.toString());
+
+			String raw = json.toString();
+			bw.write(StringEscapeUtils.escapeJavaScript(raw));
 			bw.write('"');
 			break;
 		case bool:

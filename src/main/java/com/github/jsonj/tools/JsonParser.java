@@ -24,6 +24,7 @@ package com.github.jsonj.tools;
 import java.io.IOException;
 import java.io.Reader;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -133,7 +134,12 @@ public class JsonParser {
 		@Override
 		public boolean primitive(final Object object) throws ParseException,
 		IOException {
-			JsonPrimitive primitive = new JsonPrimitive(object);
+			JsonPrimitive primitive;
+			if(object instanceof String) {
+				primitive = new JsonPrimitive(StringEscapeUtils.unescapeJavaScript((String)object));
+			} else {
+				primitive = new JsonPrimitive(object);
+			}
 			if (isObject) {
 				stack.add(primitive);
 			} else {

@@ -26,9 +26,8 @@ import static com.github.jsonj.tools.JsonBuilder.object;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
-import com.github.jsonj.tools.JsonParser;
-import com.github.jsonj.tools.JsonSerializer;
 
 @Test
 public class JsonSerializerTest {
@@ -47,5 +46,12 @@ public class JsonSerializerTest {
 		Assert.assertEquals(
 				JsonSerializer.serialize(original, false),
 				JsonSerializer.serialize(jsonParser.parse(json2), false));
+	}
+
+	public void shouldHandleEscaping() {
+		JsonObject object = object().put("doublequotes", "\"value\"").put("singlequotes", "'value'").put("number", 1).put("alltheseshouldbeescaped", "\"'\t\n\r").get();
+		String json = JsonSerializer.serialize(object);
+		JsonElement parsed = new JsonParser().parse(json);
+		Assert.assertEquals(object, parsed);
 	}
 }

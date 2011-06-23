@@ -33,9 +33,6 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
 import com.github.jsonj.tools.JsonParser;
 
 /**
@@ -48,6 +45,14 @@ public class ShowOffTheFramework {
 	private final JsonParser jsonParser = new JsonParser();;
 
 	public void whatCanThisBabyDo() throws IOException {
+		// First there are the json primitives which are based on well known Java classes
+		// Everything is a JsonElement: JsonObject, JsonArray, JsonPrimitive (that's it, all you need to know)
+		// json dictionaries and arrays are generic Maps and Lists in Java:
+		// JsonObject extends LinkedHashMap<String, JsonElement> implements JsonElement
+		// JsonArray extends LinkedList<JsonElement> implements JsonElement
+		// JsonPrimitive implements JsonElement
+
+		// new is tedious so we have a nice builder for constructing json structures:
 		JsonObject object = object()
 			.put("its", "just a hash map")
 			.put("and", array(
@@ -60,7 +65,7 @@ public class ShowOffTheFramework {
 			.put("booleanstoo", true)
 			.put("nulls_if_you_insist", nullValue())
 			.put("a", object()
-						.put("b", object()
+					.put("b", object()
 						.put("c", true)
 						.put("d", 42)
 						.put("e", "hi!")
@@ -86,13 +91,11 @@ public class ShowOffTheFramework {
 			"and objects");
 
 		// builders are nice, but still feels kind of repetitive
-		JsonObject anotherObject = object.getOrCreateObject("1","2","3","4");
-		anotherObject.put("5", "xxx");
+		// getOrCreate will assume you want the object and will create it and everything on its path for you.
+		object.getOrCreateObject("1","2","3","4","5").put("5", "xxx");
 		assertTrue(object.getString("1","2","3","4","5").equals("xxx"),
-			"yep, we just added a string value 5 levels deep");
-
-		JsonArray anotherArray = object.getOrCreateArray("5","4","3","2","1");
-		anotherArray.add("xxx");
+			"yep, we just added a string value 5 levels deep that did not exist so far");
+		object.getOrCreateArray("5","4","3","2","1").add("xxx");
 		assertTrue(object.getArray("5","4","3","2","1").contains("xxx"),
 			"naturally it works for arrays too");
 
@@ -107,9 +110,8 @@ public class ShowOffTheFramework {
 				object().put("b", 2).put("a", 1).get()),
 			"true for objects as well");
 
-		// Arrays are lists
+		// arrays are a bit more flexible than ordinary lists
 		JsonArray array = array("foo", "bar");
-
 		assertTrue(array.get(1) == array.get("bar"),
 			"returns the same object");
 		assertTrue(array.contains(primitive("foo")),
