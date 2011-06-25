@@ -31,10 +31,6 @@ import com.github.jsonj.JsonPrimitive;
  * want to import this statically, for example by adding this class to your
  * eclipse Favorites list.
  */
-/**
- * @author jilles
- *
- */
 public class JsonBuilder {
 	private final JsonObject object;
 

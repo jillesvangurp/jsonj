@@ -40,6 +40,10 @@ import com.github.jsonj.JsonType;
  * Utility class to serialize Json.
  */
 public class JsonSerializer {
+	
+	private JsonSerializer() {
+		// utility class, don't instantiate
+	}
 
 	/**
 	 * @param json
