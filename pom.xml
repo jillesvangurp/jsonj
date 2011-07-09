@@ -18,7 +18,7 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/jillesvangurp/jsonj/</url>
+		<url>git://github.com/jillesvangurp/jsonj.git</url>
 		<connection>scm:git:git@github.com:jillesvangurp/jsonj.git</connection>
 		<developerConnection>scm:git:git://github.com/jillesvangurp/jsonj.git</developerConnection>
 	</scm>
@@ -90,7 +90,7 @@
 
 	<profiles>
 		<profile>
-			<id>mavencentral</id>
+			<id>signartifacts</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -137,6 +137,5 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-
 	</dependencies>
 </project>
