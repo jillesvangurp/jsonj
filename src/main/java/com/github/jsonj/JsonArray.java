@@ -160,4 +160,19 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		}
 		return code;
 	}
+	
+	@Override
+	public Object clone() {
+		return deepClone();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JsonArray deepClone() {
+		JsonArray array = new JsonArray();
+		for (JsonElement jsonElement : this) {
+			array.add(jsonElement.deepClone());
+		}
+		return array;
+	}	
 }

@@ -33,12 +33,16 @@ import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonPrimitive;
 
 public class JsonPrimitiveTest {
+
 	@DataProvider
-	public Object[][] primitives() {
-		return new Object[][] {
-				{primitive(true)},
+	public JsonPrimitive[][] primitives() {
+		return new JsonPrimitive[][] {
+				{primitive(true)}, 
+				{primitive(false)},
 				{primitive(42)},
-				{primitive("abc")}
+				{primitive(42.0)},
+				{primitive("abc")}, 
+				{primitive((Object)null)}
 		};
 	}
 
@@ -69,5 +73,11 @@ public class JsonPrimitiveTest {
 	@Test(dataProvider="notEqual")
 	public void shouldNotBeEqual(final JsonPrimitive primitive, final Object o) {
 		Assert.assertNotSame(primitive, o);
+	}
+
+	
+	@Test(dataProvider="primitives")
+	public void shouldBeEqualWithClone(JsonPrimitive p) {
+		Assert.assertTrue(p.equals(p.clone()));
 	}
 }

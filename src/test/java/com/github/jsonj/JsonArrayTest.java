@@ -83,8 +83,23 @@ public class JsonArrayTest {
 				{array("foo","bar"), array("foo", "bbbbbar")} // not same
 		};
 	}
+	
 	@Test(dataProvider="unEqualPairs")
 	public void shouldNotBeEqual(final JsonArray left, final JsonArray right) {
 		Assert.assertFalse(left.equals(right));
+	}
+	
+	public void shouldDoDeepClone() {
+		JsonArray a = array(1,2,3);
+		JsonArray cloneOfA = a.deepClone();
+		Assert.assertTrue(a.equals(cloneOfA));
+		a.remove(1);
+		Assert.assertFalse(a.equals(cloneOfA));
+		JsonArray b = array(cloneOfA);		
+		Assert.assertTrue(b.equals(b.clone()));
+		Object cloneOfB = b.clone();
+		cloneOfA.remove(1);
+		Assert.assertFalse(b.equals(cloneOfB));
+		Assert.assertTrue(a.equals(cloneOfA));		
 	}
 }

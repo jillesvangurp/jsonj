@@ -21,11 +21,9 @@
  */
 package com.github.jsonj;
 
-import java.io.Serializable;
-
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
-public class JsonPrimitive implements JsonElement, Serializable {
+public class JsonPrimitive implements JsonElement {
 	private static final long serialVersionUID = 111536854493507209L;
 
 	private final Object value;
@@ -34,6 +32,11 @@ public class JsonPrimitive implements JsonElement, Serializable {
 	/** Null object in json, no point creating this over and over again */
 	public static final JsonPrimitive JSON_NULL = new JsonPrimitive((String)null);
 
+	private JsonPrimitive(Object value, JsonType type) {
+		this.value = value;
+		this.type = type;		
+	}
+	
 	public JsonPrimitive(final String s) {
 		if(s==null) {
 			type = JsonType.nullValue;
@@ -139,7 +142,10 @@ public class JsonPrimitive implements JsonElement, Serializable {
 
 	@Override
 	public String toString() {
-		return value.toString();
+		if(value != null)
+			return value.toString();
+		else
+			return "null";
 	}
 
 	@Override
@@ -183,5 +189,17 @@ public class JsonPrimitive implements JsonElement, Serializable {
 			hashCode = hashCode * value.hashCode();
 		}
 		return hashCode;
+	}
+	
+	@Override
+	public Object clone() {
+		return deepClone();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JsonPrimitive deepClone() {
+		// all supported value types are immutable so no need to clone those.
+		return new JsonPrimitive(value,type);
 	}
 }

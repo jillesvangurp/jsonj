@@ -21,12 +21,14 @@
  */
 package com.github.jsonj;
 
+import java.io.Serializable;
+
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 /**
  * Super type of all Json Objects.
  */
-public interface JsonElement {
+public interface JsonElement extends Serializable, Cloneable{
 	/**
 	 * @return the type of this json element
 	 */
@@ -53,4 +55,6 @@ public interface JsonElement {
 	boolean isObject();
 	boolean isArray();
 	boolean isPrimitive();
+	
+    <T extends JsonElement> T deepClone();
 }

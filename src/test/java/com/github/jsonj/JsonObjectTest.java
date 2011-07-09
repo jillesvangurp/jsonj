@@ -116,5 +116,18 @@ public class JsonObjectTest {
 		JsonObject object = object().put("a", object().put("b", 42).get()).get();
 		object.getOrCreateObject("a","b");
 	}
+	
+	public void shouldDoDeepClone() {
+		JsonObject o = object().put("1", 42).put("2", "Hello world").get();
+		JsonObject cloneOfO = o.deepClone();
+		Assert.assertTrue(o.equals(cloneOfO));
+		o.remove("1");
+		Assert.assertFalse(o.equals(cloneOfO));
+		o.put("1", cloneOfO);
+		Object clone = o.clone();
+		Assert.assertTrue(o.equals(clone));
+		cloneOfO.remove("2");
+		Assert.assertFalse(o.equals(clone));		
+	}
 
 }

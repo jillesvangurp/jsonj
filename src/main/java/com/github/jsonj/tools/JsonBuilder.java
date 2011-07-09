@@ -170,6 +170,15 @@ public class JsonBuilder {
 		return jjArray;
 	}
 
+	public static JsonArray array(final Number...elements) {
+		JsonArray jjArray = new JsonArray();
+		for (Number n : elements) {
+			jjArray.add(primitive(n));
+		}
+		return jjArray;
+	}
+
+	
 	/**
 	 * @param value
 	 * @return a JsonPrimitive with the value

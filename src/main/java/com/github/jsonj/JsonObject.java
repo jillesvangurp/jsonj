@@ -289,4 +289,21 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 		return hashCode;
 	}
+	
+	@Override
+	public Object clone() {		
+		return deepClone();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JsonObject deepClone() {
+		JsonObject object = new JsonObject();
+		Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
+		for (Entry<String, JsonElement> entry : es) {
+			object.put(entry.getKey(), entry.getValue().deepClone());
+		}
+		return object;
+	}
+
 }
