@@ -24,7 +24,9 @@ package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -304,6 +306,22 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 			object.put(entry.getKey(), entry.getValue().deepClone());
 		}
 		return object;
+	}
+	
+	/**
+	 * Sort objects by key. Note: this method does not recurse on the members.
+	 * @return a new JsonObject sorted by key.
+	 */
+	public JsonObject sort() {
+		Set<String> keys = keySet();
+		LinkedList<String> list = new LinkedList<String>();
+		list.addAll(keys);
+		Collections.sort(list);
+		JsonObject jsonObject = new JsonObject();
+		for (String key : list) {
+			jsonObject.put(key, this.get(key).deepClone());
+		}
+		return jsonObject;
 	}
 
 }

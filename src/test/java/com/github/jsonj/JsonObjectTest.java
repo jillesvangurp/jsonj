@@ -25,6 +25,8 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import java.util.Set;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -128,6 +130,17 @@ public class JsonObjectTest {
 		Assert.assertTrue(o.equals(clone));
 		cloneOfO.remove("2");
 		Assert.assertFalse(o.equals(clone));		
+	}
+	
+	public void shouldSortOnKey() {
+		JsonObject unsorted = object().put("c", "c").put("a", "a").put("b", "b").get();
+		JsonObject sorted = unsorted.sort();
+		Set<String> ks = sorted.keySet();
+		int i = 0;
+		String[] keys = new String[] {"a","b","c"};
+		for (String k : ks) {
+			Assert.assertTrue(k.equals(keys[i++]));			
+		}
 	}
 
 }
