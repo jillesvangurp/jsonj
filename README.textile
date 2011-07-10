@@ -10,6 +10,7 @@ Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/
 
 h1. Changelog
 
+* 0.6 Support for deepCloning, object sorting added. Use String.intern() on object keys to optimize frequent operations on json objects.
 * 0.5 Serializer and parser now properly escape and unescape string literals.
 * 0.4 Bug fixes, changed groupid, documentation.
 * 0.3 Several new methods added in JsonArray and JsonObject; fixed the parser bug where nested arrays and objects were not handled correctly.
