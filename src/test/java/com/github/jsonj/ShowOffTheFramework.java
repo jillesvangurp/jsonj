@@ -92,7 +92,7 @@ public class ShowOffTheFramework {
 
 		// builders are nice, but still feels kind of repetitive
 		// getOrCreate will assume you want the object and will create it and everything on its path for you.
-		object.getOrCreateObject("1","2","3","4","5").put("5", "xxx");
+		object.getOrCreateObject("1","2","3","4").put("5", "xxx");
 		assertTrue(object.getString("1","2","3","4","5").equals("xxx"),
 			"yep, we just added a string value 5 levels deep that did not exist so far");
 		object.getOrCreateArray("5","4","3","2","1").add("xxx");
