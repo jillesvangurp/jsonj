@@ -8,7 +8,7 @@ The purpose of this framework is to remove some of the barriers and allow you to
 
 * Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.6.jar
 * Read the "Javadoc":http://jillesvangurp.github.com/jsonj/apidocs/
-* Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java to get some idea of what this framework is about.
+* Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java to get some idea of what this framework is about.
 
 h1. Changelog
 
