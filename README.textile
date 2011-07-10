@@ -6,7 +6,9 @@ Just think about it, the whole point of json is a straightforward serialization 
 
 The purpose of this framework is to remove some of the barriers and allow you to write code that has a low amount of verbosity. I can't change the language but I can bend the rules a little when it comes to maps and lists. JsonJ framework simply extends LinkedHashMap and LinkedList to provide default implementations of json dictionaries and lists that implement APIs any java developer will be familiar with. Additionally, some convenience methods have been added to these classes to give you sensible hashcode and equals implementations, a deepClone method, as well as methods for manipulating the contents of the dictionary and list structures. Finally, a builder class is provided and of course the framework would not be complete without a good parser and pretty printing serializer.
 
-Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java to get some idea of what this framework is about.
+* Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.6.jar
+* Read the "Javadoc":http://jillesvangurp.github.com/jsonj/apidocs/
+* Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java to get some idea of what this framework is about.
 
 h1. Changelog
 
@@ -52,7 +54,7 @@ h1. How to build JsonJ
 
 h1. Where is the documentation?
 
-Look at the javadoc and the tests. Particularly "this one here":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
+Look at the "javadoc":http://jillesvangurp.github.com/jsonj/apidocs/ and the tests. Particularly "this one here":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
 
 h1. License
 
