@@ -41,13 +41,13 @@ public interface JsonElement extends Serializable, Cloneable{
 	JsonObject asObject();
 
 	/**
-	 * @return a JsonObject
+	 * @return a JsonArray
 	 * @throws JsonTypeMismatchException if the element is not an array
 	 */
 	JsonArray asArray();
 
 	/**
-	 * @return a JsonObject
+	 * @return a JsonPrimitive
 	 * @throws JsonTypeMismatchException if the element is not a primitive type
 	 */
 	JsonPrimitive asPrimitive();
