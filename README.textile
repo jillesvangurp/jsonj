@@ -1,12 +1,12 @@
 h1. Introduction
 
-Jsonj is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
+JsonJ is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
 
 Just think about it, the whole point of json is a straightforward serialization and deserialization of native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
 
-The purpose of this framework is to remove some of the barriers. I can't change the language but I can bend the rules a little when it comes to maps and lists. This is exactly what this framework does. This framework simply extends LinkedHashMap and LinkedList to provide default implementations of json dictionaries and lists that implement APIs any java developer will be familiar with. Additionally, some convenience methods have been added to these classes to give you sensible hashcode and equals implementation as well as methods for manipulating the contents of the dictionary and list structures. Finally, a builder class is provided and of course the framework would not be complete without a good parser and pretty printing serializer.
+The purpose of this framework is to remove some of the barriers and allow you to write code that has a low amount of verbosity. I can't change the language but I can bend the rules a little when it comes to maps and lists. JsonJ framework simply extends LinkedHashMap and LinkedList to provide default implementations of json dictionaries and lists that implement APIs any java developer will be familiar with. Additionally, some convenience methods have been added to these classes to give you sensible hashcode and equals implementations, a deepClone method, as well as methods for manipulating the contents of the dictionary and list structures. Finally, a builder class is provided and of course the framework would not be complete without a good parser and pretty printing serializer.
 
-Check out the "example code":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java to get some idea of what this framework is about.
+Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java to get some idea of what this framework is about.
 
 h1. Changelog
 
@@ -18,7 +18,7 @@ h1. Changelog
 
 h1. What's with the name
 
-It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java", or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, jsonj it is.
+It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java", or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
 
 h1. Why another framework?
 
@@ -45,13 +45,13 @@ h1. I found a bug, what should I do
 
 File a bug, or mail/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That's what github is all about.
 
-h1. How to build jsonj
+h1. How to build JsonJ
 
 @mvn clean install@ should do the trick with maven 3.x (and probably 2.x as well). I'm not a big maven fan but this is a relatively trivial project and it's just easier this way.
 
 h1. Where is the documentation?
 
-Look at the javadoc and the tests. Particularly "this one here":https://github.com/jillesvangurp/jsonj/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java shows off most of the features this framework has.
+Look at the javadoc and the tests. Particularly "this one here":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
 
 h1. License
 
@@ -60,5 +60,5 @@ The license is the "MIT license":http://en.wikipedia.org/wiki/MIT_License, a.k.a
 h1. Acknowledgements
 
 # I've been greatly influenced by the classes representing the json primitives in the GSon framework. If only they implemented Map and List and weren't final. But lovely framework and would use it again.
-# I spend quite a bit of time figuring out a way of parsing Json that didn't involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for jsonj in under two hours with a custom content handler. It seems to work and alledgedly json-simple is pretty fast as well.
+# I spend quite a bit of time figuring out a way of parsing Json that didn't involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for JsonJ in under two hours using a custom json-simple content handler. It seems to work and json-simple is pretty fast as well.
 # This code is very loosely based on work I did at work with several colleagues. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.

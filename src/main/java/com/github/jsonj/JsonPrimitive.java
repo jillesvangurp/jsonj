@@ -23,6 +23,9 @@ package com.github.jsonj;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
+/**
+ * Representation of json primitives.
+ */
 public class JsonPrimitive implements JsonElement {
 	private static final long serialVersionUID = 111536854493507209L;
 
@@ -65,7 +68,7 @@ public class JsonPrimitive implements JsonElement {
 			type = JsonType.number;
 			if(n instanceof Integer) {
 				// make sure to handle Integers and Longs consistently with json simple (always a long)
-				value = new Long((Integer)n);
+				value = n.longValue();
 			} else {
 				value = n;
 			}
@@ -80,7 +83,7 @@ public class JsonPrimitive implements JsonElement {
 			type = JsonType.number;
 			if(object instanceof Integer) {
 				// make sure to handle Integers and Longs consistently with json simple (always a long)
-				value = new Long((Integer)object);
+				value = ((Number)object).longValue();
 			} else {
 				value = object;
 			}
