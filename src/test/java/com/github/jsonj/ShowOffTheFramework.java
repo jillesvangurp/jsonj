@@ -119,6 +119,12 @@ public class ShowOffTheFramework {
 		assertTrue(array.contains("foo"),
 			"but this works as well");
 
+		// cloning is supported too
+		JsonObject deepClone = object.deepClone();
+		assertTrue(object.equals(deepClone));
+		// deepClone is just a more convenient API than clone but of course Cloneable is implemented on all json elements
+		assertTrue(object.equals(deepClone.clone()));
+		
 		// serialize like this
 		String serialized = serialize(object);
 
@@ -127,13 +133,17 @@ public class ShowOffTheFramework {
 
 		// and write it straight to some stream
 		write(System.out, json, false);
+		System.out.println();
 
 		// or pretty print it like this
-		System.out.println("\n" + serialize(json, true));
+		System.out.println(serialize(json, true));
 
 		assert serialize(object).equals(serialize(jsonParser.parse(serialize(object))));
 
 		assertTrue(object.equals(jsonParser.parse(serialize(object))),
 			"input is the same as output");
+		
+		assertTrue(serialize(object).equals(serialize(jsonParser.parse((serialize(object))))), 
+				"the same as in string equals");
 	}
 }
