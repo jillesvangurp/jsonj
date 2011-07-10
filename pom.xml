@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jsonj</groupId>
 	<artifactId>jsonj</artifactId>
-	<version>0.6</version>
 
 	<name>Json Java</name>
 	<description>A framework for working with json in Java the &quot;proper&quot; way. No mappings or model classes, it's all just lovely json, but in Java.</description>
@@ -138,4 +137,5 @@
 			<version>2.6</version>
 		</dependency>
 	</dependencies>
+	<version>0.7-SNAPSHOT</version>
 </project>
