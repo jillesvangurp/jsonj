@@ -162,7 +162,9 @@ public class JsonParser {
 				JsonElement last = stack.peekLast();
 				if(last.isObject()) {
 					JsonObject container = last.asObject();
-					container.put(e.toString(), value);
+					String key = e.toString();
+					// use intern under the assumption that the set of unique keys is small; should reduce memory usage and speed up things a bit
+					container.put(key.intern(), value);
 				} else if(last.isArray()) {
 					throw new IllegalStateException("shouldn't happen");
 
