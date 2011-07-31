@@ -18,8 +18,6 @@ pre..
   <version>0.6</version>
 </dependency>
 
-p. 
-
 h1. Changelog
 
 * 0.6 Support for deepCloning, object sorting added. Use String.intern() on object keys to optimize frequent operations on json objects.
@@ -56,7 +54,7 @@ The latest. Seriously, the older versions have bugs that I know about and alread
 
 h1. I found a bug, what should I do
 
-File a bug, or mail/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That's what github is all about.
+File a bug on this github project, or just mail/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That's what github is all about.
 
 h1. How to build JsonJ
 
