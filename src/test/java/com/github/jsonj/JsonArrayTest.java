@@ -22,15 +22,13 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
 
 @Test
 public class JsonArrayTest {
@@ -83,23 +81,30 @@ public class JsonArrayTest {
 				{array("foo","bar"), array("foo", "bbbbbar")} // not same
 		};
 	}
-	
+
 	@Test(dataProvider="unEqualPairs")
 	public void shouldNotBeEqual(final JsonArray left, final JsonArray right) {
 		Assert.assertFalse(left.equals(right));
 	}
-	
+
 	public void shouldDoDeepClone() {
 		JsonArray a = array(1,2,3);
 		JsonArray cloneOfA = a.deepClone();
 		Assert.assertTrue(a.equals(cloneOfA));
 		a.remove(1);
 		Assert.assertFalse(a.equals(cloneOfA));
-		JsonArray b = array(cloneOfA);		
+		JsonArray b = array(cloneOfA);
 		Assert.assertTrue(b.equals(b.clone()));
 		Object cloneOfB = b.clone();
 		cloneOfA.remove(1);
 		Assert.assertFalse(b.equals(cloneOfB));
-		Assert.assertTrue(a.equals(cloneOfA));		
+		Assert.assertTrue(a.equals(cloneOfA));
+	}
+
+	public void shouldRemoveEmpty() {
+		JsonArray array = array(object().get(), array(), nullValue());
+		Assert.assertTrue(array.isEmpty(), "array should be empty");
+		array.removeEmpty();
+		Assert.assertEquals(array.size(), 0);
 	}
 }

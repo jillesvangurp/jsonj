@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
@@ -31,9 +32,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 @Test
@@ -118,7 +116,7 @@ public class JsonObjectTest {
 		JsonObject object = object().put("a", object().put("b", 42).get()).get();
 		object.getOrCreateObject("a","b");
 	}
-	
+
 	public void shouldDoDeepClone() {
 		JsonObject o = object().put("1", 42).put("2", "Hello world").get();
 		JsonObject cloneOfO = o.deepClone();
@@ -129,9 +127,9 @@ public class JsonObjectTest {
 		Object clone = o.clone();
 		Assert.assertTrue(o.equals(clone));
 		cloneOfO.remove("2");
-		Assert.assertFalse(o.equals(clone));		
+		Assert.assertFalse(o.equals(clone));
 	}
-	
+
 	public void shouldSortOnKey() {
 		JsonObject unsorted = object().put("c", "c").put("a", "a").put("b", "b").get();
 		JsonObject sorted = unsorted.sort();
@@ -139,8 +137,17 @@ public class JsonObjectTest {
 		int i = 0;
 		String[] keys = new String[] {"a","b","c"};
 		for (String k : ks) {
-			Assert.assertTrue(k.equals(keys[i++]));			
+			Assert.assertTrue(k.equals(keys[i++]));
 		}
+	}
+
+	public void shouldRemoveEmptyElements() {
+		JsonObject jsonObject = object().put("empty", object().get()).put("empty2", nullValue()).put("empty3", new JsonArray()).get();
+		Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
+		jsonObject.removeEmpty();
+		Assert.assertEquals(jsonObject.getString("empty"), null);
+		Assert.assertEquals(jsonObject.getString("empty2"), null);
+		Assert.assertEquals(jsonObject.getString("empty3"), null);
 	}
 
 }

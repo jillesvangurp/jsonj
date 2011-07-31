@@ -23,6 +23,7 @@ package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
@@ -174,5 +175,32 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 			array.add(jsonElement.deepClone());
 		}
 		return array;
-	}	
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		boolean empty = true;
+		if(size() > 0) {
+			for (JsonElement element : this) {
+				empty = empty && element.isEmpty();
+				if(!empty) {
+					return false;
+				}
+			}
+		}
+		return empty;
+	}
+	
+	@Override
+	public void removeEmpty() {
+		Iterator<JsonElement> iterator = iterator();
+		while (iterator.hasNext()) {
+			JsonElement jsonElement = (JsonElement) iterator.next();
+			if(jsonElement.isEmpty()) {
+				iterator.remove();
+			} else {
+				jsonElement.removeEmpty();
+			}			
+		}
+	}
 }

@@ -26,7 +26,7 @@ import java.io.Serializable;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 /**
- * Super type of all Json Objects.
+ * Super type of all Json elements (object, list, and primitive).
  */
 public interface JsonElement extends Serializable, Cloneable{
 	/**
@@ -52,9 +52,37 @@ public interface JsonElement extends Serializable, Cloneable{
 	 */
 	JsonPrimitive asPrimitive();
 
+	/**
+	 * @return true if the JsonElement is a JsonObject.
+	 */
 	boolean isObject();
+
+	/**
+	 * @return true if the JsonElement is a JsonArray
+	 */
 	boolean isArray();
+
+	/**
+	 * @return true if the JsonElement is a JsonPrimitive
+	 */
 	boolean isPrimitive();
-	
+
+    /**
+     * @return a deep clone of the JsonElement.
+     */
     <T extends JsonElement> T deepClone();
+
+	/**
+	 * @return true if the JsonElement is effectively empty.
+	 */
+	boolean isEmpty();
+
+	/**
+	 * Removes empty elements from a json tree. An object is empty if it
+	 * contains no elements or if all the entries in it are empty. Likewise a
+	 * list is empty if it has no elements or only empty elements. Finally,
+	 * primitives are considered empty if the value is null or if the string
+	 * value is equal to "".
+	 */
+	void removeEmpty();
 }

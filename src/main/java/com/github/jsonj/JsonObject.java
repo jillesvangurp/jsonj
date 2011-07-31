@@ -25,8 +25,10 @@ package com.github.jsonj;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -291,12 +293,12 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 		return hashCode;
 	}
-	
+
 	@Override
-	public Object clone() {		
+	public Object clone() {
 		return deepClone();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public JsonObject deepClone() {
@@ -307,7 +309,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		}
 		return object;
 	}
-	
+
 	/**
 	 * Sort objects by key. Note: this method does not recurse on the members.
 	 * @return a new JsonObject sorted by key.
@@ -324,4 +326,31 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return jsonObject;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		boolean empty = true;
+		if(keySet().size() != 0) {
+			for(java.util.Map.Entry<String, JsonElement> entry: entrySet()) {
+				empty = empty && entry.getValue().isEmpty();
+				if(!empty) {
+					return false;
+				}
+			}
+		}
+		return empty;
+	}
+
+	@Override
+	public void removeEmpty() {
+		Iterator<java.util.Map.Entry<String, JsonElement>> iterator = entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<String, JsonElement> entry = iterator.next();
+			JsonElement element = entry.getValue();
+			if(element.isEmpty()) {
+				iterator.remove();
+			} else {
+				element.removeEmpty();
+			}
+		}
+	}
 }

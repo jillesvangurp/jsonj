@@ -21,6 +21,8 @@
  */
 package com.github.jsonj;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 /**
@@ -204,5 +206,18 @@ public class JsonPrimitive implements JsonElement {
 	public JsonPrimitive deepClone() {
 		// all supported value types are immutable so no need to clone those.
 		return new JsonPrimitive(value,type);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		if(value == null) {
+			return true;
+		} else {
+			return StringUtils.isEmpty(asString());
+		}
+	}
+
+	@Override
+	public void removeEmpty() {
 	}
 }
