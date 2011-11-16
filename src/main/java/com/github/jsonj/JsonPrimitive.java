@@ -123,6 +123,9 @@ public class JsonPrimitive implements JsonElement {
 	}
 
 	public String asString() {
+        if( null == value ) {
+            return null;
+        }
 		return value.toString();
 	}
 

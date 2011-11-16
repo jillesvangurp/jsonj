@@ -127,7 +127,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		if(jsonElement == null) {
 			return null;
 		} else {
-			return get(labels).asPrimitive().asString();
+			return jsonElement.asPrimitive().asString();
 		}
 	}
 
