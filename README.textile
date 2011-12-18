@@ -2,11 +2,13 @@ h1. Introduction
 
 JsonJ is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
 
-Just think about it, the whole point of json is a straightforward serialization and deserialization of native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
+JsonJ is optimized for working with json in a programmatic way rather in a reflective/annotated domain object way. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc. 
+
+Just think about it, the whole point of json is a straightforward serialization and deserialization of simple, native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
 
 The purpose of this framework is to remove some of the barriers and allow you to write code that has a low amount of verbosity. I can't change the language but I can bend the rules a little when it comes to maps and lists. JsonJ framework simply extends LinkedHashMap and LinkedList to provide default implementations of json dictionaries and lists that implement APIs any java developer will be familiar with. Additionally, some convenience methods have been added to these classes to give you sensible hashcode and equals implementations, a deepClone method, as well as methods for manipulating the contents of the dictionary and list structures. Finally, a builder class is provided and of course the framework would not be complete without a good parser and pretty printing serializer.
 
-* Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.6.jar
+* Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.7.jar
 * Read the "Javadoc":http://jillesvangurp.github.com/jsonj/apidocs/
 * Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java to get some idea of what this framework is about.
 * Or add the maven dependency
@@ -15,11 +17,12 @@ pre..
 <dependency>
   <groupId>com.github.jsonj</groupId>
   <artifactId>jsonj</artifactId>
-  <version>0.6</version>
+  <version>0.7</version>
 </dependency>
 
 h1. Changelog
 
+* 0.7 Add support for converting a json element to a dom tree so that things like xpath or xsl can be used on it
 * 0.6 Support for deepCloning, object sorting added. Use String.intern() on object keys to optimize frequent operations on json objects.
 * 0.5 Serializer and parser now properly escape and unescape string literals.
 * 0.4 Bug fixes, changed groupid, documentation.
