@@ -161,12 +161,12 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		}
 		return code;
 	}
-	
+
 	@Override
 	public Object clone() {
 		return deepClone();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public JsonArray deepClone() {
@@ -176,7 +176,7 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		}
 		return array;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		boolean empty = true;
@@ -190,17 +190,17 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		}
 		return empty;
 	}
-	
+
 	@Override
 	public void removeEmpty() {
 		Iterator<JsonElement> iterator = iterator();
 		while (iterator.hasNext()) {
-			JsonElement jsonElement = (JsonElement) iterator.next();
+			JsonElement jsonElement = iterator.next();
 			if(jsonElement.isEmpty()) {
 				iterator.remove();
 			} else {
 				jsonElement.removeEmpty();
-			}			
+			}
 		}
 	}
 }

@@ -39,9 +39,9 @@ public class JsonPrimitive implements JsonElement {
 
 	private JsonPrimitive(Object value, JsonType type) {
 		this.value = value;
-		this.type = type;		
+		this.type = type;
 	}
-	
+
 	public JsonPrimitive(final String s) {
 		if(s==null) {
 			type = JsonType.nullValue;
@@ -147,10 +147,11 @@ public class JsonPrimitive implements JsonElement {
 
 	@Override
 	public String toString() {
-		if(value != null)
+		if(value != null) {
 			return value.toString();
-		else
+		} else {
 			return "null";
+		}
 	}
 
 	@Override
@@ -195,12 +196,12 @@ public class JsonPrimitive implements JsonElement {
 		}
 		return hashCode;
 	}
-	
+
 	@Override
 	public Object clone() {
 		return deepClone();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public JsonPrimitive deepClone() {
