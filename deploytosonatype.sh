@@ -20,11 +20,14 @@
 # create a bundle
 # cd target
 # jar -cvf bundle.jar jsonj*
-# go to https://oss.sonatype.org, in the Nexus UI, click Staging Upload in the left column. In the Staging Upload panel, select Artifact Bundle as Upload Mode and select the bundle you just created
+# go to https://oss.sonatype.org, in the Nexus UI, click Staging Upload in the left column. 
+# In the Staging Upload panel, select Artifact Bundle as Upload Mode and select the bundle you just created
 # now in staging repositories, find the uploaded artifact and click release. It should already be in the "closed" state.
 
-# now update the documentation project on the gh-pages branch; this works easiest with the project checked out in a separate directory and permanently on the gh-pages branch
-# replace the jar file, the apidocs with the appropriate versions from the target directory where you just built the release. Fix the link in index.html.
+# now update the documentation project on the gh-pages branch; this works easiest with the project checked 
+# out in a separate directory and permanently on the gh-pages branch
+# replace the jar file, the apidocs with the appropriate versions from the target directory where 
+# you just built the release. Fix the link in index.html.
 # commit and push (git push origin gh-pages)
 
 
