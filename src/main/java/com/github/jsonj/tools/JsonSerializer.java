@@ -31,8 +31,6 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonType;
 
@@ -40,7 +38,7 @@ import com.github.jsonj.JsonType;
  * Utility class to serialize Json.
  */
 public class JsonSerializer {
-	
+
 	private JsonSerializer() {
 		// utility class, don't instantiate
 	}
@@ -136,7 +134,7 @@ public class JsonSerializer {
 			bw.write('"');
 
 			String raw = json.toString();
-			bw.write(StringEscapeUtils.escapeJavaScript(raw));
+			bw.write(jsonEscape(raw));
 			bw.write('"');
 			break;
 		case bool:
@@ -154,7 +152,23 @@ public class JsonSerializer {
 		}
 	}
 
-	private static void newline(final BufferedWriter bw, final int n, final boolean pretty) throws IOException {
+	public static String jsonEscape(String raw) {
+	    StringBuilder buf=new StringBuilder(raw.length());
+	    for(char c: raw.toCharArray()) {
+	        if('\n' == c) {
+	            buf.append("\\n");
+	        } else if('"' == c) {
+	            buf.append("\\\"");
+	        } else if('\\' == c) {
+                buf.append("\\\\");
+            } else {
+	            buf.append(c);
+	        }
+	    }
+        return buf.toString();
+    }
+
+    private static void newline(final BufferedWriter bw, final int n, final boolean pretty) throws IOException {
 		if(pretty) {
 			bw.write('\n');
 			for(int i=0;i<n;i++) {
