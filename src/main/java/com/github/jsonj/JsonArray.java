@@ -23,6 +23,7 @@ package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -55,11 +56,21 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	/**
 	 * Variant of add that adds multiple JsonElements.
 	 * @param elements
-	 */	public void add(final JsonElement...elements) {
+	 */
+	public void add(final JsonElement...elements) {
 		for (JsonElement element : elements) {
 			add(primitive(element));
 		}
 	}
+
+	@Override
+	public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
+        for (Object element : c) {
+            add(primitive(element));
+        }
+        return c.size() != 0;
+	}
+
 
 	/**
 	 * Convenient method providing a few alternate ways of extracting elements
