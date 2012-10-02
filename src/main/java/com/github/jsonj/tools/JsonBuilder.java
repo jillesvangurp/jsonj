@@ -177,7 +177,6 @@ public class JsonBuilder {
 		}
 		return jjArray;
 	}
-
 	
 	/**
 	 * @param value

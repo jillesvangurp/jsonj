@@ -102,7 +102,7 @@ public class JsonPrimitive implements JsonElement {
 		if(type == JsonType.number) {
 			return ((Number)value).intValue();
 		} else {
-			throw new JsonTypeMismatchException("not a number");
+			throw new JsonTypeMismatchException("not a number '"+value+"'");
 		}
 	}
 
@@ -110,7 +110,7 @@ public class JsonPrimitive implements JsonElement {
 		if(type == JsonType.number) {
 			return ((Number)value).doubleValue();
 		} else {
-			throw new JsonTypeMismatchException("not a number");
+			throw new JsonTypeMismatchException("not a number '"+value+"'");
 		}
 	}
 
@@ -118,7 +118,7 @@ public class JsonPrimitive implements JsonElement {
 		if(type == JsonType.bool) {
 			return ((Boolean)value).booleanValue();
 		} else{
-			throw new JsonTypeMismatchException("not a boolean");
+			throw new JsonTypeMismatchException("not a boolean '"+value+"'");
 		}
 	}
 
