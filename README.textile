@@ -9,7 +9,7 @@ pre..
 <dependency>
   <groupId>com.github.jsonj</groupId>
   <artifactId>jsonj</artifactId>
-  <version>0.7</version>
+  <version>0.8</version>
 </dependency>
 
 h1. Introduction
