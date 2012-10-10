@@ -24,6 +24,7 @@ The purpose of the JsonJ framework is to remove these barriers and allow you to 
 
 h1. Changelog
 
+* 0.8 fix escaping, npe fix John Goodwin merged, misc minor fixes
 * 0.7 Add support for converting a json element to a dom tree so that things like xpath or xsl can be used on it
 * 0.6 Support for deepCloning, object sorting added. Use String.intern() on object keys to optimize frequent operations on json objects.
 * 0.5 Serializer and parser now properly escape and unescape string literals.
