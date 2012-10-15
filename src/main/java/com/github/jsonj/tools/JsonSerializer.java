@@ -93,7 +93,10 @@ public class JsonSerializer {
 	}
 
 	private static void write(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
-		JsonType type = json.type();
+		if(json==null) {
+            return;
+        }
+	    JsonType type = json.type();
 		switch (type) {
 		case object:
 			bw.write('{');
