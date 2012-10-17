@@ -106,13 +106,15 @@ public class JsonSerializer {
 				Entry<String, JsonElement> entry = iterator.next();
 				String key = entry.getKey();
 				JsonElement value = entry.getValue();
-				bw.write('"');
-				bw.write(key);
-				bw.write("\":");
-				write(bw,value,pretty,indent+1);
-				if(iterator.hasNext()) {
-					bw.write(',');
-					newline(bw, indent+1, pretty);
+				if(value != null) {
+    				bw.write('"');
+    				bw.write(key);
+    				bw.write("\":");
+    				write(bw,value,pretty,indent+1);
+    				if(iterator.hasNext()) {
+    					bw.write(',');
+    					newline(bw, indent+1, pretty);
+    				}
 				}
 			}
 			newline(bw, indent, pretty);
