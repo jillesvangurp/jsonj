@@ -90,15 +90,12 @@ public class JsonArrayTest {
 	public void shouldDoDeepClone() {
 		JsonArray a = array(1,2,3);
 		JsonArray cloneOfA = a.deepClone();
-		Assert.assertTrue(a.equals(cloneOfA));
+		Assert.assertTrue(a.equals(cloneOfA), "a's clone should be equal");
 		a.remove(1);
-		Assert.assertFalse(a.equals(cloneOfA));
+		Assert.assertFalse(a.equals(cloneOfA), "a was modified so clone is different");
 		JsonArray b = array(cloneOfA);
-		Assert.assertTrue(b.equals(b.clone()));
-		Object cloneOfB = b.clone();
-		cloneOfA.remove(1);
-		Assert.assertFalse(b.equals(cloneOfB));
-		Assert.assertTrue(a.equals(cloneOfA));
+        Assert.assertTrue(b.equals(b.clone()), "b's clone should be equal");
+        Assert.assertTrue(b.equals(cloneOfA), "b's clone should to clone of A");
 	}
 
 	public void shouldRemoveEmpty() {
