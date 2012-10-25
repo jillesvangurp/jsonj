@@ -38,7 +38,7 @@ public class TypeSupport {
         double[][] result = new double[arrayOfArrays.size()][arrayOfArrays.get(0).asArray().size()];
         for(int i =0; i<arrayOfArrays.size();i++) {
             JsonArray subArray = arrayOfArrays.get(i).asArray();
-            for(int j =0; j<arrayOfArrays.size();j++) {
+            for(int j =0; j<subArray.size();j++) {
                 result[i][j] = subArray.get(j).asPrimitive().asDouble();
             }            
         }        

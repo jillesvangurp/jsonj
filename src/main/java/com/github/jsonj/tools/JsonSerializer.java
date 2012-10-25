@@ -166,6 +166,8 @@ public class JsonSerializer {
 	            buf.append("\\\"");
 	        } else if('\\' == c) {
                 buf.append("\\\\");
+            } else if('\t' == c) {
+                buf.append("\\t");
             } else {
 	            buf.append(c);
 	        }
