@@ -54,9 +54,11 @@ h1. For who is this framework intended
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn't wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
+Jsonj had a bit of a rocky start where especially the early versions had loads of bugs. I've basically ran into most of them and have been using it in a few projects. Most recent development has been about addressing very minor issues and adding new features. As of 0.8 it seems to work for most of what I do with it and I'm not aware of major open issues. I've processed many gigabytes of information with it and am fairly confident to have caught all major issues at this point. So, I might cut a 1.0 fairly soon.
+
 h1. Which version should I use?
 
-The latest. Seriously, the older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine. If you prefer non snapshot releases, go for the latest tag. The release process I use is "release frequently and don't keep working stuff unreleased". My QA process is verifying I did not break any tests (in combination with good test coverage).
+The latest release or snapshot typically. Beyond the version number, there is not much difference between a release and a snapshot. I don't bother with the ceremony for each commit. Seriously, the older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine. If you prefer non snapshot releases, go for the latest tag. The release process I use is "release frequently and don't keep working stuff unreleased". My QA process is verifying I did not break any tests (in combination with good test coverage).
 
 h1. I found a bug, what should I do
 
