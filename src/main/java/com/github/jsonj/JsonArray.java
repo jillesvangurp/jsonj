@@ -66,7 +66,11 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	@Override
 	public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
         for (Object element : c) {
-            add(primitive(element));
+            if(element instanceof JsonElement) {
+                add((JsonElement)element);
+            } else {
+                add(primitive(element));
+            }
         }
         return c.size() != 0;
 	}
