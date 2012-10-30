@@ -96,7 +96,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	/**
 	 * Get a json element at a particular path in an object structure.
 	 * @param labels list of field names that describe the location to a particular json node.
-	 * @return a json element at a particular path in an object.
+	 * @return a json element at a particular path in an object or null if it can't be found.
 	 */
 	public JsonElement get(final String...labels) {
 		JsonElement e = this;
