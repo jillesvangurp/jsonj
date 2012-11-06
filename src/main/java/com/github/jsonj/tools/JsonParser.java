@@ -24,7 +24,6 @@ package com.github.jsonj.tools;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -136,7 +135,8 @@ public class JsonParser {
 		IOException {
 			JsonPrimitive primitive;
 			if(object instanceof String) {
-				primitive = new JsonPrimitive(StringEscapeUtils.unescapeJavaScript((String)object));
+			    // jsonsimple will have unescaped already, so no need to do it again
+                primitive = new JsonPrimitive(object);
 			} else {
 				primitive = new JsonPrimitive(object);
 			}
