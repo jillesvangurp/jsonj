@@ -21,9 +21,13 @@
  */
 package com.github.jsonj.tools;
 
+import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.object;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.github.jsonj.JsonElement;
@@ -47,11 +51,43 @@ public class JsonSerializerTest {
 				JsonSerializer.serialize(original, false),
 				JsonSerializer.serialize(jsonParser.parse(json2), false));
 	}
-
-	public void shouldHandleEscaping() {
-		JsonObject object = object().put("doublequotes", "\"value\"").put("singlequotes", "'value'").put("number", 1).put("alltheseshouldbeescaped", "\"'\t\n\r").get();
-		String json = JsonSerializer.serialize(object);
-		JsonElement parsed = new JsonParser().parse(json);
-		Assert.assertEquals(object, parsed);
+	
+	@DataProvider
+	public Object[][] strings() {
+	    return new Object[][] {
+                {"x"},
+                {"xx"},
+                {"xxx"},
+                {"xxxx"},
+                {"fooo\n"},
+                {"fooo\nx"},
+                {"fooo\nxx"},
+                {"fooo\nxxx"},
+                {"\tx"},
+                {"\txx"},
+                {"\txxx"},
+                {"\txxxx"},
+	            {"e^r is irrational for r\\in\\mathbbQ\\setminus\\0\\"},
+	            {"\"value\""},
+	            {"'value'"},
+	            {"\"'\t\n\r"},
+	            {"\\\\\\"}
+	    };
+	}
+	
+	@Test(dataProvider="strings")
+	public void shouldParseSerializedAndHandleEscapingBothWays(String text) {
+        JsonElement e = object().put(text, "value").put("stringval", text).put("array", array(text,text)).get();
+	    
+	    String json = JsonSerializer.serialize(e);
+	    JsonElement parsed = new JsonParser().parse(json);
+	    Assert.assertEquals(e, parsed);
+	}
+	
+    @Test(dataProvider="strings")
+	public void shouldEscapeAndUnescape(String string) {
+        String escaped = JsonSerializer.jsonEscape(string);
+        String unEscaped = JsonSerializer.jsonUnescape(escaped);
+        assertThat(unEscaped, is(string));
 	}
 }
