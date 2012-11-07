@@ -16,7 +16,7 @@ public class TypeSupport {
      * @param twoDArray
      * @return a JsonArray
      */
-    public static JsonArray convert2DDoubleArray(double[][] twoDArray) {
+    public static JsonArray convertFrom2DDoubleArray(double[][] twoDArray) {
         JsonArray result = array();
         for (int i=0;i<twoDArray.length ; i++) {
             double[] values = twoDArray[i];
@@ -34,7 +34,7 @@ public class TypeSupport {
      * @param arrayOfArrays
      * @return a double[][]
      */
-    public static double[][] convert2DDoubleArray(JsonArray arrayOfArrays) {
+    public static double[][] convertTo2DDoubleArray(JsonArray arrayOfArrays) {
         double[][] result = new double[arrayOfArrays.size()][arrayOfArrays.get(0).asArray().size()];
         for(int i =0; i<arrayOfArrays.size();i++) {
             JsonArray subArray = arrayOfArrays.get(i).asArray();
