@@ -134,12 +134,7 @@ public class JsonParser {
 		public boolean primitive(final Object object) throws ParseException,
 		IOException {
 			JsonPrimitive primitive;
-			if(object instanceof String) {
-			    // jsonsimple will have unescaped already, so no need to do it again
-                primitive = new JsonPrimitive(object);
-			} else {
-				primitive = new JsonPrimitive(object);
-			}
+			primitive = new JsonPrimitive(object);
 			if (isObject) {
 				stack.add(primitive);
 			} else {
@@ -162,7 +157,7 @@ public class JsonParser {
 				JsonElement last = stack.peekLast();
 				if(last.isObject()) {
 					JsonObject container = last.asObject();
-					String key = e.toString();
+					String key = e.asPrimitive().asString();
 					// use intern under the assumption that the set of unique keys is small; should reduce memory usage and speed up things a bit
 					container.put(key.intern(), value);
 				} else if(last.isArray()) {

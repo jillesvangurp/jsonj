@@ -136,20 +136,16 @@ public class JsonSerializer {
 			bw.write(']');
 			break;
 		case string:
-			bw.write('"');
-
-			String raw = json.toString();
-			bw.write(jsonEscape(raw));
-			bw.write('"');
+			bw.write(json.toString());
 			break;
 		case bool:
-			bw.write(json.toString());
+            bw.write(json.toString());
 			break;
 		case number:
-			bw.write(json.toString());
+            bw.write(json.toString());
 			break;
 		case nullValue:
-			bw.write("null");
+            bw.write(json.toString());
 			break;
 
 		default:

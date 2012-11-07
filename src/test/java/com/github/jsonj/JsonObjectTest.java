@@ -77,7 +77,7 @@ public class JsonObjectTest {
 	public void shouldExtractValue() {
 		JsonObject o = object().put("a",
 				object().put("b", object().put("c", "d").get()).get()).get();
-		Assert.assertEquals("d", o.get("a", "b", "c").toString());
+		Assert.assertEquals("d", o.get("a", "b", "c").asPrimitive().asString());
 	}
 
 	public void shouldCreateArray() {

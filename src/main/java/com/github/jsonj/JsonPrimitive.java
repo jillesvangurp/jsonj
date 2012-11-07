@@ -24,6 +24,7 @@ package com.github.jsonj;
 import org.apache.commons.lang.StringUtils;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonSerializer;
 
 /**
  * Representation of json primitives.
@@ -148,14 +149,22 @@ public class JsonPrimitive implements JsonElement {
 		return this;
 	}
 
-	@Override
-	public String toString() {
-		if(value != null) {
-			return value.toString();
-		} else {
-			return "null";
-		}
-	}
+    @Override
+    public String toString() {
+        switch (type) {
+        case string:
+            String raw = value.toString();
+            return '"' + JsonSerializer.jsonEscape(raw) + '"';
+        case bool:
+            return value.toString();
+        case number:
+            return value.toString();
+        case nullValue:
+            return "null";
+        default:
+            throw new IllegalArgumentException("value has to be a primitive");
+        }
+    }
 
 	@Override
 	public boolean isObject() {

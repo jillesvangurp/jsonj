@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonSerializer;
 
 /**
  * Representation of json arrays that extends LinkedList.
@@ -89,7 +90,7 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		int i = 0;
 		try{
 			for (JsonElement e : this) {
-				if(e.isPrimitive() && e.toString().equals(label)) {
+				if(e.isPrimitive() && e.asPrimitive().asString().equals(label)) {
 					return e;
 				} else if((e.isObject() || e.isArray())  && Integer.valueOf(label).equals(i)) {
 					return e;
@@ -217,5 +218,10 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 				jsonElement.removeEmpty();
 			}
 		}
+	}
+	
+	@Override
+	public String toString() {
+	    return JsonSerializer.serialize(this,false);
 	}
 }

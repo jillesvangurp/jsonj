@@ -41,7 +41,7 @@ public class JsonArrayTest {
     public void shouldGetByLabel() {
         JsonElement element = array("foo", "bar").get("bar");
         Assert.assertNotNull(element);
-        Assert.assertEquals("bar", element.toString());
+        Assert.assertEquals("bar", element.asPrimitive().asString());
     }
 
     public void shouldGetObjectByIndex() {
