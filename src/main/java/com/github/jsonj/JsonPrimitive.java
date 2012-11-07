@@ -148,6 +148,13 @@ public class JsonPrimitive implements JsonElement {
 	public JsonPrimitive asPrimitive() {
 		return this;
 	}
+	
+	/**
+	 * @return the raw value as an Object.
+	 */
+	public Object value() {
+	    return value;
+	}
 
     @Override
     public String toString() {
