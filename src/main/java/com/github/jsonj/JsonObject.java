@@ -41,10 +41,22 @@ import com.github.jsonj.tools.JsonSerializer;
  */
 public class JsonObject extends LinkedHashMap<String, JsonElement> implements JsonElement {
 	private static final long serialVersionUID = 2183487305816320684L;
+	
+	private String idField=null;
 
 	@Override
 	public JsonType type() {
 		return JsonType.object;
+	}
+	
+	/**
+	 * By default, the hash code is calculated recursively, which can be rather expensive. Calling this method allows you
+	 * to specify a special field that will be used for calculating this object's hashcode. In case the field value is null
+	 * it will fall back to recursive behavior.
+	 * @param fieldName name of the field value that should be used for calculating the hash code
+	 */
+	public void useIdHashCodeStrategy(String fieldName) {
+	    idField = fieldName.intern();
 	}
 
 	@Override
@@ -286,6 +298,12 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 
 	@Override
 	public int hashCode() {
+	    if(idField != null) {
+	        JsonElement jsonElement = get(idField);
+	        if(jsonElement != null) {
+                return jsonElement.hashCode();
+            }
+	    }
 		int hashCode=23;
 		Set<Entry<String, JsonElement>> entrySet = entrySet();
 		for (Entry<String, JsonElement> entry : entrySet) {
