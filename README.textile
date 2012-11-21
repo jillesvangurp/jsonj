@@ -1,6 +1,6 @@
 h1. Getting started
 
-* Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.7.jar
+* Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.8.jar
 * Read the "Javadoc":http://jillesvangurp.github.com/jsonj/apidocs/
 * Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java to get some idea of what this framework is about.
 * Or add the maven dependency
