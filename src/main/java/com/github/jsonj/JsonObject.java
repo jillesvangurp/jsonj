@@ -104,6 +104,36 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	public boolean isPrimitive() {
 		return false;
 	}
+	
+    /**
+     * Allows you to get the nth entry in the JsonObject. Please note that this method iterates over all the entries
+     * until it finds the nth, so getting the last element is probably going to be somewhat expensive, depending on the
+     * size of the collection. Also note that the entries in JsonObject are ordered by the order of insertion (it is a
+     * LinkedHashMap).
+     * 
+     * @param index
+     * @return the nth entry in the JsonObject.
+     */
+    public Entry<String, JsonElement> get(int index) {
+        if (index >= size()) {
+            throw new IllegalArgumentException("index out of range");
+        } else {
+            int i = 0;
+            for (Entry<String, JsonElement> e : entrySet()) {
+                if (i++ == index) {
+                    return e;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * @return the first entry in the object.
+     */
+    public Entry<String, JsonElement> first() {
+        return get(0);
+    }
 
 	/**
 	 * Get a json element at a particular path in an object structure.

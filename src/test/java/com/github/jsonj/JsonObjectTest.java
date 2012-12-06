@@ -25,6 +25,8 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Set;
 
@@ -149,5 +151,12 @@ public class JsonObjectTest {
 		Assert.assertEquals(jsonObject.getString("empty2"), null);
 		Assert.assertEquals(jsonObject.getString("empty3"), null);
 	}
+	
+	public void shouldReturn2ndEntry() {
+	    assertThat(object().put("1", 1).put("2", 2).put("3", 3).get().get(1).getValue(), is((JsonElement)primitive(2)));
+	}
 
+    public void shouldReturnFirstEntry() {
+        assertThat(object().put("1", 1).put("2", 2).put("3", 3).get().first().getValue(), is((JsonElement)primitive(1)));
+    }
 }
