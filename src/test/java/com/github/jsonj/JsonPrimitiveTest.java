@@ -24,6 +24,8 @@ package com.github.jsonj;
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -80,4 +82,12 @@ public class JsonPrimitiveTest {
 	public void shouldBeEqualWithClone(JsonPrimitive p) {
 		Assert.assertTrue(p.equals(p.clone()));
 	}
+	
+	public void shouldReturnAsString() {
+	    assertThat(primitive(1).asString(), is("1"));
+	}
+	
+   public void shouldReturnJsonString() {
+        assertThat(primitive(1).toString(), is("\"1\""));
+    }
 }

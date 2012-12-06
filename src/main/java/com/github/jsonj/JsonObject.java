@@ -75,6 +75,11 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	}
 
 	@Override
+    public String asString() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
+	@Override
 	public String toString() {
 		return JsonSerializer.serialize(this, false);
 	}

@@ -51,6 +51,8 @@ public interface JsonElement extends Serializable, Cloneable{
 	 * @throws JsonTypeMismatchException if the element is not a primitive type
 	 */
 	JsonPrimitive asPrimitive();
+	
+	String asString();
 
 	/**
 	 * @return true if the JsonElement is a JsonObject.

@@ -133,6 +133,11 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	public JsonPrimitive asPrimitive() {
 		throw new JsonTypeMismatchException("not a primitive");
 	}
+	
+   @Override
+    public String asString() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
 
 	@Override
 	public boolean isObject() {
