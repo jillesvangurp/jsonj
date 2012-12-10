@@ -25,6 +25,8 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +156,19 @@ public class JsonArrayTest {
             }
         }
         Assert.assertTrue(found, "jsonObject with display name is found in jsonArray created from ArrayList ");
-
     }
+    
+    public void shouldConvertToDoubleArray() {
+        assertThat(array(0.1,0.2).asDoubleArray(), is(new double[]{0.1,0.2}));
+    }
+    
+    public void shouldConvertToIntArray() {
+        assertThat(array(1,2).asIntArray(), is(new int[]{1,2}));
+    }
+    
+    public void shouldConvertToStringArray() {
+        assertThat(array("1","2").asStringArray(), is(new String[]{"1","2"}));
+    }
+
+
 }

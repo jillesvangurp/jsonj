@@ -128,6 +128,33 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	public JsonArray asArray() {
 		return this;
 	}
+	
+	public double[] asDoubleArray() {
+	    double[] result = new double[size()];
+	    int i=0;
+	    for(JsonElement e: this) {
+	        result[i++] = e.asPrimitive().asDouble();
+	    }
+	    return result;
+	}
+	
+   public int[] asIntArray() {
+        int[] result = new int[size()];
+        int i=0;
+        for(JsonElement e: this) {
+            result[i++] = e.asPrimitive().asInt();
+        }
+        return result;
+    }
+
+   public String[] asStringArray() {
+       String[] result = new String[size()];
+       int i=0;
+       for(JsonElement e: this) {
+           result[i++] = e.asPrimitive().asString();
+       }
+       return result;
+   }
 
 	@Override
 	public JsonPrimitive asPrimitive() {
