@@ -41,14 +41,14 @@ import com.github.jsonj.tools.JsonSerializer;
  */
 public class JsonObject extends LinkedHashMap<String, JsonElement> implements JsonElement {
 	private static final long serialVersionUID = 2183487305816320684L;
-	
+
 	private String idField=null;
 
 	@Override
 	public JsonType type() {
 		return JsonType.object;
 	}
-	
+
 	/**
 	 * By default, the hash code is calculated recursively, which can be rather expensive. Calling this method allows you
 	 * to specify a special field that will be used for calculating this object's hashcode. In case the field value is null
@@ -109,13 +109,13 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	public boolean isPrimitive() {
 		return false;
 	}
-	
+
     /**
      * Allows you to get the nth entry in the JsonObject. Please note that this method iterates over all the entries
      * until it finds the nth, so getting the last element is probably going to be somewhat expensive, depending on the
      * size of the collection. Also note that the entries in JsonObject are ordered by the order of insertion (it is a
      * LinkedHashMap).
-     * 
+     *
      * @param index
      * @return the nth entry in the JsonObject.
      */
@@ -132,7 +132,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
         }
         return null;
     }
-    
+
     /**
      * @return the first entry in the object.
      */
@@ -342,7 +342,10 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		int hashCode=23;
 		Set<Entry<String, JsonElement>> entrySet = entrySet();
 		for (Entry<String, JsonElement> entry : entrySet) {
-			hashCode = hashCode * entry.getKey().hashCode() * entry.getValue().hashCode();
+			JsonElement value = entry.getValue();
+			if(value != null) { // skip null entries
+			    hashCode = hashCode * entry.getKey().hashCode() * value.hashCode();
+			}
 		}
 		return hashCode;
 	}
