@@ -128,7 +128,7 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	public JsonArray asArray() {
 		return this;
 	}
-	
+
 	public double[] asDoubleArray() {
 	    double[] result = new double[size()];
 	    int i=0;
@@ -137,7 +137,7 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	    }
 	    return result;
 	}
-	
+
    public int[] asIntArray() {
         int[] result = new int[size()];
         int i=0;
@@ -160,7 +160,7 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	public JsonPrimitive asPrimitive() {
 		throw new JsonTypeMismatchException("not a primitive");
 	}
-	
+
    @Override
     public String asString() {
         throw new JsonTypeMismatchException("not a primitive");
@@ -251,9 +251,15 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 	    return JsonSerializer.serialize(this,false);
 	}
+
+    @Override
+    public String prettyPrint() {
+        return JsonSerializer.serialize(this, true);
+    }
+
 }

@@ -51,7 +51,7 @@ public interface JsonElement extends Serializable, Cloneable{
 	 * @throws JsonTypeMismatchException if the element is not a primitive type
 	 */
 	JsonPrimitive asPrimitive();
-	
+
 	String asString();
 
 	/**
@@ -87,4 +87,9 @@ public interface JsonElement extends Serializable, Cloneable{
 	 * value is equal to "".
 	 */
 	void removeEmpty();
+
+    /**
+     * @return pretty printed serialized version of this element. Use toString to get the non pretty printed version.
+     */
+    String prettyPrint();
 }

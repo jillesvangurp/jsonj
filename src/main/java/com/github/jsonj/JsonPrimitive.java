@@ -123,7 +123,8 @@ public class JsonPrimitive implements JsonElement {
 		}
 	}
 
-	public String asString() {
+	@Override
+    public String asString() {
         if( null == value ) {
             return null;
         }
@@ -148,7 +149,7 @@ public class JsonPrimitive implements JsonElement {
 	public JsonPrimitive asPrimitive() {
 		return this;
 	}
-	
+
 	/**
 	 * @return the raw value as an Object.
 	 */
@@ -171,6 +172,11 @@ public class JsonPrimitive implements JsonElement {
         default:
             throw new IllegalArgumentException("value has to be a primitive");
         }
+    }
+
+    @Override
+    public String prettyPrint() {
+        return JsonSerializer.serialize(this, true);
     }
 
 	@Override

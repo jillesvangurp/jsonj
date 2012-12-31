@@ -84,6 +84,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return JsonSerializer.serialize(this, false);
 	}
 
+	@Override
 	public String prettyPrint() {
         return JsonSerializer.serialize(this, true);
     }
