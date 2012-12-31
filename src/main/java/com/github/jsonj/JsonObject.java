@@ -84,6 +84,10 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return JsonSerializer.serialize(this, false);
 	}
 
+	public String prettyPrint() {
+        return JsonSerializer.serialize(this, true);
+    }
+
 	/**
 	 * Variant of put that can take a Object instead of a primitive. The normal put inherited from LinkedHashMap only takes JsonElement instances.
 	 * @param key
