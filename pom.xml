@@ -28,7 +28,6 @@
     <artifactId>jsonj</artifactId>
     <version>0.9-SNAPSHOT</version>
 
-
     <name>Json Java</name>
     <description>A framework for working with json in Java the &quot;proper&quot; way. No mappings or model classes, it's all just lovely json, but in Java.</description>
     <url>https://github.com/jillesvangurp/jsonj</url>
@@ -40,6 +39,17 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+	<distributionManagement>
+		<repository>
+			<id>release.repo</id>
+			<url>dav:http://repo.jillesvangurp.com/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot.repo</id>
+			<url>dav:http://repo.jillesvangurp.com/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
     <scm>
         <url>git://github.com/jillesvangurp/jsonj.git</url>
@@ -111,8 +121,14 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+            <artifactId>wagon-webdav-jackrabbit</artifactId>
+            <groupId>org.apache.maven.wagon</groupId>
+            <version>2.2</version>
+            </extension>
+        </extensions>
     </build>
-
     <profiles>
         <profile>
             <id>signartifacts</id>
