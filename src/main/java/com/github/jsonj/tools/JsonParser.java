@@ -21,8 +21,12 @@
  */
 package com.github.jsonj.tools;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.JSONParser;
@@ -73,7 +77,15 @@ public class JsonParser {
 		return handler.get();
 	}
 
-	/**
+	public JsonElement parseResource(String resource) throws IOException {
+	    return parse(this.getClass().getClassLoader().getResourceAsStream(resource));
+	}
+
+    private JsonElement parse(InputStream resourceAsStream) throws IOException {
+        return parse(new BufferedReader(new InputStreamReader(resourceAsStream, Charset.forName("UTF-8"))));
+    }
+
+    /**
 	 * @param r
 	 *            reader with some json input
 	 * @return JsonElement
