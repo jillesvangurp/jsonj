@@ -262,4 +262,24 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
         return JsonSerializer.serialize(this, true);
     }
 
+    @Override
+    public boolean isNumber() {
+        return false;
+    }
+
+    @Override
+    public boolean isBoolean() {
+        return false;
+    }
+
+    @Override
+    public boolean isNull() {
+        return false;
+    }
+
+    @Override
+    public boolean isString() {
+        return false;
+    }
+
 }

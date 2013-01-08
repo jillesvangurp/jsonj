@@ -92,4 +92,24 @@ public interface JsonElement extends Serializable, Cloneable{
      * @return pretty printed serialized version of this element. Use toString to get the non pretty printed version.
      */
     String prettyPrint();
+
+    /**
+     * @return true if the element is a json number (double or long)
+     */
+    boolean isNumber();
+
+    /**
+     * @return true if the element is a boolean
+     */
+    boolean isBoolean();
+
+    /**
+     * @return true if the element is a json null
+     */
+    boolean isNull();
+
+    /**
+     * @return true if the element is a string
+     */
+    boolean isString();
 }

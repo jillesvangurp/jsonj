@@ -414,4 +414,24 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 			}
 		}
 	}
+
+    @Override
+    public boolean isNumber() {
+        return false;
+    }
+
+    @Override
+    public boolean isBoolean() {
+        return false;
+    }
+
+    @Override
+    public boolean isNull() {
+        return false;
+    }
+
+    @Override
+    public boolean isString() {
+        return false;
+    }
 }

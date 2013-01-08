@@ -194,6 +194,23 @@ public class JsonPrimitive implements JsonElement {
 		return true;
 	}
 
+	public boolean isNumber() {
+	    return JsonType.number.equals(type);
+	}
+
+	public boolean isBoolean() {
+        return JsonType.bool.equals(type);
+    }
+
+    public boolean isNull() {
+        return JsonType.nullValue.equals(type);
+    }
+
+    public boolean isString() {
+        return JsonType.string.equals(type);
+    }
+
+
 	@Override
 	public boolean equals(final Object o) {
 		if(o == null) {
