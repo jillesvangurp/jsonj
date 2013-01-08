@@ -22,6 +22,7 @@
  */
 package com.github.jsonj;
 
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.Collections;
@@ -43,6 +44,21 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	private static final long serialVersionUID = 2183487305816320684L;
 
 	private String idField=null;
+
+	public JsonObject() {
+	    super();
+    }
+
+	@SuppressWarnings("rawtypes")
+	public JsonObject( Map existing) {
+        super();
+        Iterator iterator = existing.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry entry = (Entry) iterator.next();
+            put(entry.getKey().toString(),fromObject(entry.getValue()));
+        }
+    }
+
 
 	@Override
 	public JsonType type() {

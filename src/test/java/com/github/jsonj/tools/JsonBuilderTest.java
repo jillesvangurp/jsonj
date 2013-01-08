@@ -21,7 +21,17 @@
  */
 package com.github.jsonj.tools;
 
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -35,5 +45,17 @@ public class JsonBuilderTest {
 		double d1 = p1.asDouble();
 		JsonPrimitive p2 = primitive(d1);
 		Assert.assertEquals(1234, p2.asInt());
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    public void shouldConvertCollectionToJsonElement() {
+	    Map m = new HashMap();
+	    List l = new LinkedList();
+	    l.add("some string");
+	    l.add(new Integer(1));
+	    m.put("list", l);
+	    m.put("nr", new Double(0.2));
+	    System.out.println(fromObject(m).prettyPrint());
+	    assertThat(fromObject(m).asObject(), is(object().put("nr", 0.2).put("list", array(primitive("some string"), primitive(1))).get()));
 	}
 }

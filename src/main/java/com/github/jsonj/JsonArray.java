@@ -21,11 +21,13 @@
  */
 package com.github.jsonj;
 
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
@@ -35,6 +37,19 @@ import com.github.jsonj.tools.JsonSerializer;
  */
 public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	private static final long serialVersionUID = -1269731858619421388L;
+
+	public JsonArray() {
+	    super();
+	}
+
+    @SuppressWarnings("rawtypes")
+    public JsonArray(List existing) {
+        super();
+        for(Object o: existing) {
+            add(fromObject(o));
+        }
+    }
+
 
 	/**
 	 * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.

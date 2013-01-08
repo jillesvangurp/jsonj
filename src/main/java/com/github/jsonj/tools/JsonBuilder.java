@@ -22,6 +22,8 @@
 package com.github.jsonj.tools;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
@@ -54,7 +56,7 @@ public class JsonBuilder {
 
     /**
      * Add an element to the object.
-     * 
+     *
      * @param key
      * @param e
      * @return the builder
@@ -66,7 +68,7 @@ public class JsonBuilder {
 
     /**
      * Add a string value to the object.
-     * 
+     *
      * @param key
      * @param s
      * @return the builder
@@ -78,7 +80,7 @@ public class JsonBuilder {
 
     /**
      * Add a boolean value to the object.
-     * 
+     *
      * @param key
      * @param b
      * @return the builder
@@ -90,7 +92,7 @@ public class JsonBuilder {
 
     /**
      * Add a number to the object.
-     * 
+     *
      * @param key
      * @param n
      * @return the builder
@@ -102,7 +104,7 @@ public class JsonBuilder {
 
     /**
      * Add a JsonArray to the object with the string values added.
-     * 
+     *
      * @param key
      * @param values
      *            values that go in the array
@@ -119,7 +121,7 @@ public class JsonBuilder {
 
     /**
      * Add a JsonArray to the object with the number values added.
-     * 
+     *
      * @param key
      * @param values
      *            values that go in the array
@@ -143,7 +145,7 @@ public class JsonBuilder {
 
     /**
      * Modify an existing JsonObject with a builder.
-     * 
+     *
      * @param object
      */
     public static JsonBuilder object(final JsonObject object) {
@@ -176,7 +178,7 @@ public class JsonBuilder {
      * in it. Because a json array is just another collection, it now inherits the behavior and you get an array of
      * elements in the collection. If the elements are JsonElements, they are added as such. Otherwise it attempts to
      * interpret them as primitives.
-     * 
+     *
      * @param c
      * @return
      */
@@ -249,5 +251,15 @@ public class JsonBuilder {
      */
     public static JsonPrimitive nullValue() {
         return JsonPrimitive.JSON_NULL;
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static JsonElement fromObject(Object o) {
+        if(o instanceof Map) {
+            return new JsonObject((Map)o);
+        } else if(o instanceof List) {
+            return new JsonArray((List)o);
+        }
+        return primitive(o);
     }
 }
