@@ -68,27 +68,28 @@ h1. What's with the name
 It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java", or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
 
 
+h1. FAQ
 
-h1. For who is this framework intended
+h2. For who is this framework intended
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn't wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
 
-h1. Which version should I use?
+h2. Which version should I use?
 
 The latest release or snapshot typically. Beyond the version number, there is not much difference between a release and a snapshot. I don't bother with the ceremony for each commit. The older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine. 
 
 If you prefer non snapshot releases, go for the latest tag. Don't be afraid to ask me to create a new release if there are recent commits that you would like to see released.
 
-h1. I found a bug, what should I do
+h2. I found a bug, what should I do
 
 File a bug on this github project, or just mail/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That's what github is all about.
 
-h1. How to build JsonJ
+h2. How to build JsonJ
 
 @mvn clean install@ should do the trick with maven 3.x (and probably 2.x as well). 
 
-h1. Where is the documentation?
+h2. Where is the documentation?
 
 Javadoc is generated during the build. After building you can find it in @./target/apidocs/index.html@
 
