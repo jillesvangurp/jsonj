@@ -14,17 +14,60 @@ pre..
 
 h1. Introduction
 
-JsonJ is a framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.
-
-JsonJ is optimized for working with json in a programmatic way rather than in a reflective/annotated domain object way. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc. 
+JsonJ is a framework for working with json in Java the "proper" way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc. 
 
 Just think about it, the whole point of json is a straightforward serialization and deserialization of simple, native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly more complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
 
-The purpose of the JsonJ framework is to remove these barriers and allow you to write code that has a low amount of verbosity. I can't change the language but I can bend the rules a little when it comes to maps and lists. The JsonJ framework simply extends LinkedHashMap and LinkedList to provide default implementations of json dictionaries and lists that implement APIs any java developer will be familiar with. Additionally, some convenience methods have been added to these classes to give you sensible hashcode and equals implementations, a deepClone method, as well as methods for manipulating the contents of the dictionary and list structures. Finally, a builder class is provided and of course the framework would not be complete without a good parser and pretty printing serializer.
+There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
+# they assume the user has model classes that need to be serialized and deserialized to and from java
+# they use an internal representation of the various json types that is not very friendly to work with if you want to manipulate them directly
+# they don't treat json as a first class entity and merely try to hide the fact that your data is stored as json
+# they don't use the Java collections framework
+# they use final classes, so your options to work around any limitations are limited.
+
+Don't get me wrong, some of these frameworks are excellent. And some of these frameworks are quite usable even if you do use them the way I want to use them. However, I find them lacking in usability. JsonJ is my attempt to fix this and deliver a highly usable framework that enables you to write code that has a low amount of verbosity and that gets out of the way. 
+
+h1. Features
+
+The purpose of the JsonJ framework is to allow you to write code that has a low amount of verbosity. 
+
+h2. Core framework
+
+JsonJ provides a few classes that extend Java's Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java engineers already know how to use. The following classes are provided:
+* public class JsonObject extends LinkedHashMap<String, JsonElement> implements JsonElement
+* public class JsonArray extends LinkedList<JsonElement> implements JsonElement
+* public class JsonPrimitive implements JsonElement
+
+These three classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement. Each of the classes provides useful implementations of toString, hash, and equals.
+
+The JsonElement interface specifies methods that allow you to do easy type checks and to convert to Java native type (when needed).
+
+h2. Parsing and serialization
+
+* A thread safe JsonParser class is provided.
+* You can serialize using JsonElement.toString(), JsonElement.prettyPrint(), or using the JsonSerializer class.
+
+h2. JsonBuilder
+
+To facilitate creation of json elements, a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to use static imports and to add this class as a favorite in eclipse to facilitate autocompletion.
+
+The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. The fromObject method takes any Java object and tries to do the right thing.
+
+h2. JRuby integration
+
+A small jruby script is provided that dynamically extends JsonObject, JsonArray, Hash, and Array with methods to convert between JsonElement and native ruby types. This makes working with jsonj a breeze and is useful when interacting with Java business logic that expects/returns jsonj objects from jruby.
 
 h1. Changelog
 
-* 0.9 fix several serialization bugs, array.addAll and the builder now play nice with collections, toString now serializes proper json (beware with using JsonPrimitive.toString() on json strings: they now include quotes!; use asString() instead).
+* 0.9 - big release with many new features that resulted from months of using jsonj in my own project
+** fixes several serialization bugs; serialization and parsing is now very robust
+** array.addAll and the builder now play nice with collections
+** toString now serializes proper json (beware with using JsonPrimitive.toString() on json strings: they now include quotes!; use asString() instead).
+** added prettyPrint method to JsonElement that returns a pretty printed string representation of the element (uses JsonSerializer)
+** added a fromObject method to the builder that handles nested maps and lists and converts those to json
+** added methods to JsonArray to convert to native double, int, or string arrays
+** added asString, asDouble, asInt methods to JsonElement so that you don't have to chain asPrimitive().asString() anymore.
+** added a *jsonj.rb* script that integrates JsonJ into jruby and allows you to convert back and forth between JsonElement and jruby's Hash and Array native types.
 * 0.8 fix escaping, npe fix John Goodwin merged, misc minor fixes
 * 0.7 Add support for converting a json element to a dom tree so that things like xpath or xsl can be used on it
 * 0.6 Support for deepCloning, object sorting added. Use String.intern() on object keys to optimize frequent operations on json objects.
@@ -38,28 +81,18 @@ h1. What's with the name
 
 It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java", or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
 
-h1. Why another framework?
 
-There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
-# they assume the user has model classes that need to be serialized and deserialized to and from java
-# they use an internal representation of the various json types that is not very friendly to work with if you want to manipulate them directly
-# they don't treat json as a first class entity and merely try to hide the fact that your data is stored as json
-# they don't use the Java collections framework
-# they use final classes, so your options to work around any limitations are a bit limited.
-
-Don't get me wrong, some of these frameworks are excellent. And some of these frameworks are quite usable even if you do use them the way I want to use them.
-
-However, from having used one of them extensively (GSon), I have learned that there is room for improvement. Since we're talking the type of improvement that is likely backwards compatibility breaking (i.e. not very likely to be implemented in one of the existing frameworks), I went ahead and created my solution.
 
 h1. For who is this framework intended
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn't wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
-Jsonj had a bit of a rocky start where especially the early versions had loads of bugs. I've basically ran into most of them and have been using it in a few projects. Most recent development has been about addressing very minor issues and adding new features. As of 0.8 it seems to work for most of what I do with it and I'm not aware of major open issues. I've processed many gigabytes of information with it and am fairly confident to have caught all major issues at this point. So, I might cut a 1.0 fairly soon.
 
 h1. Which version should I use?
 
-The latest release or snapshot typically. Beyond the version number, there is not much difference between a release and a snapshot. I don't bother with the ceremony for each commit. Seriously, the older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine. If you prefer non snapshot releases, go for the latest tag. The release process I use is "release frequently and don't keep working stuff unreleased". My QA process is verifying I did not break any tests (in combination with good test coverage).
+The latest release or snapshot typically. Beyond the version number, there is not much difference between a release and a snapshot. I don't bother with the ceremony for each commit. The older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine. 
+
+If you prefer non snapshot releases, go for the latest tag. Don't be afraid to ask me to create a new release if there are recent commits that you would like to see released.
 
 h1. I found a bug, what should I do
 
@@ -67,11 +100,13 @@ File a bug on this github project, or just mail/im me directly. Either way, if I
 
 h1. How to build JsonJ
 
-@mvn clean install@ should do the trick with maven 3.x (and probably 2.x as well). I'm not a big maven fan but this is a relatively trivial project and it's just easier this way.
+@mvn clean install@ should do the trick with maven 3.x (and probably 2.x as well). 
 
 h1. Where is the documentation?
 
-Look at the "javadoc":http://jillesvangurp.github.com/jsonj/apidocs/ and the tests. Particularly "this one here":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
+Javadoc is generated during the build. After building you can find it in @./target/apidocs/index.html@
+
+Additionally, look at the  tests. Particularly "*this one here*":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
 
 h1. License
 
