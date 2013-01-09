@@ -1,17 +1,3 @@
-h1. Getting started
-
-* Download the "latest release":http://jillesvangurp.github.com/jsonj/jsonj-0.8.jar
-* Read the "Javadoc":http://jillesvangurp.github.com/jsonj/apidocs/
-* Check out the "example code":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/jsonj/ShowOffTheFramework.java to get some idea of what this framework is about.
-* Or add the maven dependency
-
-pre.. 
-<dependency>
-  <groupId>com.github.jsonj</groupId>
-  <artifactId>jsonj</artifactId>
-  <version>0.8</version>
-</dependency>
-
 h1. Introduction
 
 JsonJ is a framework for working with json in Java the "proper" way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc. 
