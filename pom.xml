@@ -52,9 +52,9 @@
 	</distributionManagement>
 
     <scm>
-        <url>git://github.com/jillesvangurp/jsonj.git</url>
+        <url>git://git@github.com:jillesvangurp/jsonj.git</url>
         <connection>scm:git:git@github.com:jillesvangurp/jsonj.git</connection>
-        <developerConnection>scm:git:git://github.com/jillesvangurp/jsonj.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:jillesvangurp/jsonj.git</developerConnection>
     </scm>
 
     <developers>
