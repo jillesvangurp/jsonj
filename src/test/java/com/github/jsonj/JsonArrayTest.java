@@ -59,15 +59,10 @@ public class JsonArrayTest {
 
     @DataProvider
     public Object[][] equalPairs() {
-        return new Object[][] { { new JsonArray(), new JsonArray() }, { array("foo", "bar"), array("foo", "bar") }, // same
-                                                                                                                    // because
-                                                                                                                    // we
-                                                                                                                    // don't
-                                                                                                                    // care
-                                                                                                                    // about
-                                                                                                                    // the
-                                                                                                                    // order
-                { array("foo", "bar"), array("bar", "foo") } // same because we don't care about the order
+        return new Object[][] {
+                { new JsonArray(), new JsonArray() },
+                { array("bar", "bar"), array("bar", "bar") },
+                { array("foo", "bar"), array("foo", "bar") }
         };
     }
 
@@ -157,15 +152,15 @@ public class JsonArrayTest {
         }
         Assert.assertTrue(found, "jsonObject with display name is found in jsonArray created from ArrayList ");
     }
-    
+
     public void shouldConvertToDoubleArray() {
         assertThat(array(0.1,0.2).asDoubleArray(), is(new double[]{0.1,0.2}));
     }
-    
+
     public void shouldConvertToIntArray() {
         assertThat(array(1,2).asIntArray(), is(new int[]{1,2}));
     }
-    
+
     public void shouldConvertToStringArray() {
         assertThat(array("1","2").asStringArray(), is(new String[]{"1","2"}));
     }

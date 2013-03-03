@@ -208,10 +208,10 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		if (size() != array.size()) {
 			return false;
 		}
-		for (JsonElement jsonElement : array) {
-			if (!contains(jsonElement)) {
-				return false;
-			}
+		for(int i=0; i<size();i++) {
+		    if(!get(i).equals(array.get(i))) {
+		        return false;
+		    }
 		}
 		return true;
 	}
