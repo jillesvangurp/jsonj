@@ -120,6 +120,14 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		return null;
 	}
 
+	public JsonElement first() {
+	    return get(0);
+	}
+
+	public JsonElement last() {
+	    return get(size()-1);
+	}
+
 	/**
 	 * Variant of contains that checks if the array contains something that can be extracted with JsonElement get(final String label).
 	 * @param label
