@@ -23,6 +23,7 @@ package com.github.jsonj.tools;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -79,19 +80,31 @@ public class JsonSerializer {
 	 * @return string representation of the json
 	 */
 	public static String serialize(final JsonElement json, final boolean pretty) {
-		StringWriter sw = new StringWriter();
-		try {
-			write(sw,json,pretty);
-		} catch (IOException e) {
-			throw new IllegalStateException("cannot serialize json to a string", e);
-		} finally {
-			try {
-				sw.close();
-			} catch (IOException e) {
-				throw new IllegalStateException("cannot serialize json to a string", e);
-			}
-		}
-		return sw.getBuffer().toString();
+	    if(pretty) {
+    		StringWriter sw = new StringWriter();
+    		try {
+    			write(sw,json,pretty);
+    		} catch (IOException e) {
+    			throw new IllegalStateException("cannot serialize json to a string", e);
+    		} finally {
+    			try {
+    				sw.close();
+    			} catch (IOException e) {
+    				throw new IllegalStateException("cannot serialize json to a string", e);
+    			}
+    		}
+    		return sw.getBuffer().toString();
+	    } else {
+	        try {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                BufferedOutputStream buffered = new BufferedOutputStream(bos);
+                json.serialize(buffered);
+                buffered.flush();
+                return bos.toString("utf8");
+            } catch (IOException e) {
+                throw new IllegalStateException("cannot serialize json to a string", e);
+            }
+	    }
 	}
 
 	/**
