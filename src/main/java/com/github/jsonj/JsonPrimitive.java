@@ -21,6 +21,8 @@
  */
 package com.github.jsonj;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -179,6 +181,28 @@ public class JsonPrimitive implements JsonElement {
             return value.toString();
         case nullValue:
             return "null";
+        default:
+            throw new IllegalArgumentException("value has to be a primitive");
+        }
+    }
+
+    @Override
+    public void serialize(OutputStream out) throws IOException {
+        switch (type) {
+        case string:
+            out.write(JsonSerializer.QUOTE);
+            JsonSerializer.serializeEscapedString((byte[]) value, out);
+            out.write(JsonSerializer.QUOTE);
+            return;
+        case bool:
+            out.write(value.toString().getBytes(UTF8));
+            return;
+        case number:
+            out.write(value.toString().getBytes(UTF8));
+            return;
+        case nullValue:
+            out.write("null".getBytes(UTF8));
+            return;
         default:
             throw new IllegalArgumentException("value has to be a primitive");
         }

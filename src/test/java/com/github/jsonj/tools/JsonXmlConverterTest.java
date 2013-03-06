@@ -38,7 +38,6 @@ public class JsonXmlConverterTest {
 		Element element = JsonXmlConverter.getElement(object, "r");
 		Document document = new Document(element);
 		String xml = document.toXML();
-//		System.out.println(xml);
 		Assert.assertTrue(xml.contains("<r>"), "should contain the opening tag <r>");
 	}
 

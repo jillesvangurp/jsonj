@@ -35,8 +35,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.github.jsonj.tools.JsonSerializer;
-
 @Test
 public class JsonArrayTest {
 
@@ -143,7 +141,6 @@ public class JsonArrayTest {
         jsonArray.addAll(results);
 
         found = false;
-        System.out.println(JsonSerializer.serialize(jsonArray));
         for (JsonElement jsonElement : jsonArray) {
             String current = jsonElement.asObject().get("display_name").toString();
             if (current.equals(lookingFor)) {

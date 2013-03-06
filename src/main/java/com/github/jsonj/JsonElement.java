@@ -21,6 +21,8 @@
  */
 package com.github.jsonj;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
@@ -112,4 +114,10 @@ public interface JsonElement extends Serializable, Cloneable{
      * @return true if the element is a string
      */
     boolean isString();
+
+    /**
+     * Serialize a utf8 encoded representation to the output stream.
+     * @param out
+     */
+    void serialize(OutputStream out) throws IOException;
 }

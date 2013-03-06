@@ -180,7 +180,7 @@ public class JsonBuilder {
      * interpret them as primitives.
      *
      * @param c
-     * @return
+     * @return json array with the collection elements in it
      */
     public static JsonArray array(Collection<?> c) {
         JsonArray jjArray = new JsonArray();

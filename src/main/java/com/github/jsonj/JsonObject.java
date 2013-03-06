@@ -26,6 +26,8 @@ import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -100,6 +102,26 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	@Override
 	public String toString() {
 		return JsonSerializer.serialize(this, false);
+	}
+
+	@Override
+	public void serialize(OutputStream out) throws IOException {
+        out.write(JsonSerializer.OPEN_BRACE);
+	    Iterator<Entry<EfficientString, JsonElement>> iterator = map.entrySet().iterator();
+	    while (iterator.hasNext()) {
+            Entry<EfficientString, JsonElement> entry = iterator.next();
+	        EfficientString key = entry.getKey();
+	        JsonElement value = entry.getValue();
+	        out.write(JsonSerializer.QUOTE);
+	        JsonSerializer.serializeEscapedString(key.bytes(), out);
+            out.write(JsonSerializer.QUOTE);
+            out.write(JsonSerializer.COLON);
+            value.serialize(out);
+            if(iterator.hasNext()) {
+                out.write(JsonSerializer.COMMA);
+            }
+	    }
+        out.write(JsonSerializer.CLOSE_BRACE);
 	}
 
 	@Override

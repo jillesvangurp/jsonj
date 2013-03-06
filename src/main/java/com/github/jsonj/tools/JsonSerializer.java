@@ -21,6 +21,7 @@
  */
 package com.github.jsonj.tools;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,6 +39,19 @@ import com.github.jsonj.JsonType;
  * Utility class to serialize Json.
  */
 public class JsonSerializer {
+    public static final Charset UTF8=Charset.forName("utf-8");
+    public static final byte[] ESCAPED_CARRIAGE_RETURN = "\\r".getBytes(UTF8);
+    public static final byte[] ESCAPED_TAB = "\\t".getBytes(UTF8);
+    public static final byte[] ESCAPED_BACKSLASH = "\\\\".getBytes(UTF8);
+    public static final byte[] ESCAPED_NEWLINE = "\\n".getBytes(UTF8);
+    public static final byte[] ESCAPED_QUOTE = "\\\"".getBytes(UTF8);
+    public static final byte[] OPEN_BRACKET="[".getBytes(UTF8);
+    public static final byte[] CLOSE_BRACKET="]".getBytes(UTF8);
+    public static final byte[] OPEN_BRACE="{".getBytes(UTF8);
+    public static final byte[] CLOSE_BRACE="}".getBytes(UTF8);
+    public static final byte[] COLON=":".getBytes(UTF8);
+    public static final byte[] QUOTE="\"".getBytes(UTF8);
+    public static final byte[] COMMA=",".getBytes(UTF8);
 
 	private JsonSerializer() {
 		// utility class, don't instantiate
@@ -50,6 +64,14 @@ public class JsonSerializer {
 	public static String serialize(final JsonElement json) {
 		return serialize(json, false);
 	}
+
+    public static void serialize(final JsonElement json, OutputStream out) {
+        try {
+            write(out, json, false);
+        } catch (IOException e) {
+            throw new IllegalStateException("cannot serialize json to output stream", e);
+        }
+    }
 
 	/**
 	 * @param json
@@ -89,7 +111,13 @@ public class JsonSerializer {
 	}
 
 	public static void write(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
-		write(new OutputStreamWriter(out, Charset.forName("UTF-8")), json, pretty);
+	    if(pretty) {
+            write(new OutputStreamWriter(out, Charset.forName("UTF-8")), json, pretty);
+        } else {
+            BufferedOutputStream bufferedOut = new BufferedOutputStream(out);
+            json.serialize(bufferedOut);
+            bufferedOut.flush();
+        }
 	}
 
 	private static void write(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
@@ -151,6 +179,31 @@ public class JsonSerializer {
 		default:
 			throw new IllegalArgumentException("unhandled type " + type);
 		}
+	}
+
+	public static void serializeEscapedString(byte[] bytes, OutputStream out) throws IOException {
+	    for (int i = 0; i < bytes.length; i++) {
+            switch (bytes[i]) {
+            case '\n':
+                out.write(ESCAPED_NEWLINE);
+                break;
+            case '\"':
+                out.write(ESCAPED_QUOTE);
+                break;
+            case '\\':
+                out.write(ESCAPED_BACKSLASH);
+                break;
+            case '\t':
+                out.write(ESCAPED_TAB);
+                break;
+            case '\r':
+                out.write(ESCAPED_CARRIAGE_RETURN);
+                break;
+            default:
+                out.write(bytes[i]);
+                break;
+            }
+        }
 	}
 
 	public static String jsonEscape(String raw) {

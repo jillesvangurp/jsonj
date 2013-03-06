@@ -55,7 +55,6 @@ public class JsonBuilderTest {
 	    l.add(new Integer(1));
 	    m.put("list", l);
 	    m.put("nr", new Double(0.2));
-	    System.out.println(fromObject(m).prettyPrint());
 	    assertThat(fromObject(m).asObject(), is(object().put("nr", 0.2).put("list", array(primitive("some string"), primitive(1))).get()));
 	}
 }

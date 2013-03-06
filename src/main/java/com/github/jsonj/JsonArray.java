@@ -24,6 +24,8 @@ package com.github.jsonj;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -280,6 +282,20 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	@Override
 	public String toString() {
 	    return JsonSerializer.serialize(this,false);
+	}
+
+	@Override
+	public void serialize(OutputStream out) throws IOException {
+        out.write(JsonSerializer.OPEN_BRACKET);
+        Iterator<JsonElement> it = iterator();
+        while (it.hasNext()) {
+            JsonElement jsonElement = it.next();
+            jsonElement.serialize(out);
+            if(it.hasNext()) {
+                out.write(JsonSerializer.COMMA);
+            }
+        }
+        out.write(JsonSerializer.CLOSE_BRACKET);
 	}
 
     @Override
