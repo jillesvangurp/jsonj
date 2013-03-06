@@ -45,6 +45,15 @@ A small jruby script is provided that dynamically extends JsonObject, JsonArray,
 
 h1. Changelog
 
+* 1.2 - Use utf8 byte arrays to conserve memory
+** String values are now represented as UTF8 byte arrays rather than 16 bit characters
+** EfficientString is used for JsonObject keys. 
+** JsonElement now has a new serialize method that serializes straight to an OutputStream. JsonSerializer now has a new serialize method to utilize this.
+** The String serialize(..) method now uses the new efficient serialization if pretty printing is turned off
+* 1.1 - minor feature added
+** Added first and last convenience methods to JsonAray 
+* 1.0 - only one change relative to 0.9
+** Fixed JsonArray.equals to be more strict
 * 0.9 - big release with many new features that resulted from months of using jsonj in my own project
 ** fixes several serialization bugs; serialization and parsing is now very robust
 ** array.addAll and the builder now play nice with collections
