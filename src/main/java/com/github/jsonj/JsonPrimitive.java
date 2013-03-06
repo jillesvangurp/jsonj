@@ -21,16 +21,21 @@
  */
 package com.github.jsonj;
 
+import java.nio.charset.Charset;
+import java.util.Arrays;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
+
 
 /**
  * Representation of json primitives.
  */
 public class JsonPrimitive implements JsonElement {
 	private static final long serialVersionUID = 111536854493507209L;
+    private static final Charset UTF8 = Charset.forName("utf-8");
 
 	private final Object value;
 	private final JsonType type;
@@ -48,8 +53,8 @@ public class JsonPrimitive implements JsonElement {
 			type = JsonType.nullValue;
 			value = null;
 		} else {
-			type = JsonType.string;
-			value = s;
+		    type=JsonType.string;
+            value = s.getBytes(UTF8);
 		}
 	}
 
@@ -95,7 +100,7 @@ public class JsonPrimitive implements JsonElement {
 			value = object;
 		} else {
 			type = JsonType.string;
-			value = object;
+            value = object.toString().getBytes(UTF8);
 		}
 	}
 
@@ -128,7 +133,11 @@ public class JsonPrimitive implements JsonElement {
         if( null == value ) {
             return null;
         }
-		return value.toString();
+        if(type==JsonType.string) {
+            return new String((byte[]) value, UTF8);
+        } else {
+            return value.toString();
+        }
 	}
 
 	@Override
@@ -161,7 +170,8 @@ public class JsonPrimitive implements JsonElement {
     public String toString() {
         switch (type) {
         case string:
-            String raw = value.toString();
+            String raw;
+            raw = new String((byte[]) value, UTF8);
             return '"' + JsonSerializer.jsonEscape(raw) + '"';
         case bool:
             return value.toString();
@@ -194,22 +204,25 @@ public class JsonPrimitive implements JsonElement {
 		return true;
 	}
 
-	public boolean isNumber() {
+	@Override
+    public boolean isNumber() {
 	    return JsonType.number.equals(type);
 	}
 
-	public boolean isBoolean() {
+	@Override
+    public boolean isBoolean() {
         return JsonType.bool.equals(type);
     }
 
+    @Override
     public boolean isNull() {
         return JsonType.nullValue.equals(type);
     }
 
+    @Override
     public boolean isString() {
         return JsonType.string.equals(type);
     }
-
 
 	@Override
 	public boolean equals(final Object o) {
@@ -223,9 +236,12 @@ public class JsonPrimitive implements JsonElement {
 		if(type == primitive.type && value == null && primitive.value == null) {
 			return true;
 		}
-		if(type == primitive.type && value.equals(primitive.value)) {
+		if(type == primitive.type && type != JsonType.string && value.equals(primitive.value)) {
 			return true;
+		} else if(type == primitive.type && type == JsonType.string) {
+		    return Arrays.equals((byte[]) value, (byte[])primitive.value);
 		}
+
 		return false;
 	}
 
@@ -233,8 +249,10 @@ public class JsonPrimitive implements JsonElement {
 	public int hashCode() {
 
 		int hashCode = 49*type.hashCode();
-		if(value != null) {
+		if(value != null && type != JsonType.string) {
 			hashCode = hashCode * value.hashCode();
+		} else if (value != null) {
+		    hashCode = hashCode * Arrays.hashCode((byte[]) value);
 		}
 		return hashCode;
 	}

@@ -31,19 +31,16 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonPrimitive;
-
 public class JsonPrimitiveTest {
 
 	@DataProvider
 	public JsonPrimitive[][] primitives() {
 		return new JsonPrimitive[][] {
-				{primitive(true)}, 
+				{primitive(true)},
 				{primitive(false)},
 				{primitive(42)},
 				{primitive(42.0)},
-				{primitive("abc")}, 
+				{primitive("abc")},
 				{primitive((Object)null)}
 		};
 	}
@@ -77,17 +74,23 @@ public class JsonPrimitiveTest {
 		Assert.assertNotSame(primitive, o);
 	}
 
-	
+
 	@Test(dataProvider="primitives")
 	public void shouldBeEqualWithClone(JsonPrimitive p) {
 		Assert.assertTrue(p.equals(p.clone()));
 	}
-	
+
 	public void shouldReturnAsString() {
 	    assertThat(primitive(1).asString(), is("1"));
 	}
-	
+
    public void shouldReturnJsonString() {
         assertThat(primitive(1).toString(), is("\"1\""));
-    }
+   }
+
+   public void shouldHandleUtf8Correctly() {
+       assertThat(primitive("hello").asString(), is("hello"));
+       assertThat(((JsonPrimitive) primitive("hello").clone()).asString(), is("hello"));
+       assertThat(primitive("hello"), is(primitive("hello")));
+   }
 }

@@ -217,7 +217,9 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 			return false;
 		}
 		for(int i=0; i<size();i++) {
-		    if(!get(i).equals(array.get(i))) {
+		    JsonElement e1 = get(i);
+            JsonElement e2 = array.get(i);
+            if(!e1.equals(e2)) {
 		        return false;
 		    }
 		}

@@ -172,7 +172,7 @@ public class JsonSerializer {
 	    }
         return buf.toString();
     }
-	
+
 	public static String jsonUnescape(String escaped) {
         StringBuilder buf=new StringBuilder(escaped.length());
         char[] chars = escaped.toCharArray();
@@ -202,10 +202,10 @@ public class JsonSerializer {
                     }
                 } else {
                     buf.append(chars[i-1]);
-                    i++;                    
+                    i++;
                 }
-            } 
-            if(i==chars.length) { 
+            }
+            if(i==chars.length) {
                 // make sure to add the last character
                 buf.append(chars[i-1]);
             }
