@@ -28,8 +28,6 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.util.Set;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -132,17 +130,6 @@ public class JsonObjectTest {
 		Assert.assertFalse(o.equals(clone));
 	}
 
-	public void shouldSortOnKey() {
-		JsonObject unsorted = object().put("c", "c").put("a", "a").put("b", "b").get();
-		JsonObject sorted = unsorted.sort();
-		Set<String> ks = sorted.keySet();
-		int i = 0;
-		String[] keys = new String[] {"a","b","c"};
-		for (String k : ks) {
-			Assert.assertTrue(k.equals(keys[i++]));
-		}
-	}
-
 	public void shouldRemoveEmptyElements() {
 		JsonObject jsonObject = object().put("empty", object().get()).put("empty2", nullValue()).put("empty3", new JsonArray()).get();
 		Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
@@ -151,7 +138,7 @@ public class JsonObjectTest {
 		Assert.assertEquals(jsonObject.getString("empty2"), null);
 		Assert.assertEquals(jsonObject.getString("empty3"), null);
 	}
-	
+
 	public void shouldReturn2ndEntry() {
 	    assertThat(object().put("1", 1).put("2", 2).put("3", 3).get().get(1).getValue(), is((JsonElement)primitive(2)));
 	}

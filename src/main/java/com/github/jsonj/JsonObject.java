@@ -23,30 +23,32 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
-import java.util.Collections;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
+import com.jillesvangurp.efficientstring.EfficientString;
 
 /**
  * Representation of json objects. This class extends LinkedHashMap and may be used as such. In addition a lot of convenience is provided in the form of
  * methods you are likely to need when working with json objects programmatically.
  */
-public class JsonObject extends LinkedHashMap<String, JsonElement> implements JsonElement {
+public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	private static final long serialVersionUID = 2183487305816320684L;
+
+	private final LinkedHashMap<EfficientString, JsonElement> map = new LinkedHashMap<EfficientString, JsonElement>();
 
 	private String idField=null;
 
 	public JsonObject() {
-	    super();
     }
 
 	@SuppressWarnings("rawtypes")
@@ -113,7 +115,7 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 	 * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
 	 */
 	public JsonElement put(final String key, final Object value) {
-		return super.put(key, primitive(value));
+		return map.put(EfficientString.fromString(key), primitive(value));
 	}
 
 	@Override
@@ -387,22 +389,6 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
 		return object;
 	}
 
-	/**
-	 * Sort objects by key. Note: this method does not recurse on the members.
-	 * @return a new JsonObject sorted by key.
-	 */
-	public JsonObject sort() {
-		Set<String> keys = keySet();
-		LinkedList<String> list = new LinkedList<String>();
-		list.addAll(keys);
-		Collections.sort(list);
-		JsonObject jsonObject = new JsonObject();
-		for (String key : list) {
-			jsonObject.put(key, this.get(key).deepClone());
-		}
-		return jsonObject;
-	}
-
 	@Override
 	public boolean isEmpty() {
 		boolean empty = true;
@@ -449,5 +435,176 @@ public class JsonObject extends LinkedHashMap<String, JsonElement> implements Js
     @Override
     public boolean isString() {
         return false;
+    }
+
+    @Override
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return map.containsKey(EfficientString.fromString(object().toString()));
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return map.containsValue(value);
+    }
+
+    @Override
+    public Set<java.util.Map.Entry<String, JsonElement>> entrySet() {
+        final Set<java.util.Map.Entry<EfficientString, JsonElement>> entrySet = map.entrySet();
+        return new Set<Map.Entry<String,JsonElement>>() {
+
+            @Override
+            public boolean add(java.util.Map.Entry<String, JsonElement> e) {
+                throw new UnsupportedOperationException("entry set is immutable");
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends java.util.Map.Entry<String, JsonElement>> c) {
+                throw new UnsupportedOperationException("entry set is immutable");
+            }
+
+            @Override
+            public void clear() {
+                throw new UnsupportedOperationException("entry set is immutable");
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                throw new UnsupportedOperationException("not supported");
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                throw new UnsupportedOperationException("not supported");
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return entrySet.isEmpty();
+            }
+
+            @Override
+            public Iterator<Entry<String, JsonElement>> iterator() {
+                return new Iterator<Entry<String, JsonElement>>() {
+                    private final Iterator<Entry<EfficientString, JsonElement>> it = entrySet.iterator();
+
+                    @Override
+                    public boolean hasNext() {
+                        return it.hasNext();
+                    }
+
+                    @Override
+                    public Entry<String, JsonElement> next() {
+                        final Entry<EfficientString, JsonElement> next = it.next();
+                        return new Entry<String,JsonElement>() {
+
+                            @Override
+                            public String getKey() {
+                                return next.getKey().toString();
+                            }
+
+                            @Override
+                            public JsonElement getValue() {
+                                return next.getValue();
+                            }
+
+                            @Override
+                            public JsonElement setValue(JsonElement value) {
+                                throw new UnsupportedOperationException("immutable entry");
+                            }
+                        };
+                    }
+
+                    @Override
+                    public void remove() {
+                        it.remove();
+                    }
+                };
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                throw new UnsupportedOperationException("entry set is immutable");
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                throw new UnsupportedOperationException("entry set is immutable");
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                throw new UnsupportedOperationException("entry set is immutable");
+            }
+
+            @Override
+            public int size() {
+                return entrySet.size();
+            }
+
+            @Override
+            public Object[] toArray() {
+                throw new UnsupportedOperationException("not supported");
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                throw new UnsupportedOperationException("not supported");
+            }
+        };
+    }
+
+    @Override
+    public JsonElement get(Object key) {
+        if(key != null && key instanceof String) {
+            return map.get(EfficientString.fromString(key.toString()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public Set<String> keySet() {
+        Set<EfficientString> keySet = map.keySet();
+        Set<String> keys = new HashSet<String>();
+        for(EfficientString es: keySet) {
+            keys.add(es.toString());
+        }
+        return keys;
+    }
+
+    @Override
+    public JsonElement put(String key, JsonElement value) {
+        return map.put(EfficientString.fromString(key), value);
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ? extends JsonElement> m) {
+        for(Entry<? extends String, ? extends JsonElement> e: m.entrySet()) {
+            map.put(EfficientString.fromString(e.getKey()), e.getValue());
+        }
+    }
+
+    @Override
+    public JsonElement remove(Object key) {
+        if(key != null && key instanceof String) {
+            return map.remove(EfficientString.fromString(key.toString()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public int size() {
+        return map.size();
+    }
+
+    @Override
+    public Collection<JsonElement> values() {
+        return map.values();
     }
 }
