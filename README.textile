@@ -49,6 +49,8 @@ A small jruby script is provided that dynamically extends JsonObject, JsonArray,
 
 h1. Changelog
 
+* 1.3
+** Promote asInt,asDouble,asBoolean from JsonPrimitive to JsonElement for convenience.
 * 1.2 - Use utf8 byte arrays to conserve memory
 ** String values are now represented as UTF8 byte arrays rather than 16 bit characters
 ** EfficientString is used for JsonObject keys. 
