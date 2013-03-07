@@ -106,7 +106,8 @@ public class JsonPrimitive implements JsonElement {
 		}
 	}
 
-	public int asInt() {
+	@Override
+    public int asInt() {
 		if(type == JsonType.number) {
 			return ((Number)value).intValue();
 		} else {
@@ -114,7 +115,8 @@ public class JsonPrimitive implements JsonElement {
 		}
 	}
 
-	public double asDouble() {
+	@Override
+    public double asDouble() {
 		if(type == JsonType.number) {
 			return ((Number)value).doubleValue();
 		} else {
@@ -122,7 +124,8 @@ public class JsonPrimitive implements JsonElement {
 		}
 	}
 
-	public boolean asBoolean() {
+	@Override
+    public boolean asBoolean() {
 		if(type == JsonType.bool) {
 			return ((Boolean)value).booleanValue();
 		} else{

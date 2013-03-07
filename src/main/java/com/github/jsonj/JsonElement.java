@@ -56,6 +56,10 @@ public interface JsonElement extends Serializable, Cloneable{
 
 	String asString();
 
+	double asDouble();
+	int asInt();
+	boolean asBoolean();
+
 	/**
 	 * @return true if the JsonElement is a JsonObject.
 	 */

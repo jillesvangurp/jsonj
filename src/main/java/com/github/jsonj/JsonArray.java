@@ -186,6 +186,21 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		throw new JsonTypeMismatchException("not a primitive");
 	}
 
+    @Override
+    public double asDouble() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
+    @Override
+    public int asInt() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
+    @Override
+    public boolean asBoolean() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
    @Override
     public String asString() {
         throw new JsonTypeMismatchException("not a primitive");
@@ -322,5 +337,4 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
     public boolean isString() {
         return false;
     }
-
 }
