@@ -35,6 +35,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.Validate;
+
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
 import com.jillesvangurp.efficientstring.EfficientString;
@@ -144,17 +146,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return JsonSerializer.serialize(this, true);
     }
 
-	/**
-	 * Variant of put that can take a Object instead of a primitive. The normal put inherited from LinkedHashMap only takes JsonElement instances.
-	 * @param key
-	 * @param value any object that is accepted by the JsonPrimitive constructor.
-	 * @return the JsonElement that was added.
-	 * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
-	 */
-	public JsonElement put(final String key, final Object value) {
-		return map.put(EfficientString.fromString(key), primitive(value));
-	}
-
 	@Override
 	public boolean isObject() {
 		return true;
@@ -169,6 +160,33 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	public boolean isPrimitive() {
 		return false;
 	}
+
+    /**
+     * Variant of put that can take a Object instead of a primitive. The normal put inherited from LinkedHashMap only takes JsonElement instances.
+     * @param key
+     * @param value any object that is accepted by the JsonPrimitive constructor.
+     * @return the JsonElement that was added.
+     * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
+     */
+    public JsonElement put(final String key, final Object value) {
+        Validate.notNull(key);
+        Validate.notNull(value);
+    	return map.put(EfficientString.fromString(key), primitive(value));
+    }
+
+    @Override
+    public JsonElement put(String key, JsonElement value) {
+        Validate.notNull(key);
+        Validate.notNull(value);
+        return map.put(EfficientString.fromString(key), value);
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ? extends JsonElement> m) {
+        for(Entry<? extends String, ? extends JsonElement> e: m.entrySet()) {
+            map.put(EfficientString.fromString(e.getKey()), e.getValue());
+        }
+    }
 
     /**
      * Allows you to get the nth entry in the JsonObject. Please note that this method iterates over all the entries
@@ -200,7 +218,16 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return get(0);
     }
 
-	/**
+	@Override
+    public JsonElement get(Object key) {
+        if(key != null && key instanceof String) {
+            return map.get(EfficientString.fromString(key.toString()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
 	 * Get a json element at a particular path in an object structure.
 	 * @param labels list of field names that describe the location to a particular json node.
 	 * @return a json element at a particular path in an object or null if it can't be found.
@@ -596,15 +623,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     @Override
-    public JsonElement get(Object key) {
-        if(key != null && key instanceof String) {
-            return map.get(EfficientString.fromString(key.toString()));
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    @Override
     public Set<String> keySet() {
         Set<EfficientString> keySet = map.keySet();
         Set<String> keys = new HashSet<String>();
@@ -612,18 +630,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             keys.add(es.toString());
         }
         return keys;
-    }
-
-    @Override
-    public JsonElement put(String key, JsonElement value) {
-        return map.put(EfficientString.fromString(key), value);
-    }
-
-    @Override
-    public void putAll(Map<? extends String, ? extends JsonElement> m) {
-        for(Entry<? extends String, ? extends JsonElement> e: m.entrySet()) {
-            map.put(EfficientString.fromString(e.getKey()), e.getValue());
-        }
     }
 
     @Override
