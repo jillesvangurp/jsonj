@@ -516,8 +516,8 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     @Override
-    public Set<java.util.Map.Entry<String, JsonElement>> entrySet() {
-        final Set<java.util.Map.Entry<EfficientString, JsonElement>> entrySet = map.entrySet();
+    public Set<Entry<String, JsonElement>> entrySet() {
+        final Set<Entry<EfficientString, JsonElement>> entrySet = map.entrySet();
         return new Set<Map.Entry<String,JsonElement>>() {
 
             @Override
@@ -611,12 +611,35 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
             @Override
             public Object[] toArray() {
-                throw new UnsupportedOperationException("not supported");
+                @SuppressWarnings("unchecked")
+                Entry<String,JsonElement>[] result = new Entry[entrySet.size()];
+                int i=0;
+                for(final Entry<EfficientString, JsonElement> e:entrySet) {
+                    result[i] = new Entry<String,JsonElement>() {
+
+                        @Override
+                        public String getKey() {
+                            return e.getKey().toString();
+                        }
+
+                        @Override
+                        public JsonElement getValue() {
+                            return e.getValue();
+                        }
+
+                        @Override
+                        public JsonElement setValue(JsonElement value) {
+                            throw new UnsupportedOperationException("immutable");
+                        }};
+                    i++;
+                }
+                return result;
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public <T> T[] toArray(T[] a) {
-                throw new UnsupportedOperationException("not supported");
+                return (T[]) toArray();
             }
         };
     }
