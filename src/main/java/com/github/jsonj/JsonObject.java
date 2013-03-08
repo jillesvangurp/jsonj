@@ -23,7 +23,6 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
-import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.io.IOException;
@@ -508,7 +507,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @Override
     public boolean containsKey(Object key) {
-        return map.containsKey(EfficientString.fromString(object().toString()));
+        return get(key) != null;
     }
 
     @Override
