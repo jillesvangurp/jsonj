@@ -100,6 +100,7 @@ public class JsonSerializer {
                 BufferedOutputStream buffered = new BufferedOutputStream(bos);
                 json.serialize(buffered);
                 buffered.flush();
+                bos.close();
                 return bos.toString("utf8");
             } catch (IOException e) {
                 throw new IllegalStateException("cannot serialize json to a string", e);
