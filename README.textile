@@ -49,6 +49,8 @@ A small jruby script is provided that dynamically extends JsonObject, JsonArray,
 
 h1. Changelog
 
+* 1.4
+** Fix two bugs with the containsKey and serialization
 * 1.3
 ** Promote asInt,asDouble,asBoolean from JsonPrimitive to JsonElement for convenience.
 * 1.2 - Use utf8 byte arrays to conserve memory
