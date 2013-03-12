@@ -267,6 +267,10 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 		return array;
 	}
 
+	public boolean isNotEmpty() {
+	    return !isEmpty();
+	}
+
 	@Override
 	public boolean isEmpty() {
 		boolean empty = true;
