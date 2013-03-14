@@ -49,6 +49,11 @@ A small jruby script is provided that dynamically extends JsonObject, JsonArray,
 
 h1. Changelog
 
+* 1.7 (and 1.5, 1.6) 
+** misc API cleanup
+** no more key interning
+** adapted pretty printing
+** fix jruby integration to work again with the utf-8 related changes
 * 1.4
 ** Fix two bugs with the containsKey and serialization
 * 1.3
