@@ -168,10 +168,14 @@ public class JsonSerializer {
 			Iterator<JsonElement> arrayIterator = json.asArray().iterator();
 			while (arrayIterator.hasNext()) {
 				JsonElement value = arrayIterator.next();
-				write(bw,value,pretty,indent+1);
+				boolean nestedPretty=false;
+				if(value.isObject()) {
+				    nestedPretty=true;
+				}
+				write(bw,value,nestedPretty,indent+1);
 				if(arrayIterator.hasNext()) {
 					bw.write(',');
-					newline(bw, indent+1, pretty);
+					newline(bw, indent+1, nestedPretty);
 				}
 			}
 			newline(bw, indent, pretty);
