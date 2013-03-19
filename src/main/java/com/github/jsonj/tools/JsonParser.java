@@ -22,6 +22,7 @@
 package com.github.jsonj.tools;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -78,7 +79,11 @@ public class JsonParser {
 	}
 
 	public JsonElement parseResource(String resource) throws IOException {
-	    return parse(this.getClass().getClassLoader().getResourceAsStream(resource));
+	    InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
+	    if(is==null) {
+	        is = new FileInputStream(resource);
+	    }
+        return parse(is);
 	}
 
     private JsonElement parse(InputStream resourceAsStream) throws IOException {
