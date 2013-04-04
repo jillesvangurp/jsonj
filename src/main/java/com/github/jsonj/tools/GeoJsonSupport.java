@@ -1,14 +1,17 @@
 package com.github.jsonj.tools;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
 
 /**
- * GeoJson uses multi dimensional arrays to support points, lines, polygons, multi polygons, etc.
- * This class offers some convenience methods for converting to and from native arrays.
+ * GeoJson uses multi dimensional arrays to support points, lines, polygons, multi polygons, etc. This class offers some
+ * convenience methods for converting to and from native arrays as well as methods for creating shape objects of various
+ * types.
  */
 public class GeoJsonSupport {
 
@@ -66,6 +69,11 @@ public class GeoJsonSupport {
         }
         return result;
     }
+
+    public static JsonArray toJsonJPolygon(double[][] polygon) {
+        return toJsonJPolygon(new double [][][] {polygon});
+    }
+
 
     public static JsonArray toJsonJPolygon(double[][][] polygon) {
         JsonArray result = array();
@@ -157,4 +165,34 @@ public class GeoJsonSupport {
         }
         return array;
     }
+
+    public static JsonObject shape(String type, JsonArray coordinates) {
+        return object().put("type", type).put("coordinates", coordinates).get();
+    }
+
+    public static JsonObject pointShape(double latitude, double longitude) {
+        return shape("Polygon", toJsonJPoint(new double[] {longitude, longitude}));
+    }
+
+
+    public static JsonObject pointShape(double[] coordinates) {
+        return shape("Polygon", toJsonJPoint(coordinates));
+    }
+
+    public static JsonObject lineStringShape(double[][] coordinates) {
+        return shape("LineString", toJsonJLineString(coordinates));
+    }
+
+    public static JsonObject polygonShape(double[][] coordinates) {
+        return shape("Polygon", toJsonJPolygon(coordinates));
+    }
+
+    public static JsonObject polygonShape(double[][][] coordinates) {
+        return shape("Polygon", toJsonJPolygon(coordinates));
+    }
+
+    public static JsonObject multiPolygonShape(double[][][][] coordinates) {
+        return shape("Polygon", toJsonJMultiPolygon(coordinates));
+    }
+
 }

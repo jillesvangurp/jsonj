@@ -31,7 +31,6 @@ import org.apache.commons.lang.StringUtils;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
 
-
 /**
  * Representation of json primitives.
  */
