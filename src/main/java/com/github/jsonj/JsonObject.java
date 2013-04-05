@@ -472,7 +472,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		while (iterator.hasNext()) {
 			Map.Entry<String, JsonElement> entry = iterator.next();
 			JsonElement element = entry.getValue();
-			if(element.isEmpty()) {
+			if(element.isEmpty() && !element.isObject()) {
 				iterator.remove();
 			} else {
 				element.removeEmpty();
