@@ -45,10 +45,16 @@ The builder class also provides methods to facilitate converting from existing M
 
 h2. JRuby integration
 
-A small jruby script is provided that dynamically extends JsonObject, JsonArray, Hash, and Array with methods to convert between JsonElement and native ruby types. This makes working with jsonj a breeze and is useful when interacting with Java business logic that expects/returns jsonj objects from jruby.
+If you use jruby, you can seemlessly integrate jsonj using this module "jruby-integration":"https://github.com/jillesvangurp/jsonj-integration". This is nice if you are mixing java code that uses JsonJ, with ruby code.
 
 h1. Changelog
 
+* 1.10
+** require java 1.7
+** move jsonj.rb, see my jsonj-integration project or install the gem from rubygems
+** ensure remove empty does not remove empty nested objects
+** make parseResource fall back to file input stream
+** use fixed version of efficientstring that is threadsafe
 * 1.7 (and 1.5, 1.6) 
 ** misc API cleanup
 ** no more key interning
