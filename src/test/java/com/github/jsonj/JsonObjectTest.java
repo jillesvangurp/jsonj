@@ -134,7 +134,7 @@ public class JsonObjectTest {
 		JsonObject jsonObject = object().put("empty", object().get()).put("empty2", nullValue()).put("empty3", new JsonArray()).get();
 		Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
 		jsonObject.removeEmpty();
-		Assert.assertEquals(jsonObject.getString("empty"), null);
+		assertThat("should leave empty objects",jsonObject.getObject("empty"), is(object().get()));
 		Assert.assertEquals(jsonObject.getString("empty2"), null);
 		Assert.assertEquals(jsonObject.getString("empty3"), null);
 	}
