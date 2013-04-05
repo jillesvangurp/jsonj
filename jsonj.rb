@@ -1,3 +1,12 @@
+#
+# This module integrates jsonj into jruby by adding ruby functions to various classes.
+# This allows you to use conversion methods on hashes, lists, and any JsonElement
+# Additionally, you can use [] for getting, putting. and adding to JsonObject and JsonArray
+# 
+# This makes the integration nearly seemless and enables you to, for example, use JsonJ enabled 
+# business logic written in Java from a jruby API layer (e.g. rails or sinatra based).
+#
+
 java_import com.github.jsonj.JsonObject
 java_import com.github.jsonj.JsonArray
 java_import com.github.jsonj.JsonPrimitive
@@ -46,6 +55,55 @@ end
 
 JsonObject.send(:define_method, 'toRuby') do 
   convertToRuby self
+end
+
+JsonObject.send(:define_method, '[]=') do |key,value|
+  self.put(key.to_s,JsonBuilder::fromObject(value))
+end
+
+
+JsonObject.send(:define_method, '[]') do |key|
+  val = self.get(key)
+  if val.isPrimitive
+    case val.type.to_s
+    when 'string'
+      val.asString
+    when 'number'
+      val.asDouble
+    when 'bool'
+      val.asBoolean
+    when 'nullValue'
+      nil
+    end
+  else
+    val
+  end
+end
+
+JsonArray.send(:define_method, '[]') do |key|
+  val = self.get(key)
+  if val.isPrimitive
+    case val.type.to_s
+    when 'string'
+      val.asString
+    when 'number'
+      val.asDouble
+    when 'bool'
+      val.asBoolean
+    when 'nullValue'
+      nil
+    end
+  else
+    val
+  end
+end
+
+JsonArray.send(:define_method, '[]=') do |index,value|
+  self.set(index,JsonBuilder::fromObject(value))
+end
+
+JsonArray.send(:define_method, '<<') do |value|
+  self.add(JsonBuilder::fromObject(value))
 end
 
 JsonArray.send(:define_method, 'toRuby') do 
