@@ -36,6 +36,7 @@ import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonPrimitive;
 
 @Test
@@ -57,4 +58,12 @@ public class JsonBuilderTest {
 	    m.put("nr", new Double(0.2));
 	    assertThat(fromObject(m).asObject(), is(object().put("nr", 0.2).put("list", array(primitive("some string"), primitive(1))).get()));
 	}
+
+	public void shouldConvertPrimitiveProperly() {
+	    assertThat(primitive(primitive("42")), is(primitive("42")));
+	}
+
+    public void shouldConvertPrimitiveProperlyOnFromObject() {
+        assertThat(fromObject(primitive("42")), is((JsonElement)primitive("42")));
+    }
 }

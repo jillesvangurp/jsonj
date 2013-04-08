@@ -243,6 +243,9 @@ public class JsonBuilder {
      * @return a JsonPrimitive with the value
      */
     public static JsonPrimitive primitive(final Object value) {
+        if(value instanceof JsonPrimitive) {
+            return ((JsonPrimitive) value).deepClone();
+        }
         return new JsonPrimitive(value);
     }
 
