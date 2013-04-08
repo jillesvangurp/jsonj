@@ -29,7 +29,6 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
@@ -45,7 +44,7 @@ public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
 	}
 
     @SuppressWarnings("rawtypes")
-    public JsonArray(List existing) {
+    public JsonArray(Collection existing) {
         super();
         for(Object o: existing) {
             add(fromObject(o));
