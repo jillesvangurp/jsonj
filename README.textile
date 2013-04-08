@@ -49,6 +49,9 @@ If you use jruby, you can seemlessly integrate jsonj using this module "jruby-in
 
 h1. Changelog
 
+* 1.11
+** Add simple JsonSet implementation because sometimes it is just nice to have one. This is a simple variation of the JsonArray that is not supported during parsing.
+** Fix bug with primitive(primitive("42)) ending up creating a primitive for the quoted value.
 * 1.10
 ** require java 1.7
 ** move jsonj.rb, see my jsonj-integration project or install the gem from rubygems
