@@ -45,4 +45,10 @@ public class JsonSetTest {
         JsonSet set = new JsonSet(collection);
         assertThat(set.size(), is(2));
     }
+
+    public void shouldAddAllElementsOfArray() {
+        JsonSet set = new JsonSet();
+        set.addAll(array(1,2,1));
+        assertThat(set.size(), is(2));
+    }
 }
