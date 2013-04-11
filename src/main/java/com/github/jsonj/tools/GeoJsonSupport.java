@@ -171,9 +171,8 @@ public class GeoJsonSupport {
     }
 
     public static JsonObject pointShape(double latitude, double longitude) {
-        return shape("Polygon", toJsonJPoint(new double[] {longitude, longitude}));
+        return shape("Point", toJsonJPoint(new double[] {longitude, longitude}));
     }
-
 
     public static JsonObject pointShape(double[] coordinates) {
         return shape("Polygon", toJsonJPoint(coordinates));
@@ -192,7 +191,7 @@ public class GeoJsonSupport {
     }
 
     public static JsonObject multiPolygonShape(double[][][][] coordinates) {
-        return shape("Polygon", toJsonJMultiPolygon(coordinates));
+        return shape("MultiPolygon", toJsonJMultiPolygon(coordinates));
     }
 
 }
