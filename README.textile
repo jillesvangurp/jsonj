@@ -17,6 +17,14 @@ h1. Features
 
 The purpose of the JsonJ framework is to allow you to write code that has a low amount of verbosity. 
 
+h2. Memory efficient
+
+JsonJ implements several things that ensure it uses much less memory than might otherwise be the case:
+
+* it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. 
+* it uses a UTF8 byte arrays for storing String primitives. 
+* it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff.
+
 h2. Design overview
 
 JsonJ provides a few classes that extend Java's Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
@@ -36,6 +44,7 @@ h2. Parsing and serialization
 
 * A thread safe JsonParser class is provided.
 * You can serialize using JsonElement.toString(), JsonElement.prettyPrint(), or using the JsonSerializer class.
+* It implements Serializable as well, if you really want to use that.
 
 h2. JsonBuilder
 
