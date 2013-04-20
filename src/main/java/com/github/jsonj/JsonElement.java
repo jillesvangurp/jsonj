@@ -30,7 +30,7 @@ import com.github.jsonj.exceptions.JsonTypeMismatchException;
 /**
  * Super type of all Json elements (object, list, and primitive).
  */
-public interface JsonElement extends Serializable, Cloneable{
+public interface JsonElement extends Cloneable, Serializable {
 	/**
 	 * @return the type of this json element
 	 */

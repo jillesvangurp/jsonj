@@ -23,6 +23,7 @@ package com.github.jsonj;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -34,7 +35,7 @@ import com.github.jsonj.tools.JsonSerializer;
 /**
  * Representation of json primitives.
  */
-public class JsonPrimitive implements JsonElement {
+public class JsonPrimitive implements JsonElement, Serializable {
 	private static final long serialVersionUID = 111536854493507209L;
     private static final Charset UTF8 = Charset.forName("utf-8");
 

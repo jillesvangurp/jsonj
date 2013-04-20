@@ -30,7 +30,6 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,9 +44,11 @@ import com.jillesvangurp.efficientstring.EfficientString;
  * methods you are likely to need when working with json objects programmatically.
  */
 public class JsonObject implements Map<String, JsonElement>, JsonElement {
-	private static final long serialVersionUID = 2183487305816320684L;
 
-	private final LinkedHashMap<EfficientString, JsonElement> map = new LinkedHashMap<EfficientString, JsonElement>();
+    private static final long serialVersionUID = 497820087656073803L;
+
+    //    private final LinkedHashMap<EfficientString, JsonElement> map = new LinkedHashMap<EfficientString, JsonElement>();
+    private final Map<EfficientString, JsonElement> map = new SimpleMap<>();
 
 	private String idField=null;
 

@@ -135,8 +135,8 @@ public class JsonObjectTest {
 		Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
 		jsonObject.removeEmpty();
 		assertThat("should leave empty objects",jsonObject.getObject("empty"), is(object().get()));
-		Assert.assertEquals(jsonObject.getString("empty2"), null);
-		Assert.assertEquals(jsonObject.getString("empty3"), null);
+		Assert.assertEquals(jsonObject.get("empty2"), null);
+		Assert.assertEquals(jsonObject.get("empty3"), null);
 	}
 
 	public void shouldReturn2ndEntry() {
