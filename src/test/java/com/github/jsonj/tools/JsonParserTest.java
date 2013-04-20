@@ -44,11 +44,10 @@ import org.testng.annotations.Test;
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
-import com.github.jsonj.tools.JsonParser;
-import com.github.jsonj.tools.JsonSerializer;
 
 public class JsonParserTest {
-	private final JsonParser jsonParser = new JsonParser();
+    private final JsonParser jsonParser = new JsonParser();
+    private final JsonParserNg jsonParserNg = new JsonParserNg();
 
 	@DataProvider
 	public Object[][] goodJson() {
@@ -87,8 +86,11 @@ public class JsonParserTest {
 	@Test(dataProvider="goodJson")
 	public void shouldParse(final JsonElement element) {
 		String input = JsonSerializer.serialize(element, false);
-		JsonElement parsed = jsonParser.parse(input);
-		Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
+        JsonElement parsed = jsonParser.parse(input);
+        Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
+        // check with the other parser as well
+        parsed = jsonParserNg.parse(input);
+        Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
 	}
 
 	@Test

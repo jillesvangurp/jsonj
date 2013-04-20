@@ -198,5 +198,11 @@
         	<artifactId>efficientstring</artifactId>
         	<version>1.4</version>
         </dependency>
+        <dependency>
+        	<groupId>com.fasterxml.jackson.core</groupId>
+        	<artifactId>jackson-core</artifactId>
+        	<version>2.1.4</version>
+        	<optional>true</optional>
+        </dependency>
     </dependencies>
 </project>

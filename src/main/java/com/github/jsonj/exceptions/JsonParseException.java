@@ -21,6 +21,8 @@
  */
 package com.github.jsonj.exceptions;
 
+import java.io.IOException;
+
 import org.json.simple.parser.ParseException;
 
 public class JsonParseException extends RuntimeException {
@@ -29,4 +31,12 @@ public class JsonParseException extends RuntimeException {
 	public JsonParseException(final ParseException e) {
 		super(e);
 	}
+
+    public JsonParseException(com.fasterxml.jackson.core.JsonParseException e) {
+        super(e);
+    }
+
+    public JsonParseException(IOException e) {
+        super(e);
+    }
 }
