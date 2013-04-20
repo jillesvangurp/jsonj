@@ -39,7 +39,7 @@ import com.github.jsonj.tools.JsonParser;
  * Not really a test but a nice place to show off how to use the framework.
  */
 @Test
-public class ShowOffTheFramework {
+public class ShowOffTheFrameworkTest {
 
 	/** this could be a singleton or a spring injected object, threadsafe of course. */
 	private final JsonParser jsonParser = new JsonParser();;
@@ -102,8 +102,6 @@ public class ShowOffTheFramework {
 		// Lets do some other stuff
 		assertTrue(object.equals(object),
 			"equals is implemented as a deep equals");
-		assertTrue(array("a", "b").equals(array("b", "a")),
-			"mostly you shouldn't care about the order of stuff in json");
 		assertTrue(
 			object().put("a", 1).put("b", 2).get()
 			.equals(
@@ -124,7 +122,7 @@ public class ShowOffTheFramework {
 		assertTrue(object.equals(deepClone));
 		// deepClone is just a more convenient API than clone but of course Cloneable is implemented on all json elements
 		assertTrue(object.equals(deepClone.clone()));
-		
+
 		// serialize like this
 		String serialized = serialize(object);
 
@@ -142,8 +140,8 @@ public class ShowOffTheFramework {
 
 		assertTrue(object.equals(jsonParser.parse(serialize(object))),
 			"input is the same as output");
-		
-		assertTrue(serialize(object).equals(serialize(jsonParser.parse((serialize(object))))), 
+
+		assertTrue(serialize(object).equals(serialize(jsonParser.parse((serialize(object))))),
 				"the same as in string equals");
 	}
 }
