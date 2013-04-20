@@ -27,6 +27,8 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,6 +38,7 @@ import java.util.Set;
 import org.apache.commons.lang.Validate;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonParser;
 import com.github.jsonj.tools.JsonSerializer;
 import com.jillesvangurp.efficientstring.EfficientString;
 
@@ -45,7 +48,12 @@ import com.jillesvangurp.efficientstring.EfficientString;
  */
 public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
+    private static final Charset UTF8 = Charset.forName("UTF-8");
+
     private static final long serialVersionUID = 497820087656073803L;
+
+    // use during serialization
+    private static JsonParser parser = null;
 
     //    private final LinkedHashMap<EfficientString, JsonElement> map = new LinkedHashMap<EfficientString, JsonElement>();
     private final Map<EfficientString, JsonElement> map = new SimpleMap<>();
@@ -672,5 +680,36 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     @Override
     public Collection<JsonElement> values() {
         return map.values();
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        // when using object serialization, write the json bytes
+        byte[] bytes = toString().getBytes(UTF8);
+        out.writeInt(bytes.length);
+        out.write(bytes);
+
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        // when deserializing, parse the json string
+        try {
+            int length = in.readInt();
+            byte[] buf = new byte[length];
+            in.readFully(buf);
+            if(parser == null) {
+                // create it lazily, static so won't increase object size
+                parser = new JsonParser();
+            }
+            JsonElement o = parser.parse(new String(buf,UTF8));
+            Field f = getClass().getDeclaredField("map");
+            f.setAccessible(true);
+            f.set(this, new SimpleMap<>());
+
+            for(Entry<String, JsonElement> e: o.asObject().entrySet()) {
+                put(e.getKey(),e.getValue());
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

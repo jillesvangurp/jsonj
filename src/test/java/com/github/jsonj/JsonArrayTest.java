@@ -27,7 +27,13 @@ import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,5 +168,18 @@ public class JsonArrayTest {
         assertThat(array("1","2").asStringArray(), is(new String[]{"1","2"}));
     }
 
+    public void shouldSupportJavaSerialization() throws IOException, ClassNotFoundException {
+        JsonArray object = array(object().put("42",42).get(), primitive(42));
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(object);
+        oos.close();
+        byte[] bytes = baos.toByteArray();
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Object object2 = ois.readObject();
+        assertTrue(object.equals(object2));
+    }
 }
