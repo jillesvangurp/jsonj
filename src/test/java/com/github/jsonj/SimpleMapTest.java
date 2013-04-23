@@ -6,9 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -86,13 +83,13 @@ public class SimpleMapTest {
 //        System.out.println(getSerializedSize(m2));
 //    }
 
-    private int getSerializedSize(Object o) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(o);
-        oos.close();
-        int size = baos.size();
-        return size;
-    }
+//    private int getSerializedSize(Object o) throws IOException {
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        ObjectOutputStream oos = new ObjectOutputStream(baos);
+//        oos.writeObject(o);
+//        oos.close();
+//        int size = baos.size();
+//        return size;
+//    }
 
 }

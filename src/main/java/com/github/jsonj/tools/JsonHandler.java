@@ -1,6 +1,7 @@
 package com.github.jsonj.tools;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
@@ -12,7 +13,7 @@ import com.github.jsonj.JsonPrimitive;
 
 final class JsonHandler implements ContentHandler {
 	// use a simple stack mechanism to reconstruct the tree
-	JsonArray stack = new JsonArray();
+	LinkedList<JsonElement> stack = new LinkedList<>();
 	boolean isObject = false;
 
 	public JsonElement get() {

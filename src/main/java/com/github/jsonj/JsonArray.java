@@ -26,9 +26,9 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
@@ -36,7 +36,7 @@ import com.github.jsonj.tools.JsonSerializer;
 /**
  * Representation of json arrays that extends LinkedList.
  */
-public class JsonArray extends LinkedList<JsonElement> implements JsonElement {
+public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	private static final long serialVersionUID = -1269731858619421388L;
 
 	public JsonArray() {
