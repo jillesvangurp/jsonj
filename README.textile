@@ -58,6 +58,8 @@ If you use jruby, you can seemlessly integrate jsonj using this module "jruby-in
 
 h1. Changelog
 
+* 1.14
+** Fix resource leak with jackson parser not being closed; make jackson not optional to fix classpath issues
 * 1.13
 ** Use new SimpleMap instead of HashMap in JsonObject. This is faster and more memory efficient for small amounts of keys
 ** JsonArray now extends ArrayList instead of LinkedList
