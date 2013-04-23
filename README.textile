@@ -23,7 +23,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 * it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. 
 * it uses a UTF8 byte arrays for storing String primitives. 
-* it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff.
+* it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff  .
 
 h2. Design overview
 
@@ -58,6 +58,12 @@ If you use jruby, you can seemlessly integrate jsonj using this module "jruby-in
 
 h1. Changelog
 
+* 1.13
+** Use new SimpleMap instead of HashMap in JsonObject. This is faster and more memory efficient for small amounts of keys
+** JsonArray now extends ArrayList instead of LinkedList
+** Add new parser based on jackson. Both parsers use the same handler so there is not much difference in performance. 
+* 1.12
+** Fix GeoJson type bugs 
 * 1.11
 ** Add simple JsonSet implementation because sometimes it is just nice to have one. This is a simple variation of the JsonArray that is not supported during parsing.
 ** Fix bug with primitive(primitive("42)) ending up creating a primitive for the quoted value.
