@@ -146,7 +146,7 @@ public class GeoJsonSupport {
      *
      *
      * @param array
-     * @return
+     * @return swapped array
      */
     public static JsonArray swapLatLon(JsonArray array) {
         if(array.isNotEmpty() && array.first().isArray()) {
