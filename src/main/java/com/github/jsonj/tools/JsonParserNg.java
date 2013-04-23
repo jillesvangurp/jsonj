@@ -61,7 +61,11 @@ public class JsonParserNg {
 	public JsonElement parse(final String s) {
 	    try {
 	        JsonParser parser = jsonFactory.createJsonParser(s);
-	        return parseContent(parser);
+	        try {
+                return parseContent(parser);
+            } finally {
+                parser.close();
+            }
         } catch (com.fasterxml.jackson.core.JsonParseException e) {
             throw new JsonParseException(e);
         } catch (IOException e) {
@@ -98,6 +102,8 @@ public class JsonParserNg {
             return parseContent(parser);
         } catch (ParseException e) {
             throw new JsonParseException(e);
+        } finally {
+            parser.close();
         }
 	}
 
