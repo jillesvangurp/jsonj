@@ -182,4 +182,14 @@ public class JsonArrayTest {
         Object object2 = ois.readObject();
         assertTrue(object.equals(object2));
     }
+
+    public void shouldIterateOverObjects() {
+        JsonObject obj = object().put("foo", "bar").get();
+        int i=0;
+        for(JsonObject o: array(obj,obj).objects()) {
+            assertThat(o.getString("foo"), is("bar"));
+            i++;
+        }
+        assertThat(i,is(2));
+    }
 }

@@ -111,5 +111,4 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         }
         return c.size() != 0;
     }
-
 }

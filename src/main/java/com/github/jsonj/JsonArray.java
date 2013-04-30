@@ -340,4 +340,36 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     public boolean isString() {
         return false;
     }
+
+    /**
+     * Convenience method to prevent casting JsonElement to JsonObject when iterating in the common case that you have
+     * an array of JsonObjects.
+     *
+     * @return iterable that iterates over JsonObjects instead of JsonElements.
+     */
+    public Iterable<JsonObject> objects() {
+        final JsonArray parent=this;
+        return new Iterable<JsonObject>() {
+
+            @Override
+            public Iterator<JsonObject> iterator() {
+                final Iterator<JsonElement> iterator = parent.iterator();
+                return new Iterator<JsonObject>() {
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    @Override
+                    public JsonObject next() {
+                        return iterator.next().asObject();
+                    }
+
+                    @Override
+                    public void remove() {
+                        iterator.remove();
+                    }};
+            }};
+    }
 }

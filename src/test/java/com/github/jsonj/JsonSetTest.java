@@ -1,9 +1,10 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -50,5 +51,16 @@ public class JsonSetTest {
         JsonSet set = new JsonSet();
         set.addAll(array(1,2,1));
         assertThat(set.size(), is(2));
+    }
+
+    public void shouldIterateOverObjects() {
+        int i=0;
+        JsonSet set = new JsonSet();
+        set.add(object().put("foo", "bar").get());
+        set.add(object().put("bar", "foo").get());
+        for(@SuppressWarnings("unused") JsonObject o: set.objects()) {
+            i++;
+        }
+        assertThat(i,is(2));
     }
 }
