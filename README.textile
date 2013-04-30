@@ -58,6 +58,8 @@ If you use jruby, you can seemlessly integrate jsonj using this module "jruby-in
 
 h1. Changelog
 
+* 1.15
+** add convenient objects() iterable to JsonArray to allow iterating over JsonObjects without calling asObject on each JsonElement. Works for JsonSet as well.
 * 1.14
 ** Fix resource leak with jackson parser not being closed; make jackson not optional to fix classpath issues
 * 1.13
