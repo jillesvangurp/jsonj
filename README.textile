@@ -29,7 +29,7 @@ h2. Design overview
 
 JsonJ provides a few classes that extend Java's Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
 * public class JsonObject implements Map<String,JsonElement>, JsonElement
-* public class JsonArray extends LinkedList<JsonElement> implements JsonElement
+* public class JsonArray extends ArrayList<JsonElement> implements JsonElement
 * public class JsonPrimitive implements JsonElement
 
 These three classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement. Each of the classes provides useful implementations of toString, hash, and equals.
