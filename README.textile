@@ -50,7 +50,7 @@ The builder class also provides methods to facilitate converting from existing M
 
 h2. JRuby integration
 
-If you use jruby, you can seemlessly integrate jsonj using this module "jruby-integration":"https://github.com/jillesvangurp/jsonj-integration". This is nice if you are mixing java code that uses JsonJ, with ruby code.
+If you use jruby, you can seemlessly integrate jsonj using this module "jsonj-integration":"https://github.com/jillesvangurp/jsonj-integration". This is nice if you are mixing java code that uses JsonJ, with ruby code.
 
 h1. Changelog
 
