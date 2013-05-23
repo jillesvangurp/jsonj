@@ -43,7 +43,7 @@ h2. Parsing, serialization, and DOM
 
 h2. JRuby integration
 
-If you use jruby, you can seemlessly integrate jsonj using this module "jsonj-integration":(https://github.com/jillesvangurp/jsonj-integration). This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds to_json and to_s methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy. 
+If you use jruby, you can seemlessly integrate jsonj using this module "jsonj-integration":https://github.com/jillesvangurp/jsonj-integration. This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds to_json and to_s methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy. 
 
 h2. Memory efficient
 
