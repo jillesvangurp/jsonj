@@ -17,7 +17,7 @@ h1. Features
 
 The purpose of the JsonJ framework is to allow you to write code that has a low amount of verbosity. 
 
-h2. Design overview
+h2. Design overview and API
 
 JsonJ provides a few classes that extend Java's Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
 * public class JsonObject implements Map<String,JsonElement>, JsonElement
@@ -26,19 +26,21 @@ JsonJ provides a few classes that extend Java's Collections framework. Extending
 
 These three classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement. Each of the classes provides useful implementations of toString, hash, and equals.
 
-The JsonElement interface specifies a lot of additional methods that allow you to do easy type checks and to convert to Java native type (when needed), etc. The API has been finetuned over many months of using it for real work and I've aimed to elemenate the need for any code that feels like it is overly repetitive or verbose. I regard this as the *key selling point of the library*.
+The JsonElement interface specifies a lot of additional methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc. For example, the add method on JsonArray is polymorph and automatically generates primitives if you add Strings, Booleans, or Numbers. The put on JsonObject behaves the same. JsonElement specifies as* methods that convert to common types or throw an unchecked exception if the conversion is impossible. There are also is* methods for checking the type conditionally.
+
+The API has been finetuned over many months of using it for real work and I've aimed to elemenate the need for any code that feels like it is overly repetitive or verbose (aka the DRY principle). I regard this as the *key selling point of the library*.
 
 h2. JsonBuilder
 
-To facilitate creation of json elements, a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to use static imports and to add this class as a favorite in eclipse to facilitate autocompletion.
+To facilitate creation of json objects, arrays, and primitives a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to use static imports and to add this class as a favorite in eclipse to facilitate autocompletion.
 
-The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. The fromObject method takes any Java object and tries to do the right thing.
+The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing.
 
 h2. Parsing, serialization, and DOM
 
 * A thread safe JsonParser class is provided based on json-simple, and another JsonParserNg that is based on jackson. There's little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
 * You can serialize using toString() or prettyPrint() on any JsonElement, or you can use the JsonSerializer class directly.
-* It implements Serializable as well, if you really want to use that (hint, you shouldn't).
+* JsonElement implements Serializable so you can serialize jsonj objects using Java's builtin serialization, if you really want to use that (hint, you shouldn't).
 * I have a utility class to convert to and from XML, and to create DOM trees from json object structures. This could come in handy if you'd want to use e.g. xpath.
 
 h2. JRuby integration
@@ -66,8 +68,8 @@ h1. Changelog
 * 1.12
 ** Fix GeoJson type bugs 
 * 1.11
-** Add simple JsonSet implementation because sometimes it is just nice to have one. This is a simple variation of the JsonArray that is not supported during parsing.
-** Fix bug with primitive(primitive("42)) ending up creating a primitive for the quoted value.
+** Add simple JsonSet implementation because sometimes it is just nice to have lists that behave like sets. This is a simple variation of the JsonArray that is not supported during parsing.
+** Fix bug with primitive(primitive(42)) ending up creating a primitive for the quoted value.
 * 1.10
 ** require java 1.7
 ** move jsonj.rb, see my jsonj-integration project or install the gem from rubygems
