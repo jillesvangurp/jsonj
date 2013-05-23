@@ -36,10 +36,6 @@ These three classes provide a type safe alternative to simply using generic maps
 
 The JsonElement interface specifies methods that allow you to do easy type checks and to convert to Java native type (when needed).
 
-JsonObject uses a LinkedHashMap internally and JsonArray extends LinkedList. This ensures that the order of the elements doesn't change arbitrarily.
-
-To conserve memory, Stings and JsonObject keys are represented as utf8 byte arrays internally rather than the 16 bit characters Java uses for Strings. Especially when working with large amounts of json in memory, this can make a large difference of up to nearly 50% of memory (depending on the language).
-
 h2. Parsing and serialization
 
 * A thread safe JsonParser class is provided.
