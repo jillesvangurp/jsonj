@@ -142,7 +142,7 @@ h2. Where is the documentation?
 
 Javadoc is generated during the build. After building you can find it in @./target/apidocs/index.html@
 
-Additionally, look at the  tests. Particularly "*this one here*":https://github.com/jillesvangurp/JsonJ/blob/master/src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
+Additionally, look at the  tests. Particularly "*this one here*":src/test/java/com/github/JsonJ/ShowOffTheFramework.java shows off most of the features this framework has.
 
 h1. License
 
