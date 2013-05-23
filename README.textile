@@ -17,14 +17,6 @@ h1. Features
 
 The purpose of the JsonJ framework is to allow you to write code that has a low amount of verbosity. 
 
-h2. Memory efficient
-
-JsonJ implements several things that ensure it uses much less memory than might otherwise be the case:
-
-* it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. 
-* it uses a UTF8 byte arrays for storing String primitives. 
-* it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff  .
-
 h2. Design overview
 
 JsonJ provides a few classes that extend Java's Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
@@ -34,13 +26,7 @@ JsonJ provides a few classes that extend Java's Collections framework. Extending
 
 These three classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement. Each of the classes provides useful implementations of toString, hash, and equals.
 
-The JsonElement interface specifies methods that allow you to do easy type checks and to convert to Java native type (when needed).
-
-h2. Parsing and serialization
-
-* A thread safe JsonParser class is provided.
-* You can serialize using JsonElement.toString(), JsonElement.prettyPrint(), or using the JsonSerializer class.
-* It implements Serializable as well, if you really want to use that.
+The JsonElement interface specifies a lot of additional methods that allow you to do easy type checks and to convert to Java native type (when needed), etc. The API has been finetuned over many months of using it for real work and I've aimed to elemenate the need for any code that feels like it is overly repetitive or verbose. I regard this as the *key selling point of the library*.
 
 h2. JsonBuilder
 
@@ -48,9 +34,24 @@ To facilitate creation of json elements, a builder class is included that makes 
 
 The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. The fromObject method takes any Java object and tries to do the right thing.
 
+h2. Parsing, serialization, and DOM
+
+* A thread safe JsonParser class is provided based on json-simple, and another JsonParserNg that is based on jackson. There's little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
+* You can serialize using toString() or prettyPrint() on any JsonElement, or you can use the JsonSerializer class directly.
+* It implements Serializable as well, if you really want to use that (hint, you shouldn't).
+* I have a utility class to convert to and from XML, and to create DOM trees from json object structures. This could come in handy if you'd want to use e.g. xpath.
+
 h2. JRuby integration
 
-If you use jruby, you can seemlessly integrate jsonj using this module "jsonj-integration":"https://github.com/jillesvangurp/jsonj-integration". This is nice if you are mixing java code that uses JsonJ, with ruby code.
+If you use jruby, you can seemlessly integrate jsonj using this module "jsonj-integration":"https://github.com/jillesvangurp/jsonj-integration". This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds to_json and to_s methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy. 
+
+h2. Memory efficient
+
+JsonJ implements several things that ensure it uses much less memory than might otherwise be the case:
+
+* it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. 
+* it uses a UTF8 byte arrays for storing String primitives. 
+* it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff  .
 
 h1. Changelog
 
@@ -112,7 +113,6 @@ h1. Changelog
 h1. What's with the name
 
 It's pronounced json-j, or jasonjay. It doesn't mean anything in particular other than "json for java", or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
-
 
 h1. FAQ
 
