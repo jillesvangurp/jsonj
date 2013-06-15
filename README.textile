@@ -49,7 +49,7 @@ JsonObject o=object()
       object()
        .put("meaningoflife",42),
       "note that the nested builder's get() method is called automatically")
-  )
+  ))
   .put("another", "element")
   .put("aSet",set(1,2,3)
   .put("nestedlists,array(array(1,2),array(3,4)))
