@@ -57,6 +57,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 h1. Changelog
 
+* 1.16
+** support addition of JsonBuilder objects in arrays, sets, and objects (automatically calls .get())
+** support JsonSet in builder
 * 1.15
 ** add convenient objects() iterable to JsonArray to allow iterating over JsonObjects without calling asObject on each JsonElement. Works for JsonSet as well.
 * 1.14
