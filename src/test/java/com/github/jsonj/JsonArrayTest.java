@@ -41,6 +41,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.github.jsonj.tools.JsonBuilder;
+
 @Test
 public class JsonArrayTest {
 
@@ -191,5 +193,14 @@ public class JsonArrayTest {
             i++;
         }
         assertThat(i,is(2));
+    }
+
+    public void shouldAddJsonBuilderObjects() {
+        JsonBuilder builder = object().put("foo", "bar");
+        JsonArray array1 = array(builder,builder);
+        JsonArray array2 = array();
+        array2.add(builder,builder);
+        assertThat(array1, is(array2));
+        assertThat(array1.toString(),is("[{\"foo\":\"bar\"},{\"foo\":\"bar\"}]"));
     }
 }

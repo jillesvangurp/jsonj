@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import com.github.jsonj.tools.JsonBuilder;
+
 @Test
 public class JsonSetTest {
     public void shouldAddNoDuplicateStrings() {
@@ -63,4 +65,13 @@ public class JsonSetTest {
         }
         assertThat(i,is(2));
     }
+
+    public void shouldAddJsonBuilderObjects() {
+        JsonBuilder builder = object().put("foo", "bar");
+        JsonSet set = new JsonSet();
+        set.add(builder,builder);
+        assertThat(set.size(), is(1));
+        assertThat(set.toString(),is("[{\"foo\":\"bar\"}]"));
+    }
+
 }

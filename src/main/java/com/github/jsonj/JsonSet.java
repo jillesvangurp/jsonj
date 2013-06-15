@@ -27,6 +27,8 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import java.util.Collection;
 import java.util.Set;
 
+import com.github.jsonj.tools.JsonBuilder;
+
 /**
  * Representation of json arrays that behaves like a set.
  */
@@ -91,6 +93,16 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
             JsonPrimitive primitive = primitive(element);
             if(!contains(primitive)) {
                 add(primitive);
+            }
+        }
+    }
+
+    @Override
+    public void add(final JsonBuilder...elements) {
+        for (JsonBuilder element : elements) {
+            JsonObject object = element.get();
+            if(!contains(object)) {
+                add(object);
             }
         }
     }

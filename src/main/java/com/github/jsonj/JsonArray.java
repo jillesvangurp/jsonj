@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
 
 /**
@@ -78,6 +79,12 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 		for (JsonElement element : elements) {
 			add(primitive(element));
 		}
+	}
+
+	public void add(JsonBuilder...elements) {
+        for (JsonBuilder element : elements) {
+            add(element.get());
+        }
 	}
 
 	@Override

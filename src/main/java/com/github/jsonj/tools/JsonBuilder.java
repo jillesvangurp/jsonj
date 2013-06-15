@@ -66,6 +66,11 @@ public class JsonBuilder {
         return this;
     }
 
+    public JsonBuilder put(final String key, final JsonBuilder e) {
+        object.put(key, e);
+        return this;
+    }
+
     /**
      * Add a string value to the object.
      *
@@ -206,6 +211,19 @@ public class JsonBuilder {
         return jjArray;
     }
 
+    /**
+     * @param elements
+     * @return json array with the builder objects
+     */
+    public static JsonArray array(final JsonBuilder... elements) {
+        JsonArray jjArray = new JsonArray();
+        for (JsonBuilder b : elements) {
+            jjArray.add(b);
+        }
+        return jjArray;
+    }
+
+
     public static JsonArray array(final Number... elements) {
         JsonArray jjArray = new JsonArray();
         for (Number n : elements) {
@@ -258,7 +276,9 @@ public class JsonBuilder {
 
     @SuppressWarnings("rawtypes")
     public static JsonElement fromObject(Object o) {
-        if(o instanceof Map) {
+        if(o instanceof JsonBuilder) {
+            return ((JsonBuilder) o).get();
+        } else if(o instanceof Map) {
             return new JsonObject((Map)o);
         } else if(o instanceof List) {
             return new JsonArray((List)o);

@@ -38,6 +38,7 @@ import java.util.Set;
 import org.apache.commons.lang.Validate;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonParser;
 import com.github.jsonj.tools.JsonSerializer;
 import com.jillesvangurp.efficientstring.EfficientString;
@@ -177,9 +178,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
      */
     public JsonElement put(final String key, final Object value) {
-        Validate.notNull(key);
-        Validate.notNull(value);
-    	return map.put(EfficientString.fromString(key), primitive(value));
+    	return put(key, primitive(value));
     }
 
     @Override
@@ -189,10 +188,15 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return map.put(EfficientString.fromString(key), value);
     }
 
+    public JsonElement put(String key, JsonBuilder value) {
+        return put(key, value.get());
+    }
+
+
     @Override
     public void putAll(Map<? extends String, ? extends JsonElement> m) {
         for(Entry<? extends String, ? extends JsonElement> e: m.entrySet()) {
-            map.put(EfficientString.fromString(e.getKey()), e.getValue());
+            put(e.getKey(), e.getValue());
         }
     }
 

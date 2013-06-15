@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
@@ -40,6 +41,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonBuilder;
 
 @Test
 public class JsonObjectTest {
@@ -167,5 +169,18 @@ public class JsonObjectTest {
         ObjectInputStream ois = new ObjectInputStream(bais);
         Object object2 = ois.readObject();
         assertTrue(object.equals(object2));
+    }
+
+    public void shouldPutBuilder() {
+        JsonBuilder builder = object().put("foo", "bar");
+        JsonObject object1 = object().put("foobar",builder).get();
+        JsonObject object2 = new JsonObject();
+        object2.put("foobar", builder);
+        JsonObject object3 = new JsonObject();
+        object3.put("foobar", fromObject(builder));
+
+        assertThat(object1, is(object2));
+        assertThat(object1, is(object3));
+        assertThat(object1.toString(), is("{\"foobar\":{\"foo\":\"bar\"}}"));
     }
 }
