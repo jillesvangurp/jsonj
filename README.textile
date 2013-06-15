@@ -37,20 +37,22 @@ Additionally a lot of methods are polymorphic and accept different types of obje
 
 JsonElement also specifies as* methods that convert to common types or throw an unchecked exception if the conversion is impossible and there are also is* methods for checking the type conditionally. This gets rid of a lot of type checks, type casts, and other ugly code.
 
-
 h2. JsonBuilder
 
 To facilitate creation of json objects, arrays, and primitives a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to use static imports and to add this class as a favorite in eclipse to facilitate autocompletion.
 
 pre. 
 JsonObject o=object()
-  .put("aList",array(1,2,object()
-    .put("meaningoflife",42),"a String")
-    .put("note","that the builder calls get() for you if you pass in another builder")
-  ))
+  .put("aList",array(
+      1,
+      2,
+      object()
+       .put("meaningoflife",42),
+      "note that the nested builder's get() method is called automatically")
+  )
   .put("another", "element")
-  .put("set",set(1,2,3)
-  .put("lists,array(array(1,2),array(3,4)))
+  .put("aSet",set(1,2,3)
+  .put("nestedlists,array(array(1,2),array(3,4)))
   .get() 
 
 p. The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing.
