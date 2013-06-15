@@ -25,9 +25,11 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +40,7 @@ import org.testng.annotations.Test;
 
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonPrimitive;
+import com.github.jsonj.JsonSet;
 
 @Test
 public class JsonBuilderTest {
@@ -65,5 +68,11 @@ public class JsonBuilderTest {
 
     public void shouldConvertPrimitiveProperlyOnFromObject() {
         assertThat(fromObject(primitive("42")), is((JsonElement)primitive("42")));
+    }
+
+    public void shouldCreateSet() {
+        JsonSet set = set(1,2,3);
+        assertThat(set, is(new JsonSet(Arrays.asList(1,2,3))));
+        assertThat(set.size(), is(3));
     }
 }

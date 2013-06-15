@@ -29,6 +29,7 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
+import com.github.jsonj.JsonSet;
 
 /**
  * Builder class for json objects. If you plan to work a lot with jsonj, you will
@@ -231,6 +232,82 @@ public class JsonBuilder {
         }
         return jjArray;
     }
+
+    /**
+     * @return an empty JsonSet
+     */
+    public static JsonSet set() {
+        return new JsonSet();
+    }
+
+    /**
+     * @param elements
+     * @return json set with all the elements added
+     */
+    public static JsonSet set(final JsonElement... elements) {
+        JsonSet jjArray = new JsonSet();
+        for (JsonElement jjElement : elements) {
+            jjArray.add(jjElement);
+        }
+        return jjArray;
+    }
+
+    /**
+     * Add elements of a collection to a json array.
+     * This changes the behavior of array(JsonElement... elements) if you called it with a single JsonArray as an
+     * element. Previously you'd get an array with a single array element
+     * in it. Because a json array is just another collection, it now inherits the behavior and you get an array of
+     * elements in the collection. If the elements are JsonElements, they are added as such. Otherwise it attempts to
+     * interpret them as primitives.
+     *
+     * @param c
+     * @return json array with the collection elements in it
+     */
+    public static JsonSet set(Collection<?> c) {
+        JsonSet jjArray = new JsonSet();
+        for (Object o : c) {
+            if (o instanceof JsonElement) {
+                jjArray.add((JsonElement) o);
+            } else {
+                jjArray.add(primitive(o));
+            }
+        }
+        return jjArray;
+    }
+
+    /**
+     * @param elements
+     * @return json array with all the elements added as JsonPrimitive
+     */
+    public static JsonSet set(final String... elements) {
+        JsonSet jjSet = new JsonSet();
+        for (String s : elements) {
+            jjSet.add(primitive(s));
+        }
+        return jjSet;
+    }
+
+    /**
+     * @param elements
+     * @return json array with the builder objects
+     */
+    public static JsonSet set(final JsonBuilder... elements) {
+        JsonSet jjArray = new JsonSet();
+        for (JsonBuilder b : elements) {
+            jjArray.add(b);
+        }
+        return jjArray;
+    }
+
+
+    public static JsonSet set(final Number... elements) {
+        JsonSet jjArray = new JsonSet();
+        for (Number n : elements) {
+            jjArray.add(primitive(n));
+        }
+        return jjArray;
+    }
+
 
     /**
      * @param value
