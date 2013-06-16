@@ -47,18 +47,20 @@ JsonBuilder
 
 To facilitate creation of json objects, arrays, and primitives a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to use static imports and to add this class as a favorite in eclipse to facilitate autocompletion.
 
-    JsonObject o=object()
-     .put(“aList”,array(
-     1,
-     2,
-     object()
-     .put(“meaningoflife”,42),
-     “note that the nested builder’s get() method is called automatically”)
-     ))
-     .put(“another”, “element”)
-     .put(“aSet”,set(1,2,3)
-     .put(“nestedlists,array(array(1,2),array(3,4)))
-     .get()
+```java
+JsonObject o=object()
+  .put(“aList”,array(
+  1,
+  2,
+  object()
+    .put(“meaningoflife”,42),
+    “note that the nested builder’s get() method is called automatically”)
+  ))
+ .put(“another”, “element”)
+ .put(“aSet”,set(1,2,3)
+ .put(“nestedlists,array(array(1,2),array(3,4)))
+ .get()
+```
 
 The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing.
 
