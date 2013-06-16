@@ -49,16 +49,19 @@ To facilitate creation of json objects, arrays, and primitives a builder class i
 
 ```java
 JsonObject o=object()
-  .put(“aList”,array(
+  .put("aList",array(
   1,
   2,
   object()
-    .put(“meaningoflife”,42),
-    “note that the nested builder’s get() method is called automatically”)
+    .put("meaningoflife",42),
+    "note that the nested builder’s get() method is called automatically")
   ))
- .put(“another”, “element”)
- .put(“aSet”,set(1,2,3)
- .put(“nestedlists,array(array(1,2),array(3,4)))
+ .put("another", "element")
+ .put("aSet",set(1,2,3)
+ .put("nestedlists",array(
+    array(1,2),
+    array(3,4)
+  ))
  .get()
 ```
 
