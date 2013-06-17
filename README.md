@@ -1,7 +1,7 @@
 Introduction
 ============
 
-JsonJ is a framework for working with json in Java the “proper” way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc.
+JsonJ is a framework for working with json in Java the "proper" way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc.
 
 Just think about it, the whole point of json is a straightforward serialization and deserialization of simple, native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly more complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
 
@@ -29,14 +29,14 @@ Design overview and API
 
 JsonJ provides a few classes that extend Java’s Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
 
-- public class JsonObject implements Map<String,JsonElement>, JsonElement
-- public class JsonArray extends ArrayList<JsonElement> implements JsonElement
-- public class JsonSet extends JsonArray (because sometimes having duplicate free lists is a nice thing)
-- public class JsonPrimitive implements JsonElement
+- `public class JsonObject implements Map<String,JsonElement>, JsonElement`
+- `public class JsonArray extends ArrayList<JsonElement> implements JsonElement`
+- `public class JsonSet extends JsonArray` (because sometimes having duplicate free lists is a nice thing)
+- `public class JsonPrimitive implements JsonElement`
 
 These classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement. Each of the classes provides useful implementations of toString, hash, and equals.
 
-The JsonElement interface specifies a lot of additional methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc.
+The `JsonElement` interface specifies a lot of additional methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc.
 
 Additionally a lot of methods are polymorphic and accept different types of objects (unlike the methods in the Collections framework).For example, the add method on JsonArray is polymorphic and automatically generates primitives if you add Strings, Booleans, or Numbers. The put on JsonObject behaves the same. The add method support varargs, so you can add multiple elements in one call.
 
@@ -70,15 +70,15 @@ The builder class also provides methods to facilitate converting from existing M
 Parsing, serialization, and DOM
 -------------------------------
 
-- A thread safe JsonParser class is provided based on json-simple, and another JsonParserNg that is based on jackson. There’s little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
-- You can serialize using toString() or prettyPrint() on any JsonElement, or you can use the JsonSerializer class directly.
-- JsonElement implements Serializable so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
+- A thread safe `JsonParser` class is provided based on json-simple, and another `JsonParserNg` that is based on jackson. There’s little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
+- You can serialize using `toString()` or `prettyPrint()` on any JsonElement, or you can use the `JsonSerializer` class directly.
+- JsonElement implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
 - I have a utility class to convert to and from XML, and to create DOM trees from json object structures. This could come in handy if you’d want to use e.g. xpath.
 
 JRuby integration
 -----------------
 
-If you use jruby, you can seemlessly integrate jsonj using this module”jsonj-integration“:https://github.com/jillesvangurp/jsonj-integration. This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds to\_json and to\_s methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy.
+If you use jruby, you can seemlessly integrate jsonj using this module [jsonj-integration](https://github.com/jillesvangurp/jsonj-integration). This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds `to_json` and `to_s` methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy.
 
 Memory efficient
 ----------------
@@ -177,18 +177,18 @@ How to build JsonJ
 ------------------
 
 `mvn clean install` should do the trick with maven 3.x (and probably 2.x as well).
-If you like to use pre-built jars, you can utilize my private maven repository as explained”here“:http://www.jillesvangurp.com/2013/02/27/maven-and-my-github-projects/
+If you like to use pre-built jars, you can utilize my private maven repository as explained [here](http://www.jillesvangurp.com/2013/02/27/maven-and-my-github-projects/)
 
 Where is the documentation?
 ---------------------------
 
 Javadoc is generated during the build. After building you can find it in `./target/apidocs/index.html`
-Additionally, look at the tests. Particularly”this one here“:src/test/java/com/github/jsonj/ShowOffTheFrameworkTest.java shows off most of the features this framework has.
+Additionally, look at the tests. Particularly [this one here](src/test/java/com/github/jsonj/ShowOffTheFrameworkTest.java) shows off most of the features this framework has.
 
 License
 =======
 
-The license is the”MIT license":http://en.wikipedia.org/wiki/MIT\_License, a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
+The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
 
 Acknowledgements
 ================
