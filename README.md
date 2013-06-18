@@ -91,6 +91,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 Changelog
 =========
 
+- 1.17
+    - update efficientstring
 - 1.16
     - support addition of JsonBuilder objects in arrays, sets, and objects )
     - support JsonSet in builder
