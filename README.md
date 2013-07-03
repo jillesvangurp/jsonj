@@ -90,7 +90,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 Changelog
 =========
-
+- 1.18
+    - add asLong method for when asInt is too short
 - 1.17
     - update efficientstring
 - 1.16
