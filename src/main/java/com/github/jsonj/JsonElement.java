@@ -57,8 +57,12 @@ public interface JsonElement extends Cloneable, Serializable {
 	String asString();
 
 	double asDouble();
-	int asInt();
-	boolean asBoolean();
+	float asFloat();
+
+    int asInt();
+	long asLong();
+
+    boolean asBoolean();
 
 	/**
 	 * @return true if the JsonElement is a JsonObject.
@@ -124,6 +128,4 @@ public interface JsonElement extends Cloneable, Serializable {
      * @param out
      */
     void serialize(OutputStream out) throws IOException;
-
-    long asLong();
 }

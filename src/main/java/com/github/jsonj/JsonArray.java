@@ -192,6 +192,11 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 		throw new JsonTypeMismatchException("not a primitive");
 	}
 
+	@Override
+    public float asFloat() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
     @Override
     public double asDouble() {
         throw new JsonTypeMismatchException("not a primitive");

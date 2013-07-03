@@ -106,6 +106,11 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	}
 
     @Override
+    public float asFloat() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
+    @Override
     public double asDouble() {
         throw new JsonTypeMismatchException("not a primitive");
     }
@@ -278,7 +283,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		if(jsonElement == null) {
 			return null;
 		} else {
-			return jsonElement.asPrimitive().asString();
+			return jsonElement.asString();
 		}
 	}
 
@@ -292,7 +297,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		if(jsonElement == null) {
 			return null;
 		} else {
-			return jsonElement.asPrimitive().asBoolean();
+			return jsonElement.asBoolean();
 		}
 	}
 
@@ -306,9 +311,37 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		if(jsonElement == null) {
 			return null;
 		} else {
-			return jsonElement.asPrimitive().asInt();
+			return jsonElement.asInt();
 		}
 	}
+
+   /**
+     * Get a value at a particular path in an object structure.
+     * @param labels
+     * @return value or null if it doesn't exist at the specified path
+     */
+    public Long getLong(final String...labels) {
+        JsonElement jsonElement = get(labels);
+        if(jsonElement == null) {
+            return null;
+        } else {
+            return jsonElement.asLong();
+        }
+    }
+
+    /**
+     * Get a value at a particular path in an object structure.
+     * @param labels
+     * @return value or null if it doesn't exist at the specified path
+     */
+    public Float getFloat(final String...labels) {
+        JsonElement jsonElement = get(labels);
+        if(jsonElement == null) {
+            return null;
+        } else {
+            return jsonElement.asFloat();
+        }
+    }
 
 	/**
 	 * Get a value at a particular path in an object structure.
@@ -320,7 +353,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		if(jsonElement == null) {
 			return null;
 		} else {
-			return jsonElement.asPrimitive().asDouble();
+			return jsonElement.asDouble();
 		}
 	}
 

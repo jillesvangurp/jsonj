@@ -124,6 +124,15 @@ public class JsonPrimitive implements JsonElement, Serializable {
 		}
 	}
 
+   @Override
+    public float asFloat() {
+        if(type == JsonType.number) {
+            return ((Number)value).floatValue();
+        } else {
+            throw new JsonTypeMismatchException("not a number '"+value+"'");
+        }
+    }
+
 	@Override
     public double asDouble() {
 		if(type == JsonType.number) {
