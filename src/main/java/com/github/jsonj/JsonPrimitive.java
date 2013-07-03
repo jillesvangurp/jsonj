@@ -106,6 +106,15 @@ public class JsonPrimitive implements JsonElement, Serializable {
 		}
 	}
 
+   @Override
+    public long asLong() {
+        if(type == JsonType.number) {
+            return ((Number)value).longValue();
+        } else {
+            throw new JsonTypeMismatchException("not a number '"+value+"'");
+        }
+    }
+
 	@Override
     public int asInt() {
 		if(type == JsonType.number) {

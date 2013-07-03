@@ -203,6 +203,11 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     }
 
     @Override
+    public long asLong() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
+
+    @Override
     public boolean asBoolean() {
         throw new JsonTypeMismatchException("not a primitive");
     }

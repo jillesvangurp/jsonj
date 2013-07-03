@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+@Test
 public class JsonPrimitiveTest {
 
 	@DataProvider
@@ -85,7 +86,7 @@ public class JsonPrimitiveTest {
 	}
 
    public void shouldReturnJsonString() {
-        assertThat(primitive(1).toString(), is("\"1\""));
+        assertThat(primitive(1).toString(), is("1"));
    }
 
    public void shouldHandleUtf8Correctly() {
@@ -93,4 +94,12 @@ public class JsonPrimitiveTest {
        assertThat(((JsonPrimitive) primitive("hello").clone()).asString(), is("hello"));
        assertThat(primitive("hello"), is(primitive("hello")));
    }
+
+    public void shouldHandleConversions() {
+        JsonPrimitive pi = primitive(Math.PI);
+        assertThat(pi.asLong(), is(3l));
+        assertThat(pi.asInt(), is(3));
+        assertThat(pi.asDouble(), is(Math.PI));
+        assertThat(pi.asString(), is(""+Math.PI));
+    }
 }

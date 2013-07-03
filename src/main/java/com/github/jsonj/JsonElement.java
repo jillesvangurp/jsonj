@@ -124,4 +124,6 @@ public interface JsonElement extends Cloneable, Serializable {
      * @param out
      */
     void serialize(OutputStream out) throws IOException;
+
+    long asLong();
 }
