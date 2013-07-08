@@ -90,6 +90,10 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 Changelog
 =========
+- 1.20
+    - handle json nulls when getting java boxed values and return a java null instead of throwing an npe
+- 1.19
+    - add asFloat, getFloat, and getLong methods
 - 1.18
     - add asLong method for when asInt is too short
 - 1.17
