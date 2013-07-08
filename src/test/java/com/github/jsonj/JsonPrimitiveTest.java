@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static org.hamcrest.CoreMatchers.is;
@@ -101,5 +102,9 @@ public class JsonPrimitiveTest {
         assertThat(pi.asInt(), is(3));
         assertThat(pi.asDouble(), is(Math.PI));
         assertThat(pi.asString(), is(""+Math.PI));
+    }
+
+    public void shouldConsiderNullEqualToNull() {
+        assertThat(nullValue(), is(nullValue()));
     }
 }

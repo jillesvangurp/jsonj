@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.Collection;
@@ -51,7 +52,6 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         }
     }
 
-
     @SuppressWarnings("rawtypes")
     public JsonSet(Set existing) {
         super(existing);
@@ -67,6 +67,18 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         if(!contains(primitive)) {
             add(primitive);
         }
+    }
+
+    @Override
+    public boolean add(JsonElement e) {
+        if(e==null) {
+            e=nullValue();
+        }
+        if(!contains(e)) {
+            super.add(e);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -91,9 +103,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     public void add(final JsonElement...elements) {
         for (JsonElement element : elements) {
             JsonPrimitive primitive = primitive(element);
-            if(!contains(primitive)) {
-                add(primitive);
-            }
+            add(primitive);
         }
     }
 
@@ -101,9 +111,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     public void add(final JsonBuilder...elements) {
         for (JsonBuilder element : elements) {
             JsonObject object = element.get();
-            if(!contains(object)) {
-                add(object);
-            }
+            add(object);
         }
     }
 
@@ -111,14 +119,10 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
         for (Object element : c) {
             if(element instanceof JsonElement) {
-                if(!contains(element)) {
-                    add((JsonElement)element);
-                }
+                add((JsonElement)element);
             } else {
                 JsonPrimitive primitive = primitive(element);
-                if(!contains(primitive)) {
-                    add(primitive);
-                }
+                add(primitive);
             }
         }
         return c.size() != 0;

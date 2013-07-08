@@ -203,4 +203,9 @@ public class JsonArrayTest {
         assertThat(array1, is(array2));
         assertThat(array1.toString(),is("[{\"foo\":\"bar\"},{\"foo\":\"bar\"}]"));
     }
+
+    public void shouldAllowJsonNullValues() {
+        JsonArray arr = array(null, nullValue());
+        assertThat(arr.get(0), is((JsonElement)nullValue()));
+    }
 }

@@ -198,4 +198,10 @@ public class JsonObjectTest {
         assertThat(o.getBoolean("x"), CoreMatchers.nullValue());
         assertThat(o.getString("x"), CoreMatchers.nullValue());
     }
+
+    public void shouldAllowPutOfNullValue() {
+        JsonElement x=null;
+        JsonObject o = object().put("x", x).get();
+        assertThat(o.getInt("x"), CoreMatchers.nullValue());
+    }
 }

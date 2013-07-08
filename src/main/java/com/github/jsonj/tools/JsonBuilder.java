@@ -172,7 +172,11 @@ public class JsonBuilder {
     public static JsonArray array(final JsonElement... elements) {
         JsonArray jjArray = new JsonArray();
         for (JsonElement jjElement : elements) {
-            jjArray.add(jjElement);
+            if(jjElement == null) {
+                jjArray.add(nullValue());
+            } else {
+                jjArray.add(jjElement);
+            }
         }
         return jjArray;
     }
@@ -247,7 +251,11 @@ public class JsonBuilder {
     public static JsonSet set(final JsonElement... elements) {
         JsonSet jjArray = new JsonSet();
         for (JsonElement jjElement : elements) {
-            jjArray.add(jjElement);
+            if(jjElement==null) {
+                jjArray.add(nullValue());
+            } else {
+                jjArray.add(jjElement);
+            }
         }
         return jjArray;
     }

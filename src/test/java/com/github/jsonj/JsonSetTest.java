@@ -1,10 +1,13 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.set;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -74,4 +77,9 @@ public class JsonSetTest {
         assertThat(set.toString(),is("[{\"foo\":\"bar\"}]"));
     }
 
+    public void shouldSupportNulls() {
+        JsonSet set = set(null, nullValue());
+        assertTrue(set.contains(nullValue()),"should contain null");
+        assertThat(set.size(), is(1));
+    }
 }

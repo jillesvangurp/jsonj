@@ -23,6 +23,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.io.IOException;
@@ -187,14 +188,16 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @return the JsonElement that was added.
      * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
      */
-    public JsonElement put(final String key, final Object value) {
+    public JsonElement put(String key, Object value) {
     	return put(key, primitive(value));
     }
 
     @Override
     public JsonElement put(String key, JsonElement value) {
         Validate.notNull(key);
-        Validate.notNull(value);
+        if(value==null) {
+            value=nullValue();
+        }
         return map.put(EfficientString.fromString(key), value);
     }
 
