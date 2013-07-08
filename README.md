@@ -171,12 +171,14 @@ For who is this framework intended
 ----------------------------------
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn’t wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
-h2. Which version should I use?
+
+Which version should I use?
+---------------------------
 
 The latest release or snapshot typically. Releases are tagged in git and I deploy artifacts to my own git repository.
 Beyond the version number, there is not much difference between a release and a snapshot. I don’t bother with the ceremony for each commit. The older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine.
 
-If you prefer non snapshot releases, go for the latest tag. Don’t be afraid to ask me to create a new release if there are recent commits that you would like to see released.
+If you prefer non snapshot releases, go for the latest tag. Don’t be afraid to ask me to create a new release if there are recent commits that you would like to see released. I released a few older versions on maven central, all pre 1.0. I recommend you don't use those. If you need jsonj on maven central, I can push a more recent release out. Given that it is a bit of a hassle, I generally don't do so by default. Alternatively, you can utilize my private maven repository as explained [here](http://www.jillesvangurp.com/2013/02/27/maven-and-my-github-projects/)
 
 I found a bug, what should I do
 -------------------------------
