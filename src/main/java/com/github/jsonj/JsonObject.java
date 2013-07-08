@@ -280,7 +280,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	 */
 	public String getString(final String...labels) {
 		JsonElement jsonElement = get(labels);
-		if(jsonElement == null) {
+		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
 			return jsonElement.asString();
@@ -294,7 +294,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	 */
 	public Boolean getBoolean(final String...labels) {
 		JsonElement jsonElement = get(labels);
-		if(jsonElement == null) {
+		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
 			return jsonElement.asBoolean();
@@ -308,7 +308,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	 */
 	public Integer getInt(final String...labels) {
 		JsonElement jsonElement = get(labels);
-		if(jsonElement == null) {
+		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
 			return jsonElement.asInt();
@@ -322,7 +322,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      */
     public Long getLong(final String...labels) {
         JsonElement jsonElement = get(labels);
-        if(jsonElement == null) {
+        if(jsonElement == null || jsonElement.isNull()) {
             return null;
         } else {
             return jsonElement.asLong();
@@ -336,7 +336,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      */
     public Float getFloat(final String...labels) {
         JsonElement jsonElement = get(labels);
-        if(jsonElement == null) {
+        if(jsonElement == null || jsonElement.isNull()) {
             return null;
         } else {
             return jsonElement.asFloat();
@@ -350,7 +350,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	 */
 	public Double getDouble(final String...labels) {
 		JsonElement jsonElement = get(labels);
-		if(jsonElement == null) {
+		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
 			return jsonElement.asDouble();
@@ -364,7 +364,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	 */
 	public JsonObject getObject(final String...labels) {
 		JsonElement jsonElement = get(labels);
-		if(jsonElement == null) {
+		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
 			return jsonElement.asObject();
@@ -378,7 +378,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	 */
 	public JsonArray getArray(final String...labels) {
 		JsonElement jsonElement = get(labels);
-		if(jsonElement == null) {
+		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
 			return jsonElement.asArray();

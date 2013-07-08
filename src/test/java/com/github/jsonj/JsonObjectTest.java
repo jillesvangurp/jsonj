@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.hamcrest.CoreMatchers;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -182,5 +183,19 @@ public class JsonObjectTest {
         assertThat(object1, is(object2));
         assertThat(object1, is(object3));
         assertThat(object1.toString(), is("{\"foobar\":{\"foo\":\"bar\"}}"));
+    }
+
+    public void shouldHandleJsonNullsOnGet() {
+        JsonObject o = object().put("x", JsonPrimitive.JSON_NULL).get();
+
+        // should return the json null
+        assertThat((JsonPrimitive)o.get("x"), CoreMatchers.notNullValue());
+        // these should all return a java null
+        assertThat(o.getInt("x"), CoreMatchers.nullValue());
+        assertThat(o.getLong("x"), CoreMatchers.nullValue());
+        assertThat(o.getFloat("x"), CoreMatchers.nullValue());
+        assertThat(o.getDouble("x"), CoreMatchers.nullValue());
+        assertThat(o.getBoolean("x"), CoreMatchers.nullValue());
+        assertThat(o.getString("x"), CoreMatchers.nullValue());
     }
 }
