@@ -90,6 +90,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 Changelog
 =========
+
+- 1.21
+    - Allow null values to be added as json null instead of rejecting them with an illegal argument exception.
 - 1.20
     - handle json nulls when getting java boxed values and return a java null instead of throwing an npe
 - 1.19
