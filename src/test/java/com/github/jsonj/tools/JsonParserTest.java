@@ -25,6 +25,8 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 import java.util.Queue;
@@ -45,6 +47,7 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 
+@Test
 public class JsonParserTest {
     private final JsonParser jsonParser = new JsonParser();
     private final JsonParserNg jsonParserNg = new JsonParserNg();
@@ -119,5 +122,11 @@ public class JsonParserTest {
 		}
 		tp.shutdown();
 		tp.awaitTermination(10, TimeUnit.SECONDS);
+	}
+
+	public void shouldParseLongValue() {
+	    long l=Long.MAX_VALUE;
+        assertThat(jsonParser.parse(""+l).asLong(), is(l));
+        assertThat(jsonParserNg.parse(""+l).asLong(), is(l));
 	}
 }
