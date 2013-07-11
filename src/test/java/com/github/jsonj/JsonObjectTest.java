@@ -197,6 +197,8 @@ public class JsonObjectTest {
         assertThat(o.getDouble("x"), CoreMatchers.nullValue());
         assertThat(o.getBoolean("x"), CoreMatchers.nullValue());
         assertThat(o.getString("x"), CoreMatchers.nullValue());
+        assertThat(o.getArray("x"), CoreMatchers.nullValue());
+        assertThat(o.getObject("x"), CoreMatchers.nullValue());
     }
 
     public void shouldAllowPutOfNullValue() {
