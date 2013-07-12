@@ -15,12 +15,14 @@ There are many frameworks for handling Json in java. So why create another one? 
 
 Don’t get me wrong, some of these frameworks are excellent. And some of these frameworks are quite usable even if you do use them the way I want to use them. However, I find them lacking in usability. JsonJ is my attempt to fix this and deliver a highly usable framework that enables you to write code that has a low amount of verbosity and that gets out of the way.
 
+The JsonJ API has been finetuned over more than a year of using it for real work and I’ve aimed to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). I regard this as the key selling point of the library. When manipulating and creating json structures programmatically, it is important that you don't have to jump through hoops to extract elements, iterate over things, etc. To facilitate this, the framework provides a large amount of convenient methods that help *prevent verbosity* in the form of unnecessary class casts, null checks, type conversions, generic types, etc. No other Json framework for Java comes close to the level of usability of this framework when it comes to this.
+
+Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
+
 Features
 ========
 
 The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures, that has a low amount of verbosity compared to other frameworks.
-
-The JsonJ API has been finetuned over more than a year of using it for real work and I’ve aimed to elemenate the need for any code that feels like it is overly repetitive or verbose (aka the DRY principle). I regard this as the key selling point of the library.
 
 I’ve used it for large scale data processing, which involves processing millions of objects, retaining large amounts of objects in memory, and loads of parsing and serialization.
 
@@ -92,10 +94,11 @@ Changelog
 =========
 - 1.22
     - Add arrays, strings, longs, doubles iterator methods to JsonArray so you can foreach over elements of that type without any conversions. We already had objects(). for example:
-    
+    ```java
         for(String s: jsonArray.strings()) {
             System.out.println(s); 
         }
+    ```
 - 1.21
     - Allow `null` values to be added as json null instead of rejecting them with an illegal argument exception.
 - 1.20
@@ -181,9 +184,11 @@ Which version should I use?
 ---------------------------
 
 The latest release or snapshot typically. Releases are tagged in git and I deploy artifacts to my own git repository.
-Beyond the version number, there is not much difference between a release and a snapshot. I don’t bother with the ceremony for each commit. The older versions have bugs that I know about and already fixed. Why take the risk? The head of the repository should be fine.
+Beyond the version number, there is not much difference between a release and a snapshot. I tend to release often. Basically every time I add a feature or fix something, it is usually because I need it right away. When I release, the tests pass.
 
-If you prefer non snapshot releases, go for the latest tag. Don’t be afraid to ask me to create a new release if there are recent commits that you would like to see released. I released a few older versions on maven central, all pre 1.0. I recommend you don't use those. If you need jsonj on maven central, I can push a more recent release out. Given that it is a bit of a hassle, I generally don't do so by default. Alternatively, you can utilize my private maven repository as explained [here](http://www.jillesvangurp.com/2013/02/27/maven-and-my-github-projects/)
+If you prefer non snapshot releases, go for the latest tag. Don’t be afraid to ask me to create a new release if there are recent commits that you would like to see released. 
+
+*Important* I released a few older versions on maven central, all pre 1.0. I recommend you *don't use those*. If you need jsonj on maven central, I can push a more recent release out. Given that it is a bit of a hassle, I generally don't do so by default. Alternatively, you can utilize my private maven repository as explained [here](http://www.jillesvangurp.com/2013/02/27/maven-and-my-github-projects/)
 
 I found a bug, what should I do
 -------------------------------
