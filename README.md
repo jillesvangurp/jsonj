@@ -90,9 +90,14 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 Changelog
 =========
-
+- 1.22
+    - Add arrays, strings, longs, doubles iterator methods to JsonArray so you can foreach over elements of that type without any conversions. We already had objects(). for example:
+    
+        for(String s: jsonArray.strings()) {
+            System.out.println(s); 
+        }
 - 1.21
-    - Allow null values to be added as json null instead of rejecting them with an illegal argument exception.
+    - Allow `null` values to be added as json null instead of rejecting them with an illegal argument exception.
 - 1.20
     - handle json nulls when getting java boxed values and return a java null instead of throwing an npe
 - 1.19
