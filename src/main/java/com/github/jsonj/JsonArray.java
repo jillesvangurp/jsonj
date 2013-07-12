@@ -386,7 +386,146 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
                     @Override
                     public void remove() {
                         iterator.remove();
-                    }};
-            }};
+                    }
+                };
+            }
+        };
     }
+
+    /**
+     * Convenience method to prevent casting JsonElement to JsonArray when iterating in the common case that you have
+     * an array of JsonArrays.
+     *
+     * @return iterable that iterates over JsonArrays instead of JsonElements.
+     */
+    public Iterable<JsonArray> arrays() {
+        final JsonArray parent=this;
+        return new Iterable<JsonArray>() {
+
+            @Override
+            public Iterator<JsonArray> iterator() {
+                final Iterator<JsonElement> iterator = parent.iterator();
+                return new Iterator<JsonArray>() {
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    @Override
+                    public JsonArray next() {
+                        return iterator.next().asArray();
+                    }
+
+                    @Override
+                    public void remove() {
+                        iterator.remove();
+                    }
+                };
+            }
+        };
+    }
+
+    /**
+     * Convenience method to prevent casting JsonElement to String when iterating in the common case that you have
+     * an array of strings.
+     *
+     * @return iterable that iterates over Strings instead of JsonElements.
+     */
+    public Iterable<String> strings() {
+        final JsonArray parent=this;
+        return new Iterable<String>() {
+
+            @Override
+            public Iterator<String> iterator() {
+                final Iterator<JsonElement> iterator = parent.iterator();
+                return new Iterator<String>() {
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    @Override
+                    public String next() {
+                        return iterator.next().asString();
+                    }
+
+                    @Override
+                    public void remove() {
+                        iterator.remove();
+                    }
+                };
+            }
+        };
+    }
+
+    /**
+     * Convenience method to prevent casting JsonElement to Double when iterating in the common case that you have
+     * an array of doubles.
+     *
+     * @return iterable that iterates over Doubles instead of JsonElements.
+     */
+    public Iterable<Double> doubles() {
+        final JsonArray parent=this;
+        return new Iterable<Double>() {
+
+            @Override
+            public Iterator<Double> iterator() {
+                final Iterator<JsonElement> iterator = parent.iterator();
+                return new Iterator<Double>() {
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    @Override
+                    public Double next() {
+                        return iterator.next().asDouble();
+                    }
+
+                    @Override
+                    public void remove() {
+                        iterator.remove();
+                    }
+                };
+            }
+        };
+    }
+
+    /**
+     * Convenience method to prevent casting JsonElement to Long when iterating in the common case that you have
+     * an array of longs.
+     *
+     * @return iterable that iterates over Longs instead of JsonElements.
+     */
+    public Iterable<Long> longs() {
+        final JsonArray parent=this;
+        return new Iterable<Long>() {
+
+            @Override
+            public Iterator<Long> iterator() {
+                final Iterator<JsonElement> iterator = parent.iterator();
+                return new Iterator<Long>() {
+
+                    @Override
+                    public boolean hasNext() {
+                        return iterator.hasNext();
+                    }
+
+                    @Override
+                    public Long next() {
+                        return iterator.next().asLong();
+                    }
+
+                    @Override
+                    public void remove() {
+                        iterator.remove();
+                    }
+                };
+            }
+        };
+    }
+
 }

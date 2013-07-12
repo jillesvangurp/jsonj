@@ -195,6 +195,32 @@ public class JsonArrayTest {
         assertThat(i,is(2));
     }
 
+    public void shouldIterateOverArrays() {
+        JsonArray twodarray = array();
+        twodarray.add(array(42,42));
+        for(JsonArray arr: twodarray.arrays()) {
+            assertThat(arr.get(0).asInt(), is(42));
+        }
+    }
+
+    public void shouldIterateOverStrings() {
+        for(String s: array("hello").strings()) {
+            assertThat(s, is("hello"));
+        }
+    }
+
+    public void shouldIterateOverLongs() {
+        for(Long l: array(42).longs()) {
+            assertThat(l, is(42l));
+        }
+    }
+
+    public void shouldIterateOverDoubles() {
+        for(Double d: array(42).doubles()) {
+            assertThat(d, is(42d));
+        }
+    }
+
     public void shouldAddJsonBuilderObjects() {
         JsonBuilder builder = object().put("foo", "bar");
         JsonArray array1 = array(builder,builder);
