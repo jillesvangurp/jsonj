@@ -11,6 +11,8 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.lang.Validate;
+
 import com.google.common.collect.Sets;
 import com.jillesvangurp.efficientstring.EfficientString;
 
@@ -78,6 +80,7 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
 
     @Override
     public V put(K key, V value) {
+        Validate.notNull(key);
         int index = getIndex(key);
         if(index >=0) {
             values.set(index, value);
