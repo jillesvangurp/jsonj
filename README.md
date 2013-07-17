@@ -92,6 +92,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 Changelog
 =========
+
+- 1.23
+    - Add not null validation for object keys; prevents npe's 
 - 1.22
     - Add arrays, strings, longs, doubles iterator methods to JsonArray so you can foreach over elements of that type without any conversions. We already had objects(). for example:
     ```java
