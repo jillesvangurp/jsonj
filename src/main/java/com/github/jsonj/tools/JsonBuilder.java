@@ -167,6 +167,21 @@ public class JsonBuilder {
     }
 
     @SafeVarargs
+    public static JsonArray $(JsonElement...elements) {
+        return array(elements);
+    }
+
+    @SafeVarargs
+    public static JsonArray $(String...elements) {
+        return array(elements);
+    }
+
+    @SafeVarargs
+    public static JsonArray $(Number...elements) {
+        return array(elements);
+    }
+
+    @SafeVarargs
     public static JsonObject $(Entry<String,JsonElement>...fields) {
         return object(fields);
     }

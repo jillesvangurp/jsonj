@@ -221,11 +221,10 @@ public class JsonObjectTest {
         JsonObject object = $(
             _("meaningoflife", 42),
             _("foo", primitive("bar")),
-            _("list",array("stuff"))
+            _("list",$("stuff"))
         );
         assertThat(object.getInt("meaningoflife"), is(42));
         assertThat(object.getString("foo"), is("bar"));
         assertThat(object.getArray("list").get(0).asString(), is("stuff"));
     }
-
 }
