@@ -166,6 +166,19 @@ public class JsonBuilder {
         return object;
     }
 
+    @SafeVarargs
+    public static JsonObject $(Entry<String,JsonElement>...fields) {
+        return object(fields);
+    }
+
+    public static Entry<String, JsonElement> _(String key, JsonElement e) {
+        return field(key,e);
+    }
+
+    public static Entry<String, JsonElement> _(String key, Object o) {
+        return field(key,o);
+    }
+
     /**
      * Create a new field that can be added to a JsonObject.
      * @param key
