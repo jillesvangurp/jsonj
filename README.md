@@ -85,7 +85,28 @@ JsonObject o=object(
      ))
 );
 ```
-The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing.
+
+Or since 1.25 you can use the $ and  _ short names as well:
+
+```java
+JsonObject o=$(
+    _("aList",array(
+        1,
+        2,
+        $(_("meaningoflife",42)),
+        "no more builder"))
+    ),
+    _("another", "element"),
+    _("aSet",set(1,2,3),
+    _("nestedlists",array(
+       array(1,2),
+       array(3,4))
+    )
+);
+```
+
+
+The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing. 
 
 Parsing, serialization, and DOM
 -------------------------------
