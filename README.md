@@ -67,6 +67,24 @@ JsonObject o=object()
  .get()
 ```
 
+Since 1.24 you can also use a different style for creating objects:
+
+```java
+JsonObject o=object(
+    field("aList",array(
+        1,
+        2,
+        object(field("meaningoflife",42)),
+        "no more builder"))
+    ),
+    field("another", "element"),
+    field("aSet",set(1,2,3),
+    field("nestedlists",array(
+       array(1,2),
+       array(3,4)
+     ))
+);
+```
 The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing.
 
 Parsing, serialization, and DOM
@@ -93,6 +111,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 Changelog
 =========
 
+- 1.24 Support new style of creating JsonObjects: `JsonObject o=object(field("foo","bar"), field("list", array(1,2,3)))` now works. You can also add multiple field entries to an existing object or take the entrySet of an existing object and add those entries as fields to an object.
 - 1.23
     - Add not null validation for object keys; prevents npe's 
 - 1.22

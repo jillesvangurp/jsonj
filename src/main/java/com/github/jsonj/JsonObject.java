@@ -75,7 +75,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
     }
 
-
 	@Override
 	public JsonType type() {
 		return JsonType.object;
