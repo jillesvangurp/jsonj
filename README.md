@@ -86,11 +86,13 @@ JsonObject o=object(
 );
 ```
 
-Or since 1.25 you can use the $ and  _ short names as well:
+Or since 1.26 you can use the `$` and  `_` short names as well. `$` is an alias for `object()` or `array()`, depending on the parameter type. `_` is an alias for `field()`.
+
+Arguably this is the most DRY and minimal way to construct json objects in Java; short of parsing a json string.
 
 ```java
 JsonObject o=$(
-    _("aList",array(
+    _("aList",$(
         1,
         2,
         $(_("meaningoflife",42)),
@@ -98,9 +100,9 @@ JsonObject o=$(
     ),
     _("another", "element"),
     _("aSet",set(1,2,3),
-    _("nestedlists",array(
-       array(1,2),
-       array(3,4))
+    _("nestedlists",$(
+       $(1,2),
+       $(3,4))
     )
 );
 ```
