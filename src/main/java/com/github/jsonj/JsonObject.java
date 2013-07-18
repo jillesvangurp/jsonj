@@ -214,6 +214,16 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     /**
+     * Add multiple fields to the object.
+     * @param es field entries
+     */
+    public void add(@SuppressWarnings("unchecked") Entry<String,JsonElement>...es) {
+        for(Map.Entry<String, JsonElement> e:es) {
+            put(e.getKey(),e.getValue());
+        }
+    }
+
+    /**
      * Allows you to get the nth entry in the JsonObject. Please note that this method iterates over all the entries
      * until it finds the nth, so getting the last element is probably going to be somewhat expensive, depending on the
      * size of the collection. Also note that the entries in JsonObject are ordered by the order of insertion (it is a

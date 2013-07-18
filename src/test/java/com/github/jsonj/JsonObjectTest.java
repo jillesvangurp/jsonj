@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
@@ -205,5 +206,12 @@ public class JsonObjectTest {
         JsonElement x=null;
         JsonObject o = object().put("x", x).get();
         assertThat(o.getInt("x"), CoreMatchers.nullValue());
+    }
+
+    public void shouldAddFields() {
+        JsonObject object = object(field("meaningoflife", 42), field("foo", primitive("bar")), field("list",array("stuff")));
+        assertThat(object.getInt("meaningoflife"), is(42));
+        assertThat(object.getString("foo"), is("bar"));
+        assertThat(object.getArray("list").get(0).asString(), is("stuff"));
     }
 }

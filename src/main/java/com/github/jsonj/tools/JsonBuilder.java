@@ -24,6 +24,7 @@ package com.github.jsonj.tools;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
@@ -156,6 +157,49 @@ public class JsonBuilder {
      */
     public static JsonBuilder object(final JsonObject object) {
         return new JsonBuilder(object);
+    }
+
+    @SafeVarargs
+    public static JsonObject object(Entry<String,JsonElement>...fields) {
+        JsonObject object = new JsonObject();
+        object.add(fields);
+        return object;
+    }
+
+    /**
+     * Create a new field that can be added to a JsonObject.
+     * @param key
+     * @param value
+     * @return field
+     */
+    public static Entry<String,JsonElement> field(final String key, final JsonElement value) {
+        Entry<String, JsonElement> entry = new Entry<String,JsonElement>() {
+
+            @Override
+            public String getKey() {
+                return key;
+            }
+
+            @Override
+            public JsonElement getValue() {
+                return value;
+            }
+
+            @Override
+            public JsonElement setValue(JsonElement value) {
+                throw new UnsupportedOperationException("entries are immutable");
+            }};
+        return entry;
+    }
+
+    /**
+     * Create a new field with the key and the result of fromObject on the value.
+     * @param key
+     * @param value
+     * @return field
+     */
+    public static Entry<String,JsonElement> field(final String key, final Object value) {
+        return field(key, fromObject(value));
     }
 
     /**
