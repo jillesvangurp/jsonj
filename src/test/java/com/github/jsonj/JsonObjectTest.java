@@ -38,6 +38,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.hamcrest.CoreMatchers;
 import org.testng.Assert;
@@ -46,6 +49,7 @@ import org.testng.annotations.Test;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonBuilder;
+import com.jillesvangurp.efficientstring.EfficientString;
 
 @Test
 public class JsonObjectTest {
@@ -226,5 +230,34 @@ public class JsonObjectTest {
         assertThat(object.getInt("meaningoflife"), is(42));
         assertThat(object.getString("foo"), is("bar"));
         assertThat(object.getArray("list").get(0).asString(), is("stuff"));
+    }
+
+    public void shouldSupportConcurrentlyCreatingNewKeys() throws InterruptedException {
+        // note. this test did never actually trigger the race condition so only limited confidence here.
+        // this is the best I've come up with so far for actually triggering the conditions this breaks
+        int factor = 666;
+        int startIndex = EfficientString.nextIndex();
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
+        final JsonObject o = new JsonObject();
+        // this should create some potential for the race condition to trigger since it rapidly creates the same keys
+        int total = 100000;
+        for(int i=0;i<total;i++) {
+            // make sure we are actually creating new Strings with no overlap with the other tests
+            final String str="shouldSupportConcurrentlyCreatingNewKeys-"+ (i/factor);
+            executorService.execute(new Runnable() {
+
+                @Override
+                public void run() {
+                    o.put(str, str); // this should never fail with null key because of the (hopefully) now fixed EfficientString
+                    EfficientString e = EfficientString.fromString(str);
+                    assertThat(EfficientString.fromString(str), is(e));
+                }
+            });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(2, TimeUnit.SECONDS);
+        assertThat(EfficientString.nextIndex()-startIndex, is(total/factor+1));
+
     }
 }
