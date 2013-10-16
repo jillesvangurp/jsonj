@@ -175,7 +175,7 @@ public class GeoJsonSupport {
     }
 
     public static JsonObject pointShape(double[] coordinates) {
-        return shape("Polygon", toJsonJPoint(coordinates));
+        return shape("Point", toJsonJPoint(coordinates));
     }
 
     public static JsonObject lineStringShape(double[][] coordinates) {
