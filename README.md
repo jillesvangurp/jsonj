@@ -133,7 +133,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 Changelog
 =========
-
+- 1.30 Fix for incorrect shape type when using pointShape in GeoJsonSupport
+- 1.29 Fix for efficient string race condition
 - 1.27-1.28 Hopefully fix race condition with efficient string once and for all.
 - 1.26 Support `$` as an alias for `array()` as well. Yay polymorphism! `JsonObject o=$(_("foo","bar"), _("list", $(1,2,3)))`
 - 1.25 Create `$` and `_` aliases for `object` and `field`: `JsonObject o=$(_("foo","bar"), _("list", array(1,2,3)))` now works as well.
