@@ -55,9 +55,11 @@ JsonElement specifies as- methods that convert to common types or throw an unche
 
 ## JsonBuilder
 
-To facilitate creation of json objects, arrays, and primitives a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to use static imports and to add this class as a favorite in eclipse to facilitate autocompletion. JsonBuilder is a one stop shop for constructing very complex json objects effortlessly.
+To facilitate creation of json objects, arrays, and primitives a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to **use static imports and to add this class as a favorite in eclipse to facilitate autocompletion**. JsonBuilder is a one stop shop for constructing very complex json objects effortlessly.
 
 ### Classic builder pattern
+
+This works by chaining method calls that all return a `JsonBuilder` and then using the `get()` method to get to the constructed object.
 
 ```java
 JsonObject o=object()
@@ -81,7 +83,7 @@ JsonObject o=object()
 
 ### Factory methods without builders
 
-If this is too verbose for you, JsonJ also supports a different style of doing the same:
+If this is too verbose for you, JsonJ also supports a different style of doing the same using simple static factory methods:
 
 ```java
 JsonObject o=object(
@@ -100,7 +102,7 @@ JsonObject o=object(
 );
 ```
 
-This uses Map.Entry and the field builder method that returns a Entry<String,JsonElement>.
+This uses `Map.Entry` and the field factory method returns a `Entry<String,JsonElement>` instance that you can simply add to the `JsonObject`.
 
 ### Jquery style shortened factory methods
 
@@ -122,6 +124,8 @@ JsonObject o=$(
     )
 );
 ```
+
+Note. It has been brought to my attention that future versions of Java may drop support for `$` and  `_` as valid function names. I've not been able to verify whether this is correct but you have been warned. In any case, I regard this style as somewhat controversial still in terms of readability.
 
 ### Misc. other builder features
 
@@ -248,6 +252,10 @@ Anyone who plans to write a lot of business logic in Java that manipulates json 
 
 The latest release or snapshot typically. Releases are tagged in git and I deploy them to maven central.
 Beyond the version number, there is not much difference between a release and a snapshot. I tend to release often. Basically every time I add a feature or fix something, it is usually because I need it right away. When I release, the tests pass.
+
+## Will there be a Java 8 version of JsonJ with closures?
+
+Yes, very likely. I've not yet started using Java 8 in production but I will probably very soon start taking a look at it shortly after the release. JsonJ will very likely evolve to blend right in with the new goodies in Java 8.
 
 ## I found a bug, what should I do
 
