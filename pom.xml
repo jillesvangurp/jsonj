@@ -144,7 +144,7 @@
                     <!-- The Base URL of Nexus instance where we want to stage -->
                     <nexusUrl>https://oss.sonatype.org/service/local/staging/deploy/maven2/</nexusUrl>
                     <serverId>sonatype-nexus-staging</serverId>
-                    <stagingProfileId>37105f340fa2ea</stagingProfileId>
+                    <stagingProfileId>7edbe315063867</stagingProfileId>
                 </configuration>
             </plugin>            
         </plugins>
