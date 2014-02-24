@@ -2,17 +2,17 @@
 
 JsonJ is a framework for working with json in Java the "proper" way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc.
 
-Just think about it, the whole point of json is a straightforward serialization and deserialization of simple, native data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly more complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
+The whole point of json is a straightforward serialization and deserialization of simple, data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly more complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
 
 There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
 
-- they assume the user has model classes that need to be serialized and deserialized to and from java
-- they use an internal representation of the various json types that is not very friendly to work with if you want to manipulate them directly
-- they don’t treat json as a first class entity and merely try to hide the fact that your data is stored as json
-- they don’t use the Java collections framework
-- they use final classes, so your options to work around any limitations are limited.
+- They assume the user has model classes that need to be serialized and deserialized to and from java. IMHO this is often an antipattern that leads to large amounts of completely pointless code that needs to be tested and maintained.
+- They use an internal representation of the various json types that is not very friendly to work with if you want to manipulate them directly. For example lists or maps that handle bare Objects.
+- They don’t treat json as a first class entity and merely try to hide the fact that your data is stored as json.
+- They don’t use the Java collections framework and mostly for no good reason. If you are going to implement something that looks like a list or a map, you might as well implement the interface.
+- They use final classes, so your options to work around any limitations are limited and you are stuck with whatever is included.
 
-Don’t get me wrong, some of these frameworks are excellent and indeed widely used. And some of these frameworks are quite OK even if you do use them the way I want to use them. However, I find them lacking in usability. JsonJ is my attempt to fix usability from the point of view of a coder who doesn't want to create model classes and who likes compact, type safe code. JsonJ delivers a highly usable framework that enables you to write code that has a low amount of verbosity and that gets out of the way.
+Despite this, some of these frameworks are excellent and indeed widely used. I've used both Gson and Jackson extensively for exampel. Also, some of these frameworks are quite OK even if you do use them the way I want to use them. However, I still find them lacking in usability. JsonJ is my attempt to fix usability from the point of view of a coder who doesn't want to create model classes and who likes compact, type safe, non cluttered Java code. JsonJ delivers a highly usable framework that enables you to write code that has a low amount of verbosity and that gets out of the way.
 
 The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it. 
 
@@ -132,19 +132,18 @@ The builder class also provides methods to facilitate converting from existing M
 - A thread safe `JsonParser` class is provided based on json-simple, and another `JsonParserNg` that is based on jackson. There’s little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
 - You can serialize using `toString()` or `prettyPrint()` on any JsonElement, or you can use the `JsonSerializer` class directly.
 - JsonElement implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
-- I have a utility class to convert to and from XML, and to create DOM trees from json object structures. This could come in handy if you’d want to use e.g. xpath.
+- A utility class allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 ## JRuby integration
 
-
-If you use jruby, you can seemlessly integrate jsonj using this module [jsonj-integration](https://github.com/jillesvangurp/jsonj-integration). This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds `to_json` and `to_s` methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy.
+If you use jruby, you can seemlessly integrate jsonj using [jsonj-integration](https://github.com/jillesvangurp/jsonj-integration). This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds `to_json` and `to_s` methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy.
 
 ## Memory efficient
 
 JsonJ implements several things that ensure it uses much less memory than might otherwise be the case:
 
 - it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8.
-- it uses a UTF8 byte arrays for storing String primitives.
+- it uses UTF8 byte arrays for storing String primitives.
 - it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory.
 
 # Changelog
@@ -247,10 +246,8 @@ Anyone who plans to write a lot of business logic in Java that manipulates json 
 
 ## Which version should I use?
 
-The latest release or snapshot typically. Releases are tagged in git and I deploy artifacts to my own git repository.
+The latest release or snapshot typically. Releases are tagged in git and I deploy them to maven central.
 Beyond the version number, there is not much difference between a release and a snapshot. I tend to release often. Basically every time I add a feature or fix something, it is usually because I need it right away. When I release, the tests pass.
-
-If you prefer non snapshot releases, go for the latest tag. Don’t be afraid to ask me to create a new release if there are recent commits that you would like to see released. 
 
 ## I found a bug, what should I do
 
@@ -259,7 +256,6 @@ File a bug on this github project, or just mail/im me directly. Either way, if I
 ## How to build JsonJ
 
 `mvn clean install` should do the trick with maven 3.x (and probably 2.x as well).
-If you like to use pre-built jars, you can utilize my private maven repository as explained [here](http://www.jillesvangurp.com/2013/02/27/maven-and-my-github-projects/)
 
 ## Where is the documentation?
 
@@ -268,11 +264,11 @@ Additionally, look at the tests. Particularly [this one here](src/test/java/com/
 
 # License
 
-The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
+The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do in your hands. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
 
 # Acknowledgements
 
 1.  I’ve been greatly influenced by the classes representing the json primitives in the GSon framework. If only they implemented Map and List and weren’t final. But lovely framework and would use it again.
-2.  I spend quite a bit of time figuring out a way of parsing Json that didn’t involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for JsonJ in under two hours using a custom json-simple content handler. It seems to work and json-simple is pretty fast as well.
-3.  This code is very loosely based on work I did at work with several colleagues. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
+2.  I spend quite a bit of time figuring out a way of parsing Json that didn’t involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for JsonJ in under two hours using a custom json-simple content handler. It seems to work and json-simple is pretty fast as well. I later experimented with a jackson backend that does the same and was not able to make it faster or slower than my original approach. Either implementation gets the job done.
+3.  This code is very loosely based on work I did at work with several colleagues some years ago. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
 
