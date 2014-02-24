@@ -239,7 +239,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 # FAQ
 
-What’s with the name
+## What’s with the name
 
 It’s pronounced json-j, or jasonjay. It doesn’t mean anything in particular other than”json for java“, or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
 
