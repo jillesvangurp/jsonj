@@ -242,9 +242,9 @@
             <version>2.6</version>
         </dependency>
         <dependency>
-        	<groupId>com.github.jillesvangurp</groupId>
+        	<groupId>com.jillesvangurp</groupId>
         	<artifactId>efficientstring</artifactId>
-        	<version>1.10</version>
+        	<version>1.11</version>
         </dependency>
         <dependency>
         	<groupId>com.fasterxml.jackson.core</groupId>
