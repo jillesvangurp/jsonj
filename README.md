@@ -2,6 +2,29 @@
 
 JsonJ is a framework for working with json in Java the "proper" way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc.
 
+There are several reasons why you might like jsonj
+
+- it provides really convenient builder classes for quickly constructing json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, generics juggling. JsonJ makes this very easy.
+- it's simple to use
+- it provides powerful extensions to the Collections API that makes extracting things from lists and nested dictionaries very easy
+- it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM
+
+There are probably more reasons you can find to like JsonJ, why not give it a try?
+
+# Get it from Maven Central
+
+```
+<dependency>
+    <groupId>com.jillesvangurp</groupId>
+    <artifactId>jsonj</artifactId>
+    <version>1.33</version>
+</dependency>
+```
+
+Note. check for the latest version. I do not always update the readme.
+
+# Why JsonJ
+
 The whole point of json is a straightforward serialization and deserialization of simple, data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly more complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
 
 There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
@@ -18,17 +41,6 @@ The JsonJ API has been finetuned over several years of using it for real work. I
 
 I regard this as the key selling point of the library. When manipulating and creating json structures programmatically, it is important that you don't have to jump through hoops to extract elements, iterate over things, etc. To facilitate this, the framework provides a large amount of convenient methods that help *prevent verbosity* in the form of unnecessary class casts, null checks, type conversions, generic types, etc. No other Json framework for Java comes close to the level of usability of this framework when it comes to this. Most leave you to either develop your own classes or with the bare bones API of the Java collections framework.
 
-# Get it from Maven Central
-
-```
-<dependency>
-    <groupId>com.jillesvangurp</groupId>
-    <artifactId>jsonj</artifactId>
-    <version>1.33</version>
-</dependency>
-```
-
-Note. check for the latest version. I do not always update the readme.
 
 # Features
 
@@ -152,7 +164,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 # Changelog
 
-- 1.33 JsonJ is back in Maven Central.
+- 1.34 Filter out iso control codes during serialization.
+- 1.33 JsonJ now deployed in Maven Central again.
 - 1.30 Fix for incorrect shape type when using pointShape in GeoJsonSupport
 - 1.29 Fix for efficient string race condition
 - 1.27-1.28 Hopefully fix race condition with efficient string once and for all.
