@@ -224,6 +224,29 @@ public class JsonSerializer {
         }
 	}
 
+    /**
+     * The xml specification defines these character hex codes as allowed: #x9 | #xA | #xD | [#x20-#xD7FF] |
+     * [#xE000-#xFFFD] | [#x10000-#x10FFFF] Characters outside this range will cause parsers to reject the xml as not
+     * well formed. Probably should not allow these in Json either.
+     *
+     * @param c
+     *        a character
+     * @return true if character is allowed in an XML document
+     */
+    public static boolean isAllowedInXml(final int c) {
+        boolean ok = false;
+        if (c >= 0x10000 && c <= 0x10FFFF) {
+            ok = true;
+        } else if (c >= 0xE000 && c <= 0xFFFD) {
+            ok = true;
+        } else if (c >= 0x20 && c <= 0xD7FF) {
+            ok = true;
+        } else if (c == 0x9 || c == 0xA || c == 0xD) {
+            ok = true;
+        }
+        return ok;
+    }
+
 	public static String jsonEscape(String raw) {
 	    StringBuilder buf=new StringBuilder(raw.length());
 	    for(char c: raw.toCharArray()) {
@@ -237,8 +260,7 @@ public class JsonSerializer {
                 buf.append("\\t");
             } else if('\r' == c) {
                 buf.append("\\r");
-            } else if(!Character.isISOControl(c)){
-                // skip isoControl characters
+            } else if(isAllowedInXml(c)){
 	            buf.append(c);
 	        }
 	    }
