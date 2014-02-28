@@ -164,6 +164,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 # Changelog
 
+- 1.35 Filter out characters that are not allowed in XML as well. This should fix some weird parsing issues I'm seeing with Jackson.
 - 1.34 Filter out iso control codes during serialization.
 - 1.33 JsonJ now deployed in Maven Central again.
 - 1.30 Fix for incorrect shape type when using pointShape in GeoJsonSupport
