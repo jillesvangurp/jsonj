@@ -237,7 +237,8 @@ public class JsonSerializer {
                 buf.append("\\t");
             } else if('\r' == c) {
                 buf.append("\\r");
-            } else {
+            } else if(!Character.isISOControl(c)){
+                // skip isoControl characters
 	            buf.append(c);
 	        }
 	    }
