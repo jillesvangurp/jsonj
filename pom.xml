@@ -1,6 +1,6 @@
 <!--
 /**
-* Copyright (c) 2011, Jilles van Gurp
+* Copyright (c) 2011-2014, Jilles van Gurp
 *
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,12 @@
     <description>A framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.</description>
     <url>https://github.com/jillesvangurp/jsonj</url>
 
+    <scm>
+        <url>git://git@github.com:jillesvangurp/jsonj.git</url>
+        <connection>scm:git:git@github.com:jillesvangurp/jsonj.git</connection>
+        <developerConnection>scm:git:git@github.com:jillesvangurp/jsonj.git</developerConnection>
+    </scm>
+
     <licenses>
         <license>
             <name>MIT license</name>
@@ -38,12 +44,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <scm>
-        <url>git://git@github.com:jillesvangurp/jsonj.git</url>
-        <connection>scm:git:git@github.com:jillesvangurp/jsonj.git</connection>
-        <developerConnection>scm:git:git@github.com:jillesvangurp/jsonj.git</developerConnection>
-    </scm>
 
     <repositories>
         <repository>
