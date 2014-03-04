@@ -528,4 +528,16 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         };
     }
 
+    @Override
+    public String builderCode() {
+        StringBuilder buf = new StringBuilder();
+        for(JsonElement element: this) {
+            buf.append(element.builderCode());
+            buf.append(',');
+        }
+        // remove last comma
+        buf.deleteCharAt(buf.length()-1);
+        return "$(" + buf.toString()  + ")\n";
+    }
+
 }

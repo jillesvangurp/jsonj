@@ -766,4 +766,16 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             throw new IllegalStateException(e);
         }
     }
-}
+
+    @Override
+    public String builderCode() {
+        StringBuilder buf = new StringBuilder();
+        for(Entry<String, JsonElement> entry: this.entrySet()) {
+//            buf.append(element.builderCode());
+            buf.append("\n_(\"" +  entry.getKey() + "\"," + entry.getValue().builderCode()+")");
+            buf.append(',');
+        }
+        // remove last comma
+        buf.deleteCharAt(buf.length()-1);
+        return "$(" + buf.toString()  + ")\n";
+    }}

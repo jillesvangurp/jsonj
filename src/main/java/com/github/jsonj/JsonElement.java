@@ -128,4 +128,10 @@ public interface JsonElement extends Cloneable, Serializable {
      * @param out
      */
     void serialize(OutputStream out) throws IOException;
+
+    /**
+     * @return java code as a string that drives $ and _ from JsonBuilder to produce JsonElement. This feature is
+     *         interesting to quickly generate builder code from code samples. Beats typing it in manually.
+     */
+    String builderCode();
 }
