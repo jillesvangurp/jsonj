@@ -212,7 +212,8 @@ public class JsonPrimitive implements JsonElement, Serializable {
         switch (type) {
         case string:
             out.write(JsonSerializer.QUOTE);
-            JsonSerializer.serializeEscapedString((byte[]) value, out);
+            byte[] bytes = (byte[]) value;
+            out.write(JsonSerializer.jsonEscape(new String(bytes, UTF8)).getBytes(UTF8));
             out.write(JsonSerializer.QUOTE);
             return;
         case bool:

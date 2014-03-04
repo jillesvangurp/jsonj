@@ -149,7 +149,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	        EfficientString key = entry.getKey();
 	        JsonElement value = entry.getValue();
 	        out.write(JsonSerializer.QUOTE);
-	        JsonSerializer.serializeEscapedString(key.bytes(), out);
+            out.write(JsonSerializer.jsonEscape(key.toString()).getBytes(UTF8));
             out.write(JsonSerializer.QUOTE);
             out.write(JsonSerializer.COLON);
             value.serialize(out);

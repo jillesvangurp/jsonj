@@ -31,6 +31,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map.Entry;
 
 import com.github.jsonj.JsonElement;
@@ -199,31 +200,6 @@ public class JsonSerializer {
 		}
 	}
 
-	public static void serializeEscapedString(byte[] bytes, OutputStream out) throws IOException {
-	    for (int i = 0; i < bytes.length; i++) {
-            switch (bytes[i]) {
-            case '\n':
-                out.write(ESCAPED_NEWLINE);
-                break;
-            case '\"':
-                out.write(ESCAPED_QUOTE);
-                break;
-            case '\\':
-                out.write(ESCAPED_BACKSLASH);
-                break;
-            case '\t':
-                out.write(ESCAPED_TAB);
-                break;
-            case '\r':
-                out.write(ESCAPED_CARRIAGE_RETURN);
-                break;
-            default:
-                out.write(bytes[i]);
-                break;
-            }
-        }
-	}
-
     /**
      * The xml specification defines these character hex codes as allowed: #x9 | #xA | #xD | [#x20-#xD7FF] |
      * [#xE000-#xFFFD] | [#x10000-#x10FFFF] Characters outside this range will cause parsers to reject the xml as not
@@ -247,24 +223,66 @@ public class JsonSerializer {
         return ok;
     }
 
-	public static String jsonEscape(String raw) {
-	    StringBuilder buf=new StringBuilder(raw.length());
-	    for(char c: raw.toCharArray()) {
-	        if('\n' == c) {
-	            buf.append("\\n");
-	        } else if('"' == c) {
-	            buf.append("\\\"");
-	        } else if('\\' == c) {
-                buf.append("\\\\");
-            } else if('\t' == c) {
-                buf.append("\\t");
-            } else if('\r' == c) {
-                buf.append("\\r");
-            } else if(isAllowedInXml(c)){
-	            buf.append(c);
-	        }
-	    }
+    public static String jsonEscape(String raw) {
+        // can't use StringEscapeUtils here because it escapes all non ascii characters and doesn't unescape them.
+        // this is unacceptable for most utf8 content where in fact you only want to escape if you really have to
+
+        StringBuilder buf = new StringBuilder(raw.length());
+        for (char c : raw.toCharArray()) {
+            // escape control characters
+            if (c < 32) {
+                switch (c) {
+                case '\b':
+                    buf.append('\\');
+                    buf.append('b');
+                    break;
+                case '\n':
+                    buf.append('\\');
+                    buf.append('n');
+                    break;
+                case '\t':
+                    buf.append('\\');
+                    buf.append('t');
+                    break;
+                case '\f':
+                    buf.append('\\');
+                    buf.append('f');
+                    break;
+                case '\r':
+                    buf.append('\\');
+                    buf.append('r');
+                    break;
+                default:
+                    // note, these characters are not unescaped.
+                    if (c > 0xf) {
+                        buf.append("\\u00" + hex(c));
+                    } else {
+                        buf.append("\\u000" + hex(c));
+                    }
+                    break;
+                }
+            } else if (isAllowedInXml(c)) {
+                // note, this silently drops characters that would not be allowed in XML anyway.
+                switch (c) {
+                case '"':
+                    buf.append('\\');
+                    buf.append('"');
+                    break;
+                case '\\':
+                    buf.append('\\');
+                    buf.append('\\');
+                    break;
+                default:
+                    buf.append(c);
+                    break;
+                }
+            }
+        }
         return buf.toString();
+    }
+
+    private static String hex(char ch) {
+        return Integer.toHexString(ch).toUpperCase(Locale.ENGLISH);
     }
 
 	public static String jsonUnescape(String escaped) {

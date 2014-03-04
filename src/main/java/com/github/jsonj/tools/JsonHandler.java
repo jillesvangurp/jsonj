@@ -50,8 +50,7 @@ final class JsonHandler implements ContentHandler {
 	}
 
 	@Override
-	public boolean primitive(final Object object) throws ParseException,
-	IOException {
+	public boolean primitive(final Object object) throws ParseException, IOException {
 		JsonPrimitive primitive;
 		primitive = new JsonPrimitive(object);
 		if (isObject) {

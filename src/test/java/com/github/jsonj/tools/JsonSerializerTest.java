@@ -21,15 +21,17 @@
  */
 package com.github.jsonj.tools;
 
+
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -45,12 +47,12 @@ public class JsonSerializerTest {
 		String json = JsonSerializer.serialize(original, true);
 		String json2 = JsonSerializer.serialize(original, false);
 		// there should be a difference (pretty printing)
-		Assert.assertNotSame(json, json2);
+		AssertJUnit.assertNotSame(json, json2);
 		// if we parse it back and reprint it they should be identical to each other and the original
-		Assert.assertEquals(
+		AssertJUnit.assertEquals(
 				JsonSerializer.serialize(jsonParser.parse(json), false),
 				JsonSerializer.serialize(jsonParser.parse(json2), false));
-		Assert.assertEquals(
+		AssertJUnit.assertEquals(
 				JsonSerializer.serialize(original, false),
 				JsonSerializer.serialize(jsonParser.parse(json2), false));
 	}
@@ -74,7 +76,9 @@ public class JsonSerializerTest {
 	            {"\"value\""},
 	            {"'value'"},
 	            {"\"'\t\n\r"},
-	            {"\\\\\\"}
+                {"\\\\\\"},
+                {"''''"},
+                {"Töölö"}
 	    };
 	}
 
@@ -84,7 +88,7 @@ public class JsonSerializerTest {
 
 	    String json = JsonSerializer.serialize(e);
 	    JsonElement parsed = new JsonParser().parse(json);
-	    Assert.assertEquals(e, parsed);
+	    AssertJUnit.assertEquals(e, parsed);
 	}
 
     @Test(dataProvider = "strings")
@@ -94,18 +98,28 @@ public class JsonSerializerTest {
         JsonSerializer.serialize(e, bos);
         String string = bos.toString("utf-8");
         JsonElement parsed = new JsonParser().parse(string);
-        Assert.assertEquals(e, parsed);
+        AssertJUnit.assertEquals(e, parsed);
     }
 
     @Test(dataProvider="strings")
 	public void shouldEscapeAndUnescape(String string) throws IOException {
         String escaped = JsonSerializer.jsonEscape(string);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        JsonSerializer.serializeEscapedString(string.getBytes(JsonSerializer.UTF8), bos);
-        String escaped2 = bos.toString("utf-8");
-        assertThat(escaped2, is(escaped));
 
         String unEscaped = JsonSerializer.jsonUnescape(escaped);
         assertThat(unEscaped, is(string));
 	}
+
+    public void shouldEscapeControlCharacters() {
+        // use separate test for this because StringEscapeUtils doesn't unescape these the way you would expect
+        char controlChar = Character.valueOf((char)27);
+        String s = ""+controlChar+"controlChars"+controlChar;
+        String escaped = JsonSerializer.jsonEscape(s);
+        assertThat(escaped, containsString("001B"));
+
+        String primitive = JsonBuilder.primitive(s).toString();
+        assertThat(primitive, containsString("001B"));
+        String json = object().put("escapeme", s).get().toString();
+
+        assertThat(json, containsString("001B"));
+    }
 }
