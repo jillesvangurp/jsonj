@@ -163,7 +163,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory.
 
 # Changelog
-
+- 1.37 Several fixes for escaping. It turns out we had two code paths for escaping and they weren't doing the same things. Now it uses the same codepath always. This mostly only affects edgecases where the json contains weird control characters that probably shouldn't be there to begin with.
 - 1.35 Filter out characters that are not allowed in XML as well. This should fix some weird parsing issues I'm seeing with Jackson.
 - 1.34 Filter out iso control codes during serialization.
 - 1.33 JsonJ now deployed in Maven Central again.
