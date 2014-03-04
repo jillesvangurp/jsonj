@@ -143,12 +143,10 @@ Note. It has been brought to my attention that future versions of Java may drop 
 
 The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing. 
 
-## Parsing, serialization, and DOM
+## Parsing and serialization
 
 - A thread safe `JsonParser` class is provided based on json-simple, and another `JsonParserNg` that is based on jackson. There’s little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
 - You can serialize using `toString()` or `prettyPrint()` on any JsonElement, or you can use the `JsonSerializer` class directly.
-- JsonElement implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
-- A utility class allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 ## JRuby integration
 
@@ -162,7 +160,14 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - it uses UTF8 byte arrays for storing String primitives.
 - it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory.
 
+## Odd features you probably don't care about
+
+- JsonElement implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
+- A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
+- Since I have a convenient builder class, I figured that I might as well add some code that generates code that uses the builder. So you can convert json to Java. I've used this to convert json queries I prototyped for elastic search into code. 
+
 # Changelog
+- 1.38 add geeky feature to generate java code to drive the JsonBuilder from the actual JsonElement. Useful to convert json fragments into code (e.g. a complex elastic search query).
 - 1.37 Several fixes for escaping. It turns out we had two code paths for escaping and they weren't doing the same things. Now it uses the same codepath always. This mostly only affects edgecases where the json contains weird control characters that probably shouldn't be there to begin with.
 - 1.35 Filter out characters that are not allowed in XML as well. This should fix some weird parsing issues I'm seeing with Jackson.
 - 1.34 Filter out iso control codes during serialization.
