@@ -33,6 +33,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
 
 /**
@@ -74,6 +75,21 @@ public class JsonParser {
 		return handler.get();
 	}
 
+	/**
+	 * Convenience method that returns a JsonObject instead of a JsonArray. Useful for the common case where top level json
+	 * element is an object. Same as calling JsonObject o = parse(s).asObject();
+	 * @param s
+	 * @return the parsed JsonObject
+	 */
+	public JsonObject parseObject(String s) {
+	    return parse(s).asObject();
+	}
+
+	/**
+	 * @param resource a classpath resource or file
+	 * @return
+	 * @throws IOException
+	 */
 	public JsonElement parseResource(String resource) throws IOException {
 	    InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
 	    if(is==null) {
@@ -104,4 +120,9 @@ public class JsonParser {
 		}
 		return handler.get();
 	}
+
+    public JsonObject parseObject(final Reader r) throws IOException {
+        return parse(r).asObject();
+    }
+
 }
