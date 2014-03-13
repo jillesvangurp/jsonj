@@ -71,6 +71,13 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 		}
 	}
 
+   public void add(final Number...numbers) {
+        for (Number n : numbers) {
+            add(primitive(n));
+        }
+    }
+
+
 	/**
 	 * Variant of add that adds multiple JsonElements.
 	 * @param elements

@@ -234,4 +234,10 @@ public class JsonArrayTest {
         JsonArray arr = array(null, nullValue());
         assertThat(arr.get(0), is((JsonElement)nullValue()));
     }
+
+    public void shouldAddNumbers() {
+        JsonArray arr = new JsonArray();
+        arr.add(1,2,3,4);
+        assertThat(arr, is(array(1,2,3,4)));
+    }
 }
