@@ -17,7 +17,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>1.33</version>
+    <version>1.40</version>
 </dependency>
 ```
 
@@ -162,17 +162,19 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 ## Odd features you probably don't care about
 
-- JsonElement implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
+- `JsonElement` implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 - Since I have a convenient builder class, I figured that I might as well add some code that generates code that uses the builder. So you can convert json to Java. I've used this to convert json queries I prototyped for elastic search into code. 
 
 # Changelog
-- 1.38 add geeky feature to generate java code to drive the JsonBuilder from the actual JsonElement. Useful to convert json fragments into code (e.g. a complex elastic search query).
+- 1.40 JsonArray was now has convenient add method for numbers and booleans in addition to the existing `add(String...s)` method.
+- 1.39 Parser can has a convenient `parseObject` method
+- 1.38 add geeky feature to generate java code to drive the `JsonBuilder` from the actual `JsonElement`. Useful to convert json fragments into code (e.g. a complex elastic search query).
 - 1.37 Several fixes for escaping. It turns out we had two code paths for escaping and they weren't doing the same things. Now it uses the same codepath always. This mostly only affects edgecases where the json contains weird control characters that probably shouldn't be there to begin with.
 - 1.35 Filter out characters that are not allowed in XML as well. This should fix some weird parsing issues I'm seeing with Jackson.
 - 1.34 Filter out iso control codes during serialization.
 - 1.33 JsonJ now deployed in Maven Central again.
-- 1.30 Fix for incorrect shape type when using pointShape in GeoJsonSupport
+- 1.30 Fix for incorrect shape type when using pointShape in `GeoJsonSupport`
 - 1.29 Fix for efficient string race condition
 - 1.27-1.28 Hopefully fix race condition with efficient string once and for all.
 - 1.26 Support `$` as an alias for `array()` as well. Yay polymorphism! `JsonObject o=$(_("foo","bar"), _("list", $(1,2,3)))`
@@ -181,7 +183,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - 1.23
     - Add not null validation for object keys; prevents npe's 
 - 1.22
-    - Add arrays, strings, longs, doubles iterator methods to JsonArray so you can foreach over elements of that type without any conversions. We already had objects(). for example:
+    - Add arrays, strings, longs, doubles iterator methods to `JsonArray` so you can foreach over elements of that type without any conversions. We already had objects(). for example:
     ```java
         for(String s: jsonArray.strings()) {
             System.out.println(s); 
