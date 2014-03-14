@@ -62,7 +62,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	}
 
 	/**
-	 * Variant of add that adds multiple strings.
+	 * Variant of add that adds one or more strings.
 	 * @param strings
 	 */
 	public void add(final String...strings) {
@@ -71,15 +71,28 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 		}
 	}
 
+    /**
+     * Variant of add that adds one or more numbers (float/int).
+     * @param numbers
+     */
    public void add(final Number...numbers) {
         for (Number n : numbers) {
             add(primitive(n));
         }
     }
 
+   /**
+    * Variant of add that adds one or more booleans.
+    * @param boolean values
+    */
+   public void add(final Boolean...booleans) {
+       for (Boolean b : booleans) {
+           add(primitive(b));
+       }
+   }
 
 	/**
-	 * Variant of add that adds multiple JsonElements.
+	 * Variant of add that adds one or more JsonElements.
 	 * @param elements
 	 */
 	public void add(final JsonElement...elements) {
