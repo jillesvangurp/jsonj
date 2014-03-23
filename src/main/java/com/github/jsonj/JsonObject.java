@@ -182,7 +182,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     /**
      * Variant of put that can take a Object instead of a primitive. The normal put inherited from LinkedHashMap only takes JsonElement instances.
-     * @param key
+     * @param key label
      * @param value any object that is accepted by the JsonPrimitive constructor.
      * @return the JsonElement that was added.
      * @throws JsonTypeMismatchException if the value cannot be turned into a primitive.
@@ -228,7 +228,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * size of the collection. Also note that the entries in JsonObject are ordered by the order of insertion (it is a
      * LinkedHashMap).
      *
-     * @param index
+     * @param index index of the entry
      * @return the nth entry in the JsonObject.
      */
     public Entry<String, JsonElement> get(int index) {
@@ -287,7 +287,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get a value at a particular path in an object structure.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return value or null if it doesn't exist at the specified path
 	 */
 	public String getString(final String...labels) {
@@ -301,7 +301,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get a value at a particular path in an object structure.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return value or null if it doesn't exist at the specified path
 	 */
 	public Boolean getBoolean(final String...labels) {
@@ -315,7 +315,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get a value at a particular path in an object structure.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return value or null if it doesn't exist at the specified path
 	 */
 	public Integer getInt(final String...labels) {
@@ -329,7 +329,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
    /**
      * Get a value at a particular path in an object structure.
-     * @param labels
+     * @param labels one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
     public Long getLong(final String...labels) {
@@ -343,7 +343,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     /**
      * Get a value at a particular path in an object structure.
-     * @param labels
+     * @param labels one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
     public Float getFloat(final String...labels) {
@@ -357,7 +357,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get a value at a particular path in an object structure.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return value or null if it doesn't exist at the specified path
 	 */
 	public Double getDouble(final String...labels) {
@@ -371,7 +371,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get a JsonObject at a particular path in an object structure.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return value or null if it doesn't exist at the specified path
 	 */
 	public JsonObject getObject(final String...labels) {
@@ -385,7 +385,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get a JsonArray at a particular path in an object structure.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return value or null if it doesn't exist at the specified path
 	 */
 	public JsonArray getArray(final String...labels) {
@@ -399,7 +399,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get or create a JsonArray at a particular path in an object structure. Any object on the path will be created as well if missing.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return the created JsonArray
 	 * @throws JsonTypeMismatchException if an element is present at the path that is not a JsonArray
 	 */
@@ -429,7 +429,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
 	/**
 	 * Get or create a JsonObject at a particular path in an object structure. Any object on the path will be created as well if missing.
-	 * @param labels
+	 * @param labels one or more text labels
 	 * @return the created JsonObject
 	 * @throws JsonTypeMismatchException if an element is present at the path that is not a JsonObject
 	 */
@@ -766,16 +766,4 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             throw new IllegalStateException(e);
         }
     }
-
-    @Override
-    public String builderCode() {
-        StringBuilder buf = new StringBuilder();
-        for(Entry<String, JsonElement> entry: this.entrySet()) {
-//            buf.append(element.builderCode());
-            buf.append("\n_(\"" +  entry.getKey() + "\"," + entry.getValue().builderCode()+")");
-            buf.append(',');
-        }
-        // remove last comma
-        buf.deleteCharAt(buf.length()-1);
-        return "$(" + buf.toString()  + ")\n";
-    }}
+}

@@ -34,6 +34,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonType;
 
@@ -60,13 +62,17 @@ public class JsonSerializer {
 	}
 
 	/**
-	 * @param json
+	 * @param json a {@link JsonElement}
 	 * @return string representation of the json
 	 */
 	public static String serialize(final JsonElement json) {
 		return serialize(json, false);
 	}
 
+    /**
+     * @param json a {@link JsonElement}
+     * @param out an {@link OutputStream}
+     */
     public static void serialize(final JsonElement json, OutputStream out) {
         try {
             write(out, json, false);
@@ -76,7 +82,7 @@ public class JsonSerializer {
     }
 
 	/**
-	 * @param json
+     * @param json a {@link JsonElement}
 	 * @param pretty if true, a properly indented version of the json is returned
 	 * @return string representation of the json
 	 */
@@ -111,10 +117,10 @@ public class JsonSerializer {
 
 	/**
 	 * Writes the object out as json.
-	 * @param out output channel
-	 * @param json
+	 * @param out output writer
+     * @param json a {@link JsonElement}
 	 * @param pretty if true, a properly indented version of the json is written
-	 * @throws IOException
+	 * @throws IOException if there is a problem writing to the writer
 	 */
 	public static void write(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
 		BufferedWriter bw = new BufferedWriter(out);
@@ -125,6 +131,13 @@ public class JsonSerializer {
 		bw.flush();
 	}
 
+    /**
+     * Writes the object out as json.
+     * @param out output writer
+     * @param json a {@link JsonElement}
+     * @param pretty if true, a properly indented version of the json is written
+     * @throws IOException if there is a problem writing to the stream
+     */
 	public static void write(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
 	    if(pretty) {
             write(new OutputStreamWriter(out, Charset.forName("UTF-8")), json, pretty);
@@ -223,6 +236,15 @@ public class JsonSerializer {
         return ok;
     }
 
+    /**
+     * This method escapes strings so that parsers don't break when encountering certain characters. Note, this method
+     * is designed to be robust against corrupted input and will simply silently drop illegal characters rather than trying
+     * to escape them. E.g. escape control characters other than the common ones are simply dropped from the input. Unlike
+     * {@link StringEscapeUtils}, this method does not convert non ascii characters to their unicode escaped notation. Since
+     * {@link JsonSerializer} always uses UTF-8 this is not required.
+     * @param raw any string
+     * @return the json escaped string
+     */
     public static String jsonEscape(String raw) {
         // can't use StringEscapeUtils here because it escapes all non ascii characters and doesn't unescape them.
         // this is unacceptable for most utf8 content where in fact you only want to escape if you really have to
@@ -285,6 +307,10 @@ public class JsonSerializer {
         return Integer.toHexString(ch).toUpperCase(Locale.ENGLISH);
     }
 
+	/**
+	 * @param escaped a json string that may contain escaped characters
+	 * @return the unescaped String
+	 */
 	public static String jsonUnescape(String escaped) {
         StringBuilder buf=new StringBuilder(escaped.length());
         char[] chars = escaped.toCharArray();

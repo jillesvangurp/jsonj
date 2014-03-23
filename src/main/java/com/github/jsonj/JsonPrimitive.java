@@ -327,10 +327,4 @@ public class JsonPrimitive implements JsonElement, Serializable {
 	@Override
 	public void removeEmpty() {
 	}
-
-    @Override
-    public String builderCode() {
-        return toString();
-    }
-
 }

@@ -18,8 +18,8 @@ public class GeoJsonSupport {
     /**
      * While many services use the order of latitude,longitude. GeoJson uses longitude,latitude in its arrays.
      * This method uses the geoJson convention
-     * @param latitude
-     * @param longitude
+     * @param latitude latitude
+     * @param longitude longitude
      * @return [longitude,latitude] as a JsonArray
      */
     public static JsonArray point(double latitude, double longitude) {
@@ -37,8 +37,8 @@ public class GeoJsonSupport {
     /**
      * Convert 2d array of doubles to a geojson style multi polygon in a 3D array of arrays of [latitude,longitude]
      * arrays.
-     *
-     * @return a JsonArray
+     * @param lineString 2d array of doubles
+     * @return a JsonArray array
      */
     public static JsonArray toJsonJLineString(double[][] lineString) {
         JsonArray points = array();
@@ -56,8 +56,8 @@ public class GeoJsonSupport {
 
     /**
      * Convert json array of arrays of double primitives to a double[][].
-     * @param lineString
-     * @return a double[][]
+     * @param lineString 2d JsonArray of doubles
+     * @return a double[][] 2d array of doubles
      */
     public static double[][] fromJsonJLineString(JsonArray lineString) {
         double[][] result = new double[lineString.size()][lineString.get(0).asArray().size()];
@@ -114,7 +114,7 @@ public class GeoJsonSupport {
 
     /**
      * Takes a two dimensional linestring and creates a three dimensional polygon from it. Also closes the polygon if needed.
-     * @param lineString
+     * @param lineString 2d array of doubles
      * @return JsonArray with the 3d polygon
      */
     public static JsonArray lineStringToPolygon(double[][] lineString) {
@@ -130,7 +130,7 @@ public class GeoJsonSupport {
 
     /**
      * Takes a two dimensional linestring and creates a three dimensional polygon from it. Also closes the polygon if needed.
-     * @param lineString
+     * @param lineString 2d JsonArray
      * @return 3d double array with the polygon
      */
     public static JsonArray lineStringToPolygon(JsonArray lineString) {
@@ -145,8 +145,8 @@ public class GeoJsonSupport {
      * Most data sources stick to latitude, longitude though. This function, swaps the two for any dimension array.
      *
      *
-     * @param array
-     * @return swapped array
+     * @param array 2d array with latitude, longitude pairs
+     * @return swapped array 2d array with longitude, latitude pairs
      */
     public static JsonArray swapLatLon(JsonArray array) {
         if(array.isNotEmpty() && array.first().isArray()) {

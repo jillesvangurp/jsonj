@@ -80,6 +80,7 @@ public interface JsonElement extends Cloneable, Serializable {
 	boolean isPrimitive();
 
     /**
+     * @param <T> an implementation of {@link JsonElement}
      * @return a deep clone of the JsonElement.
      */
     <T extends JsonElement> T deepClone();
@@ -125,13 +126,8 @@ public interface JsonElement extends Cloneable, Serializable {
 
     /**
      * Serialize a utf8 encoded representation to the output stream.
-     * @param out
+     * @param out stream
+     * @throws IOException when there is a problem with the stream
      */
     void serialize(OutputStream out) throws IOException;
-
-    /**
-     * @return java code as a string that drives $ and _ from JsonBuilder to produce JsonElement. This feature is
-     *         interesting to quickly generate builder code from code samples. Beats typing it in manually.
-     */
-    String builderCode();
 }

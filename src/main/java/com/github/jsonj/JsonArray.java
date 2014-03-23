@@ -55,7 +55,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
 	/**
 	 * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
-	 * @param s
+	 * @param s string
 	 */
 	public void add(final String s) {
 		add(primitive(s));
@@ -63,7 +63,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
 	/**
 	 * Variant of add that adds one or more strings.
-	 * @param strings
+	 * @param strings values
 	 */
 	public void add(final String...strings) {
 		for (String s : strings) {
@@ -73,7 +73,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
     /**
      * Variant of add that adds one or more numbers (float/int).
-     * @param numbers
+     * @param numbers values
      */
    public void add(final Number...numbers) {
         for (Number n : numbers) {
@@ -83,7 +83,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
    /**
     * Variant of add that adds one or more booleans.
-    * @param boolean values
+    * @param booleans values
     */
    public void add(final Boolean...booleans) {
        for (Boolean b : booleans) {
@@ -93,7 +93,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
 	/**
 	 * Variant of add that adds one or more JsonElements.
-	 * @param elements
+	 * @param elements elements
 	 */
 	public void add(final JsonElement...elements) {
 		for (JsonElement element : elements) {
@@ -101,6 +101,10 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 		}
 	}
 
+	/**
+     * Variant of add that adds one or more JsonBuilders. This means you don't have to call get() on the builder when adding object builders.
+	 * @param elements builders
+	 */
 	public void add(JsonBuilder...elements) {
         for (JsonBuilder element : elements) {
             add(element.get());
@@ -124,7 +128,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	 * Convenient method providing a few alternate ways of extracting elements
 	 * from a JsonArray.
 	 *
-	 * @param label
+	 * @param label label
 	 * @return the first element in the array matching the label or the n-th
 	 *         element if the label is an integer and the element an object or
 	 *         an array.
@@ -158,7 +162,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
 	/**
 	 * Variant of contains that checks if the array contains something that can be extracted with JsonElement get(final String label).
-	 * @param label
+	 * @param label label
 	 * @return true if the array contains the element
 	 */
 	public boolean contains(final String label) {
@@ -547,17 +551,4 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
             }
         };
     }
-
-    @Override
-    public String builderCode() {
-        StringBuilder buf = new StringBuilder();
-        for(JsonElement element: this) {
-            buf.append(element.builderCode());
-            buf.append(',');
-        }
-        // remove last comma
-        buf.deleteCharAt(buf.length()-1);
-        return "$(" + buf.toString()  + ")\n";
-    }
-
 }

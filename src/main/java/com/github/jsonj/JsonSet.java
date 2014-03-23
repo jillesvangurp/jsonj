@@ -59,7 +59,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
 
     /**
      * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
-     * @param s
+     * @param s element
      */
     @Override
     public void add(final String s) {
@@ -83,11 +83,11 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
 
     /**
      * Variant of add that adds multiple strings.
-     * @param strings
+     * @param elements elements
      */
     @Override
-    public void add(final String...strings) {
-        for (String s : strings) {
+    public void add(final String...elements) {
+        for (String s : elements) {
             JsonPrimitive primitive = primitive(s);
             if(!contains(primitive)) {
                 add(primitive);
@@ -97,7 +97,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
 
     /**
      * Variant of add that adds multiple JsonElements.
-     * @param elements
+     * @param elements elements
      */
     @Override
     public void add(final JsonElement...elements) {

@@ -78,7 +78,7 @@ public class JsonParser {
 	/**
 	 * Convenience method that returns a JsonObject instead of a JsonArray. Useful for the common case where top level json
 	 * element is an object. Same as calling JsonObject o = parse(s).asObject();
-	 * @param s
+	 * @param s a json string
 	 * @return the parsed JsonObject
 	 */
 	public JsonObject parseObject(String s) {
@@ -87,8 +87,8 @@ public class JsonParser {
 
 	/**
 	 * @param resource a classpath resource or file
-	 * @return
-	 * @throws IOException
+	 * @return the parsed {@link JsonElement}
+	 * @throws IOException if there is a problem accessing the resource
 	 */
 	public JsonElement parseResource(String resource) throws IOException {
 	    InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
@@ -107,7 +107,7 @@ public class JsonParser {
 	 *            reader with some json input
 	 * @return JsonElement
 	 * @throws IOException
-	 *             if there is some problem reading the input
+	 *             if there is some problem reading the reader
 	 * @throws JsonParseException
 	 *             if the json cannot be parsed
 	 */
@@ -121,6 +121,12 @@ public class JsonParser {
 		return handler.get();
 	}
 
+    /**
+     * @param r
+     *            reader with some json input
+     * @return the parsed JsonObject
+     * @throws IOException if there is a problem accessing the reader
+     */
     public JsonObject parseObject(final Reader r) throws IOException {
         return parse(r).asObject();
     }

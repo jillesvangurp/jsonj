@@ -50,17 +50,15 @@ public class JsonBuilder {
     }
 
     /**
-     * @return the constructed object
+     * @return constructed JsonObject
      */
     public JsonObject get() {
         return object;
     }
 
     /**
-     * Add an element to the object.
-     *
-     * @param key
-     * @param e
+     * @param key key
+     * @param e value
      * @return the builder
      */
     public JsonBuilder put(final String key, final JsonElement e) {
@@ -68,6 +66,11 @@ public class JsonBuilder {
         return this;
     }
 
+    /**
+     * @param key key
+     * @param e value
+     * @return the builder
+     */
     public JsonBuilder put(final String key, final JsonBuilder e) {
         object.put(key, e);
         return this;
@@ -76,8 +79,8 @@ public class JsonBuilder {
     /**
      * Add a string value to the object.
      *
-     * @param key
-     * @param s
+     * @param key key
+     * @param s value
      * @return the builder
      */
     public JsonBuilder put(final String key, final String s) {
@@ -88,8 +91,8 @@ public class JsonBuilder {
     /**
      * Add a boolean value to the object.
      *
-     * @param key
-     * @param b
+     * @param key key
+     * @param b value
      * @return the builder
      */
     public JsonBuilder put(final String key, final boolean b) {
@@ -100,8 +103,8 @@ public class JsonBuilder {
     /**
      * Add a number to the object.
      *
-     * @param key
-     * @param n
+     * @param key key
+     * @param n value
      * @return the builder
      */
     public JsonBuilder put(final String key, final Number n) {
@@ -112,8 +115,8 @@ public class JsonBuilder {
     /**
      * Add a JsonArray to the object with the string values added.
      *
-     * @param key
-     * @param values
+     * @param key key
+     * @param values one or more {@link String} values
      *            values that go in the array
      * @return the builder
      */
@@ -129,8 +132,8 @@ public class JsonBuilder {
     /**
      * Add a JsonArray to the object with the number values added.
      *
-     * @param key
-     * @param values
+     * @param key key
+     * @param values values
      *            values that go in the array
      * @return the builder
      */
@@ -153,12 +156,18 @@ public class JsonBuilder {
     /**
      * Modify an existing JsonObject with a builder.
      *
-     * @param object
+     * @param object a json object
+     * @return the builder
      */
     public static JsonBuilder object(final JsonObject object) {
         return new JsonBuilder(object);
     }
 
+    /**
+     * Alternative to using the object() builder that allows you to add {@link Entry} instances.
+     * @param fields one or more Entry instances (use the field method to create them).
+     * @return the JsonObject with the entries added.
+     */
     @SafeVarargs
     public static JsonObject object(Entry<String,JsonElement>...fields) {
         JsonObject object = new JsonObject();
@@ -166,39 +175,11 @@ public class JsonBuilder {
         return object;
     }
 
-    @SafeVarargs
-    public static JsonArray $(JsonElement...elements) {
-        return array(elements);
-    }
-
-    @SafeVarargs
-    public static JsonArray $(String...elements) {
-        return array(elements);
-    }
-
-    @SafeVarargs
-    public static JsonArray $(Number...elements) {
-        return array(elements);
-    }
-
-    @SafeVarargs
-    public static JsonObject $(Entry<String,JsonElement>...fields) {
-        return object(fields);
-    }
-
-    public static Entry<String, JsonElement> _(String key, JsonElement e) {
-        return field(key,e);
-    }
-
-    public static Entry<String, JsonElement> _(String key, Object o) {
-        return field(key,o);
-    }
-
     /**
      * Create a new field that can be added to a JsonObject.
-     * @param key
-     * @param value
-     * @return field
+     * @param key key
+     * @param value value
+     * @return field entry implementation that can be added to a JsonObject
      */
     public static Entry<String,JsonElement> field(final String key, final JsonElement value) {
         Entry<String, JsonElement> entry = new Entry<String,JsonElement>() {
@@ -222,9 +203,9 @@ public class JsonBuilder {
 
     /**
      * Create a new field with the key and the result of fromObject on the value.
-     * @param key
-     * @param value
-     * @return field
+     * @param key key
+     * @param value value
+     * @return field entry implementation that can be added to a JsonObject
      */
     public static Entry<String,JsonElement> field(final String key, final Object value) {
         return field(key, fromObject(value));
@@ -238,7 +219,7 @@ public class JsonBuilder {
     }
 
     /**
-     * @param elements
+     * @param elements one or more json elements
      * @return json array with all the elements added
      */
     public static JsonArray array(final JsonElement... elements) {
@@ -261,7 +242,7 @@ public class JsonBuilder {
      * elements in the collection. If the elements are JsonElements, they are added as such. Otherwise it attempts to
      * interpret them as primitives.
      *
-     * @param c
+     * @param c an existing collection. If the elements are JsonElements, they will be added. Otherwise, primitive will be called on them.
      * @return json array with the collection elements in it
      */
     public static JsonArray array(Collection<?> c) {
@@ -277,7 +258,7 @@ public class JsonBuilder {
     }
 
     /**
-     * @param elements
+     * @param elements strings
      * @return json array with all the elements added as JsonPrimitive
      */
     public static JsonArray array(final String... elements) {
@@ -289,7 +270,8 @@ public class JsonBuilder {
     }
 
     /**
-     * @param elements
+     * Allows you to add incomplete object builders without calling get()
+     * @param elements json builders
      * @return json array with the builder objects
      */
     public static JsonArray array(final JsonBuilder... elements) {
@@ -301,6 +283,10 @@ public class JsonBuilder {
     }
 
 
+    /**
+     * @param elements numbers
+     * @return an array
+     */
     public static JsonArray array(final Number... elements) {
         JsonArray jjArray = new JsonArray();
         for (Number n : elements) {
@@ -317,7 +303,7 @@ public class JsonBuilder {
     }
 
     /**
-     * @param elements
+     * @param elements elements
      * @return json set with all the elements added
      */
     public static JsonSet set(final JsonElement... elements) {
@@ -340,7 +326,7 @@ public class JsonBuilder {
      * elements in the collection. If the elements are JsonElements, they are added as such. Otherwise it attempts to
      * interpret them as primitives.
      *
-     * @param c
+     * @param c an existing collection. If the elements are JsonElements, they will be added. Otherwise, primitive will be called on them.
      * @return json array with the collection elements in it
      */
     public static JsonSet set(Collection<?> c) {
@@ -356,7 +342,7 @@ public class JsonBuilder {
     }
 
     /**
-     * @param elements
+     * @param elements strings
      * @return json array with all the elements added as JsonPrimitive
      */
     public static JsonSet set(final String... elements) {
@@ -368,7 +354,8 @@ public class JsonBuilder {
     }
 
     /**
-     * @param elements
+     * Allows you to add incomplete object builders without calling get()
+     * @param elements json builders
      * @return json array with the builder objects
      */
     public static JsonSet set(final JsonBuilder... elements) {
@@ -380,6 +367,10 @@ public class JsonBuilder {
     }
 
 
+    /**
+     * @param elements {@link Number} instances
+     * @return json array
+     */
     public static JsonSet set(final Number... elements) {
         JsonSet jjArray = new JsonSet();
         for (Number n : elements) {
@@ -390,7 +381,7 @@ public class JsonBuilder {
 
 
     /**
-     * @param value
+     * @param value a boolean
      * @return a JsonPrimitive with the value
      */
     public static JsonPrimitive primitive(final boolean value) {
@@ -398,7 +389,7 @@ public class JsonBuilder {
     }
 
     /**
-     * @param value
+     * @param value a string
      * @return a JsonPrimitive with the value
      */
     public static JsonPrimitive primitive(final String value) {
@@ -406,7 +397,7 @@ public class JsonBuilder {
     }
 
     /**
-     * @param value
+     * @param value a {@link Number} instance
      * @return a JsonPrimitive with the value
      */
     public static JsonPrimitive primitive(final Number value) {
@@ -414,12 +405,12 @@ public class JsonBuilder {
     }
 
     /**
-     * @param value
+     * @param value any object that the JsonPrimitive constructor would accept. If it is a JsonPrimitive, the immutable value is returned.
      * @return a JsonPrimitive with the value
      */
     public static JsonPrimitive primitive(final Object value) {
         if(value instanceof JsonPrimitive) {
-            return ((JsonPrimitive) value).deepClone();
+            return ((JsonPrimitive) value);
         }
         return new JsonPrimitive(value);
     }

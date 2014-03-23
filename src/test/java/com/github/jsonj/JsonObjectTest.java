@@ -21,8 +21,6 @@
  */
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.$;
-import static com.github.jsonj.tools.JsonBuilder._;
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
@@ -221,16 +219,16 @@ public class JsonObjectTest {
         assertThat(object.getArray("list").get(0).asString(), is("stuff"));
     }
 
-    public void shouldAddFieldsShortNotation() {
-        JsonObject object = $(
-            _("meaningoflife", 42),
-            _("foo", primitive("bar")),
-            _("list",$("stuff"))
-        );
-        assertThat(object.getInt("meaningoflife"), is(42));
-        assertThat(object.getString("foo"), is("bar"));
-        assertThat(object.getArray("list").get(0).asString(), is("stuff"));
-    }
+//    public void shouldAddFieldsShortNotation() {
+//        JsonObject object = $(
+//            _("meaningoflife", 42),
+//            _("foo", primitive("bar")),
+//            _("list",$("stuff"))
+//        );
+//        assertThat(object.getInt("meaningoflife"), is(42));
+//        assertThat(object.getString("foo"), is("bar"));
+//        assertThat(object.getArray("list").get(0).asString(), is("stuff"));
+//    }
 
     public void shouldSupportConcurrentlyCreatingNewKeys() throws InterruptedException {
         // note. this test did never actually trigger the race condition so only limited confidence here.
