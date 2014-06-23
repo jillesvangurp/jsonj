@@ -260,7 +260,6 @@ public class JsonObjectTest {
 
     public void shouldGetPrimitiveDefaultValues() {
         JsonObject object = object().get();
-        assertThat(object.get("field", "42"), is("42"));
         assertThat(object.get("field", 42), is(42));
         assertThat(object.get("field", 42l), is(42l));
         assertThat(object.get("field", 42.0), is(42.0));
@@ -270,7 +269,6 @@ public class JsonObjectTest {
 
     public void shouldGetPrimitiveNumber() {
         JsonObject object = object(field("field",42));
-        assertThat(object.get("field", "1"), is("42"));
         assertThat(object.get("field", 1), is(42));
         assertThat(object.get("field", 1l), is(42l));
         assertThat(object.get("field", 1.0), is(42.0));

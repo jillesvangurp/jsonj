@@ -299,20 +299,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		}
 	}
 
-    /**
-     * @param field name of the field
-     * @param defaultValue default value that is returned if the field has no value
-     * @return value of the field as a String
-     */
-    public String get(final String field, String defaultValue) {
-        JsonElement e = get(field);
-        if (e == null) {
-            return defaultValue;
-        } else {
-            return e.asString();
-        }
-    }
-
 	/**
 	 * Get a value at a particular path in an object structure.
 	 * @param labels one or more text labels
