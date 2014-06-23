@@ -97,7 +97,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	 */
 	public void add(final JsonElement...elements) {
 		for (JsonElement element : elements) {
-			add(primitive(element));
+			add(element);
 		}
 	}
 

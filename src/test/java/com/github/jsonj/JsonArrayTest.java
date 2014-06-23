@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
@@ -239,5 +240,14 @@ public class JsonArrayTest {
         JsonArray arr = new JsonArray();
         arr.add(1,2,3,4);
         assertThat(arr, is(array(1,2,3,4)));
+    }
+
+    public void shouldAddJsonElements() {
+        JsonArray arr = new JsonArray();
+        arr.add(primitive(1),object(field("1", "2")),array(42));
+        assertThat(arr.size(), is(3));
+        assertThat(arr.get(0).isPrimitive(), is(true));
+        assertThat(arr.get(1).isObject(), is(true));
+        assertThat(arr.get(2).isArray(), is(true));
     }
 }

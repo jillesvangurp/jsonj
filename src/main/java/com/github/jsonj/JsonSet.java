@@ -102,8 +102,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     @Override
     public void add(final JsonElement...elements) {
         for (JsonElement element : elements) {
-            JsonPrimitive primitive = primitive(element);
-            add(primitive);
+            add(element);
         }
     }
 
