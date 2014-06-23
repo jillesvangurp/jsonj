@@ -299,6 +299,20 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		}
 	}
 
+    /**
+     * @param field name of the field
+     * @param defaultValue default value that is returned if the field has no value
+     * @return value of the field as a String
+     */
+    public String get(final String field, String defaultValue) {
+        JsonElement e = get(field);
+        if (e == null) {
+            return defaultValue;
+        } else {
+            return e.asString();
+        }
+    }
+
 	/**
 	 * Get a value at a particular path in an object structure.
 	 * @param labels one or more text labels
@@ -309,9 +323,39 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		if(jsonElement == null || jsonElement.isNull()) {
 			return null;
 		} else {
-			return jsonElement.asBoolean();
+		    if(jsonElement.isBoolean()) {
+                return jsonElement.asBoolean();
+            } else if(jsonElement.isNumber()) {
+                return jsonElement.asInt() > 0;
+            } else if(jsonElement.isPrimitive()) {
+                return Boolean.valueOf(jsonElement.asString());
+            } else {
+                throw new JsonTypeMismatchException("expected primitive value but was " + jsonElement.type());
+            }
 		}
 	}
+
+    /**
+     * @param field name of the field
+     * @param defaultValue default value that is returned if the field has no value
+     * @return value of the field as a boolean
+     */
+    public boolean get(final String field, boolean defaultValue) {
+        JsonElement e = get(field);
+        if (e == null) {
+            return defaultValue;
+        } else {
+            if(e.isBoolean()) {
+                return e.asBoolean();
+            } else if(e.isNumber()) {
+                return e.asInt() > 0;
+            } else if(e.isPrimitive()) {
+                return Boolean.valueOf(e.asString());
+            } else {
+                throw new JsonTypeMismatchException("expected primitive value but was " + e.type());
+            }
+        }
+    }
 
 	/**
 	 * Get a value at a particular path in an object structure.
@@ -327,6 +371,20 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		}
 	}
 
+    /**
+     * @param field name of the field
+     * @param defaultValue default value that is returned if the field has no value
+     * @return value of the field as an int
+     */
+    public int get(final String field, int defaultValue) {
+        JsonElement e = get(field);
+        if (e == null) {
+            return defaultValue;
+        } else {
+            return e.asInt();
+        }
+    }
+
    /**
      * Get a value at a particular path in an object structure.
      * @param labels one or more text labels
@@ -338,6 +396,20 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             return null;
         } else {
             return jsonElement.asLong();
+        }
+    }
+
+    /**
+     * @param field name of the field
+     * @param defaultValue default value that is returned if the field has no value
+     * @return value of the field as a long
+     */
+    public long get(final String field, long defaultValue) {
+        JsonElement e = get(field);
+        if (e == null) {
+            return defaultValue;
+        } else {
+            return e.asLong();
         }
     }
 
@@ -355,6 +427,20 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
     }
 
+    /**
+     * @param field name of the field
+     * @param defaultValue default value that is returned if the field has no value
+     * @return value of the field as a float
+     */
+    public float get(final String field, float defaultValue) {
+        JsonElement e = get(field);
+        if (e == null) {
+            return defaultValue;
+        } else {
+            return e.asFloat();
+        }
+    }
+
 	/**
 	 * Get a value at a particular path in an object structure.
 	 * @param labels one or more text labels
@@ -368,6 +454,21 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 			return jsonElement.asDouble();
 		}
 	}
+
+    /**
+     * @param field name of the field
+     * @param defaultValue default value that is returned if the field has no value
+     * @return value of the field as a double
+     */
+    public double get(final String field, double defaultValue) {
+        JsonElement e = get(field);
+        if (e == null) {
+            return defaultValue;
+        } else {
+            return e.asDouble();
+        }
+    }
+
 
 	/**
 	 * Get a JsonObject at a particular path in an object structure.

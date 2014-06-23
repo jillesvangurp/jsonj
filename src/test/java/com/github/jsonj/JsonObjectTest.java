@@ -256,6 +256,25 @@ public class JsonObjectTest {
         executorService.shutdown();
         executorService.awaitTermination(2, TimeUnit.SECONDS);
         assertThat(EfficientString.nextIndex()-startIndex, is(total/factor+1));
+    }
 
+    public void shouldGetPrimitiveDefaultValues() {
+        JsonObject object = object().get();
+        assertThat(object.get("field", "42"), is("42"));
+        assertThat(object.get("field", 42), is(42));
+        assertThat(object.get("field", 42l), is(42l));
+        assertThat(object.get("field", 42.0), is(42.0));
+        assertThat(object.get("field", 42.0f), is(42.0f));
+        assertThat(object.get("field", true), is(true));
+    }
+
+    public void shouldGetPrimitiveNumber() {
+        JsonObject object = object(field("field",42));
+        assertThat(object.get("field", "1"), is("42"));
+        assertThat(object.get("field", 1), is(42));
+        assertThat(object.get("field", 1l), is(42l));
+        assertThat(object.get("field", 1.0), is(42.0));
+        assertThat(object.get("field", 1.0f), is(42.0f));
+        assertThat(object.get("field", false), is(true));
     }
 }
