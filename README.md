@@ -5,11 +5,11 @@ JsonJ is a framework for working with json in Java the "proper" way without mapp
 There are several reasons why you might like jsonj
 
 - it provides really convenient builder classes for quickly constructing json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, generics juggling. JsonJ makes this very easy.
-- it's simple to use
-- it provides powerful extensions to the Collections API that makes extracting things from lists and nested dictionaries very easy
-- it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM
+- it provides powerful extensions to the Collections API that makes extracting things from lists and nested dictionaries very easy.
+- it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic hashmaps or huge amounts of strings in memory, you might appreciate some of these optimizations.
+- it's simple to use and lacks the complexity of other solutions.
 
-There are probably more reasons you can find to like JsonJ, why not give it a try?
+There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not) or let me know it should be changed in some way.
 
 # Get it from Maven Central
 
@@ -17,7 +17,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>1.40</version>
+    <version>1.43</version>
 </dependency>
 ```
 
@@ -116,29 +116,6 @@ JsonObject o=object(
 
 This uses `Map.Entry` and the field factory method returns a `Entry<String,JsonElement>` instance that you can simply add to the `JsonObject`.
 
-### Jquery style shortened factory methods
-
-Jquery and other javascript libraries using characters like `$` and  `_` to cut down on key strokes. It turns out you can do the same in Java. So if the above is still too verbose, you can go even less verbose with just these two characters. `$` is an alias for `object()` or `array()`, depending on the parameter type. `_` is an alias for `field()`. **Arguably this is the most DRY and minimal way to construct json objects in Java; short of parsing a json string**.
-
-```java
-JsonObject o=$(
-    _("aList",$(
-        1,
-        2,
-        $(_("meaningoflife",42)),
-        "no more builder"))
-    ),
-    _("another", "element"),
-    _("aSet",set(1,2,3),
-    _("nestedlists",$(
-       $(1,2),
-       $(3,4))
-    )
-);
-```
-
-Note. It has been brought to my attention that future versions of Java may drop support for `$` and  `_` as valid function names. I've not been able to verify whether this is correct but you have been warned. In any case, I regard this style as somewhat controversial still in terms of readability.
-
 ### Misc. other builder features
 
 The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing. 
@@ -167,6 +144,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Since I have a convenient builder class, I figured that I might as well add some code that generates code that uses the builder. So you can convert json to Java. I've used this to convert json queries I prototyped for elastic search into code. 
 
 # Changelog
+- 1.43 Add convenience methods on JsonObject for getting primitives with default values; fix add method on JsonArray to not convert JsonElement to JsonPrimitive.
+- 1.41 Remove $ and _ methods from API since these conflict with Java 8 code guidelines as enforced by the more strict javadoc default settings. This breaks the builder API unfortunately but I believe it had to be done. Fortunately the fix is easy: simply use the object, field, and array methods.
 - 1.40 JsonArray was now has convenient add method for numbers and booleans in addition to the existing `add(String...s)` method.
 - 1.39 Parser can has a convenient `parseObject` method
 - 1.38 add geeky feature to generate java code to drive the `JsonBuilder` from the actual `JsonElement`. Useful to convert json fragments into code (e.g. a complex elastic search query).
@@ -265,7 +244,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 It’s pronounced json-j, or jasonjay. It doesn’t mean anything in particular other than”json for java“, or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
 
 
-## For who is this framework intended
+## For whom is this framework intended
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn’t wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
