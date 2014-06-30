@@ -168,7 +168,14 @@ for(int i: array(1,2,3).ints()) {
 }
 ```
 
-Of course all this convenience means that sometimes things don't work.
+Of course all this convenience means that sometimes things don't work. All the exceptions in jsonj are unchecked.
+
+
+```java
+array("foo").ints() // throws JsonTypeMismatchException
+array(1,2,3).asObject() // throws JsonTypeMismatchException
+
+```
 
 
 ## Parsing and serialization
