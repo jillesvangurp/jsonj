@@ -60,7 +60,7 @@ public class JsonParserNg {
 	 */
 	public JsonElement parse(final String s) {
 	    try {
-	        JsonParser parser = jsonFactory.createJsonParser(s);
+	        JsonParser parser = jsonFactory.createParser(s);
 	        try {
                 return parseContent(parser);
             } finally {
