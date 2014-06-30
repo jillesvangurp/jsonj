@@ -144,6 +144,14 @@ a.add(1);
 a.add("1");
 a.add(1.0);
 
+JsonObject o = new JsonObject();
+// these four lines do the same thing
+o.put("field", new JsonPrimitive(42)));
+o.put("field", primitive(42));
+o.put("field", 42);
+o.add(field("field",42));
+// {"field":42}
+
 ```
 
 You can easily create and manipulate nested objects or arrays with getOrCreateObject or getOrCreateArray. Both methods only work on objects and save you from having to recursively add objects and check for their existence while you do so.
@@ -163,6 +171,7 @@ There are convenient methods to iterate over different types of elements in an a
 ints(), longs(), strings(), arrays(), and objects() are supported for this.
 
 ```java
+// [1,2,3]
 for(int i: array(1,2,3).ints()) {
   ..
 }
