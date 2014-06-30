@@ -30,12 +30,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
 
 /**
- * Representation of json arrays that extends LinkedList.
+ * Representation of json arrays.
  */
 public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	private static final long serialVersionUID = -1269731858619421388L;
@@ -182,6 +184,13 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	@Override
 	public JsonArray asArray() {
 		return this;
+	}
+
+	@Override
+    public JsonSet asSet() {
+	    JsonSet set = JsonBuilder.set();
+	    set.addAll(this);
+	    return set;
 	}
 
 	public double[] asDoubleArray() {
@@ -482,6 +491,61 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
                 };
             }
         };
+    }
+
+    /**
+     * Replaces the first matching element.
+     * @param e1 original
+     * @param e2 replacement
+     * @return true if the element was replaced.
+     */
+    public boolean replace(JsonElement e1, JsonElement e2) {
+        int index = indexOf(e1);
+        if(index>=0) {
+            set(index, e2);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Replaces the element.
+     * @param e1 original
+     * @param e2 replacement
+     * @return true if element was replaced
+     */
+    public boolean replace(Object e1, Object e2) {
+        return replace(fromObject(e1),fromObject(e2));
+    }
+
+    /**
+     * Convenient replace method that allows you to replace an object based on field equality for a specified field.
+     * Useful if you have an id field in your objects. Note, the array may contain non objects as well or objects
+     * without the specified field. Those elements won't be replaced of course.
+     *
+     * @param e1 object you want replaced; must have a value at the specified path
+     * @param e2 replacement
+     * @param path path
+     * @return true if something was replaced.
+     */
+    public boolean replaceObject(JsonObject e1, JsonObject e2, String...path) {
+        JsonElement compareElement = e1.get(path);
+        if(compareElement == null) {
+            throw new IllegalArgumentException("specified path may not be null in object " + StringUtils.join(path));
+        }
+        int i=0;
+        for(JsonElement e: this) {
+            if(e.isObject()) {
+                JsonElement fieldValue = e.asObject().get(path);
+                if(compareElement.equals(fieldValue)) {
+                    set(i,e2);
+                    return true;
+                }
+            }
+            i++;
+        }
+        return false;
     }
 
     /**

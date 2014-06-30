@@ -101,6 +101,11 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 	}
 
 	@Override
+    public JsonSet asSet() {
+        throw new JsonTypeMismatchException("not an array");
+    }
+
+	@Override
 	public JsonPrimitive asPrimitive() {
 		throw new JsonTypeMismatchException("not a primitive");
 	}

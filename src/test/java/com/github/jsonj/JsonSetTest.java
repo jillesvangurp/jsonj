@@ -82,4 +82,12 @@ public class JsonSetTest {
         assertTrue(set.contains(nullValue()),"should contain null");
         assertThat(set.size(), is(1));
     }
+
+    public void shouldConvertToArray() {
+        JsonArray array = set(1,2,3).asArray();
+        array.add(1,2,3);
+        assertThat(array.size(), is(6));
+    }
+
+
 }

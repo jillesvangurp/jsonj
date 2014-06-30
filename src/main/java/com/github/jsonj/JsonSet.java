@@ -21,6 +21,7 @@
  */
 package com.github.jsonj;
 
+import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
@@ -79,6 +80,18 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public JsonArray asArray() {
+        JsonArray array = array();
+        array.addAll(this);
+        return array;
+    }
+
+    @Override
+    public JsonSet asSet() {
+        return this;
     }
 
     /**

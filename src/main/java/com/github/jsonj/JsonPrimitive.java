@@ -177,6 +177,11 @@ public class JsonPrimitive implements JsonElement, Serializable {
 		throw new JsonTypeMismatchException("not an array");
 	}
 
+    @Override
+    public JsonSet asSet() {
+        throw new JsonTypeMismatchException("not an array");
+    }
+
 	@Override
 	public JsonPrimitive asPrimitive() {
 		return this;

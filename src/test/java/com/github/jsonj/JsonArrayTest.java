@@ -242,6 +242,37 @@ public class JsonArrayTest {
         assertThat(arr, is(array(1,2,3,4)));
     }
 
+    public void shouldConvertToSet() {
+        assertThat(array(1,2,3,1,2,3).asSet().size(), is(3));
+    }
+
+    public void shouldReplaceElement() {
+        JsonArray array = array("bar","foo");
+        assertThat(array.replace("bar", "rab"), is(true));
+        assertThat(array.replace("bar", "rab"), is(false));
+        assertThat(array.contains("rab"), is(true));
+        assertThat(array.contains("foo"), is(true));
+        assertThat(array.contains("bar"), is(false));
+    }
+
+    public void shouldReplaceObject() {
+        JsonArray array = array(
+                object(field("id", 1)),
+                object(field("id", 2)),
+                object(field("id", 3)),
+                object(field("id", 4))
+                );
+        assertThat(array.replaceObject(object(field("id", 2)), object(field("id", 22)), "id"), is(true));
+        assertThat(array.replaceObject(object(field("id", 2)), object(field("id", 22)), "id"), is(false));
+        assertThat(array.contains(object(field("id", 22))), is(true));
+        assertThat(array.contains(object(field("id", 2))), is(false));
+    }
+
+    @Test(expectedExceptions=IllegalArgumentException.class)
+    public void shouldThrowExceptionWhenSpecifiedFieldIsMissing() {
+        array().replaceObject(object(field("id", 1)), object(field("id", 1)), "Idontexist");
+    }
+
     public void shouldAddJsonElements() {
         JsonArray arr = new JsonArray();
         arr.add(primitive(1),object(field("1", "2")),array(42));

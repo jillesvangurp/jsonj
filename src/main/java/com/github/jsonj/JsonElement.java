@@ -130,4 +130,6 @@ public interface JsonElement extends Cloneable, Serializable {
      * @throws IOException when there is a problem with the stream
      */
     void serialize(OutputStream out) throws IOException;
+
+    JsonSet asSet();
 }
