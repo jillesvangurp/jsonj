@@ -36,7 +36,7 @@ public class BuilderCodeGenerationTest {
                 "        }\n" +
                 "    }\n" +
                 "}";
-        JsonElement parsed = parser.parse(json);
+        parser.parse(json);
         // builder code below was actually pasted from the output
         // System.out.println(parsed.builderCode());
 //        JsonObject builderResult = $(_("filter", $(_("range", $(_("updatedAt", $(_("gt", "2014-01-01"))))))),
