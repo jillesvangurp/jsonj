@@ -21,7 +21,6 @@
  */
 package com.github.jsonj.tools;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -247,12 +246,56 @@ public class JsonBuilder {
      */
     public static JsonArray array(Iterable<?> c) {
         JsonArray jjArray = new JsonArray();
-        for (Object o : c) {
-            if (o instanceof JsonElement) {
-                jjArray.add((JsonElement) o);
-            } else {
-                jjArray.add(primitive(o));
+        if(c instanceof JsonElement) {
+            jjArray.add((JsonArray)c);
+        } else {
+            for (Object o : c) {
+                if (o instanceof JsonElement) {
+                    jjArray.add((JsonElement) o);
+                } else {
+                    jjArray.add(primitive(o));
+                }
             }
+        }
+        return jjArray;
+    }
+
+    public static <T> JsonArray array(T[] array) {
+        JsonArray jjArray = new JsonArray();
+        for(T e: array) {
+            jjArray.add(fromObject(e));
+        }
+        return jjArray;
+    }
+
+    public static JsonArray array(int[] array) {
+        JsonArray jjArray = new JsonArray();
+        for(int e: array) {
+            jjArray.add(e);
+        }
+        return jjArray;
+    }
+
+    public static JsonArray array(long[] array) {
+        JsonArray jjArray = new JsonArray();
+        for(long e: array) {
+            jjArray.add(e);
+        }
+        return jjArray;
+    }
+
+    public static JsonArray array(float[] array) {
+        JsonArray jjArray = new JsonArray();
+        for(float e: array) {
+            jjArray.add(e);
+        }
+        return jjArray;
+    }
+
+    public static JsonArray array(double[] array) {
+        JsonArray jjArray = new JsonArray();
+        for(double e: array) {
+            jjArray.add(e);
         }
         return jjArray;
     }
@@ -329,13 +372,17 @@ public class JsonBuilder {
      * @param c an existing collection. If the elements are JsonElements, they will be added. Otherwise, primitive will be called on them.
      * @return json array with the collection elements in it
      */
-    public static JsonSet set(Collection<?> c) {
+    public static JsonSet set(Iterable<?> c) {
         JsonSet jjArray = new JsonSet();
-        for (Object o : c) {
-            if (o instanceof JsonElement) {
-                jjArray.add((JsonElement) o);
-            } else {
-                jjArray.add(primitive(o));
+        if(c instanceof JsonElement) {
+            jjArray.add((JsonArray)c);
+        } else {
+            for (Object o : c) {
+                if (o instanceof JsonElement) {
+                    jjArray.add((JsonElement) o);
+                } else {
+                    jjArray.add(primitive(o));
+                }
             }
         }
         return jjArray;
@@ -351,6 +398,46 @@ public class JsonBuilder {
             jjSet.add(primitive(s));
         }
         return jjSet;
+    }
+
+    public static <T> JsonSet set(T[] array) {
+        JsonSet set = new JsonSet();
+        for(T e: array) {
+            set.add(fromObject(e));
+        }
+        return set;
+    }
+
+    public static JsonSet set(int[] array) {
+        JsonSet set = new JsonSet();
+        for(int e: array) {
+            set.add(e);
+        }
+        return set;
+    }
+
+    public static JsonSet set(long[] array) {
+        JsonSet set = new JsonSet();
+        for(long e: array) {
+            set.add(e);
+        }
+        return set;
+    }
+
+    public static JsonSet set(float[] array) {
+        JsonSet set = new JsonSet();
+        for(float e: array) {
+            set.add(e);
+        }
+        return set;
+    }
+
+    public static JsonSet set(double[] array) {
+        JsonSet set = new JsonSet();
+        for(double e: array) {
+            set.add(e);
+        }
+        return set;
     }
 
     /**

@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.testng.Assert;
@@ -110,9 +111,10 @@ public class JsonArrayTest {
         Assert.assertTrue(a.equals(cloneOfA), "a's clone should be equal");
         a.remove(1);
         Assert.assertFalse(a.equals(cloneOfA), "a was modified so clone is different");
-        JsonArray b = array(cloneOfA);
+        JsonArray b = array();
+        b.addAll(cloneOfA);
         Assert.assertTrue(b.equals(b.clone()), "b's clone should be equal");
-        Assert.assertTrue(b.equals(cloneOfA), "b's clone should to clone of A");
+        Assert.assertTrue(b.equals(cloneOfA), "b's clone should be equal to clone of A");
     }
 
     public void shouldRemoveEmpty() {
@@ -280,5 +282,18 @@ public class JsonArrayTest {
         assertThat(arr.get(0).isPrimitive(), is(true));
         assertThat(arr.get(1).isObject(), is(true));
         assertThat(arr.get(2).isArray(), is(true));
+    }
+
+    public void shouldAddArrayToArray() {
+        assertThat(array(array(1,2,3)).size(), is(1));
+    }
+
+    public void shouldAddElementsToArray() {
+        assertThat(array(Arrays.asList(1,2,3)).size(), is(3));
+        assertThat(array(new Integer[]{1,2,3}).size(), is(3));
+        assertThat(array(new int[]{1,2,3}).size(), is(3));
+        assertThat(array(new long[]{1,2,3}).size(), is(3));
+        assertThat(array(new float[]{1,2,3}).size(), is(3));
+        assertThat(array(new double[]{1,2,3}).size(), is(3));
     }
 }

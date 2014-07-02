@@ -89,5 +89,17 @@ public class JsonSetTest {
         assertThat(array.size(), is(6));
     }
 
+    public void shouldAddArrayToArray() {
+        assertThat(set(set(1,2,3)).size(), is(1));
+        assertThat(set(array(1,2,3)).size(), is(1));
+    }
 
+    public void shouldAddElementsToArray() {
+        assertThat(set(Arrays.asList(1,2,3)).size(), is(3));
+        assertThat(set(new Integer[]{1,2,3}).size(), is(3));
+        assertThat(set(new int[]{1,2,3}).size(), is(3));
+        assertThat(set(new long[]{1,2,3}).size(), is(3));
+        assertThat(set(new float[]{1,2,3}).size(), is(3));
+        assertThat(set(new double[]{1,2,3}).size(), is(3));
+    }
 }
