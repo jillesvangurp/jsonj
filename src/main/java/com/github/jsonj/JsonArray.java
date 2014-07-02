@@ -125,7 +125,6 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return c.size() != 0;
 	}
 
-
 	/**
 	 * Convenient method providing a few alternate ways of extracting elements
 	 * from a JsonArray.

@@ -245,7 +245,7 @@ public class JsonBuilder {
      * @param c an existing collection. If the elements are JsonElements, they will be added. Otherwise, primitive will be called on them.
      * @return json array with the collection elements in it
      */
-    public static JsonArray array(Collection<?> c) {
+    public static JsonArray array(Iterable<?> c) {
         JsonArray jjArray = new JsonArray();
         for (Object o : c) {
             if (o instanceof JsonElement) {
