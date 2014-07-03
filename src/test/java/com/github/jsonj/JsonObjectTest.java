@@ -275,4 +275,13 @@ public class JsonObjectTest {
         assertThat(object.get("field", 1.0f), is(42.0f));
         assertThat(object.get("field", false), is(true));
     }
+
+    public void shouldConvertFieldToSet() {
+        JsonObject object = object(field("f", array(1,1,1,1,1)));
+        assertThat(object.getOrCreateArray("f").size(), is(5));
+        assertThat(object.getOrCreateSet("f").size(), is(1));
+        assertThat(object.getArray("f").size(), is(1));
+        object.getArray("f").add(1);
+        assertThat(object.getArray("f").size(), is(1));
+    }
 }

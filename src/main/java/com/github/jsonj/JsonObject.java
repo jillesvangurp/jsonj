@@ -519,6 +519,42 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 		return null;
 	}
 
+
+    /**
+     * Extracts or creates and adds a set at the specied path. Any JsonArrays are converted to sets and updated in the JsonObject as well.
+     * @param labels path to the set in the JsonObject
+     * @return the set
+     * @throws JsonTypeMismatchException if an element is present at the path that is not a JsonArray or JsonSet
+     */
+    public JsonSet getOrCreateSet(final String... labels) {
+        JsonObject parent = this;
+        JsonElement decendent;
+        int index = 0;
+        for (String label : labels) {
+            decendent = parent.get(label);
+            if (decendent == null && index < labels.length - 1 && parent.isObject()) {
+                decendent = new JsonObject();
+                parent.put(label, decendent);
+            } else if (index == labels.length - 1) {
+                if (decendent == null) {
+                    decendent = new JsonSet();
+                    parent.put(label, decendent);
+                    return decendent.asSet();
+                } else {
+                    JsonSet set = decendent.asSet();
+                    if(!(decendent instanceof JsonSet)) {
+                        // if it wasn't a set update it
+                        parent.put(label, set);
+                    }
+                    return set;
+                }
+            }
+            parent = decendent.asObject();
+            index++;
+        }
+        return null;
+    }
+
 	/**
 	 * Get or create a JsonObject at a particular path in an object structure. Any object on the path will be created as well if missing.
 	 * @param labels one or more text labels
