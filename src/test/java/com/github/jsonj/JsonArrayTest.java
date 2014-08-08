@@ -296,4 +296,14 @@ public class JsonArrayTest {
         assertThat(array(new float[]{1,2,3}).size(), is(3));
         assertThat(array(new double[]{1,2,3}).size(), is(3));
     }
+
+    public void shouldRemovePrimitive() {
+        JsonArray array = array("1","2","3");
+        array.remove("2");
+        assertThat("should be removed as primitive", !array.contains(primitive("2")));
+        assertThat("should be removed as primitive", !array.contains("2"));
+        array.remove(primitive("3"));
+        assertThat("should be removed", !array.contains(primitive("3")));
+        assertThat("should be removed", !array.contains("3"));
+    }
 }

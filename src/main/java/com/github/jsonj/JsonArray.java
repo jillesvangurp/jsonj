@@ -334,6 +334,16 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 	}
 
 	@Override
+	public boolean remove(Object o) {
+	    if(o instanceof JsonElement) {
+	        return super.remove(o);
+	    } else {
+	        // try remove it as a primitive.
+	        return super.remove(primitive(o));
+	    }
+	}
+
+	@Override
 	public void removeEmpty() {
 		Iterator<JsonElement> iterator = iterator();
 		while (iterator.hasNext()) {
