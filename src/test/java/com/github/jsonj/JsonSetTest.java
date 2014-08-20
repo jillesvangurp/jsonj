@@ -1,6 +1,7 @@
 package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
@@ -101,5 +102,23 @@ public class JsonSetTest {
         assertThat(set(new long[]{1,2,3}).size(), is(3));
         assertThat(set(new float[]{1,2,3}).size(), is(3));
         assertThat(set(new double[]{1,2,3}).size(), is(3));
+    }
+
+    public void shouldUseIdStrategy() {
+        JsonObject object1 = object(field("id",1), field("value", "foo"));
+        JsonObject object2 = object(field("id",1), field("value", "bar"));
+        JsonSet set = set();
+        set = set.applyIdStrategy("id");
+        set.add(object1, object2);
+        assertThat(set.size(), is(1));
+    }
+
+    public void shouldRemoveDuplicatesAfterSettingStrategy() {
+        JsonObject object1 = object(field("id",1), field("value", "foo"));
+        JsonObject object2 = object(field("id",1), field("value", "bar"));
+        JsonSet set = set();
+        set.add(object1, object2);
+        set = set.applyIdStrategy("id");
+        assertThat(set.size(), is(1));
     }
 }
