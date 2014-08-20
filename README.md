@@ -17,7 +17,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>1.43</version>
+    <version>1.48</version>
 </dependency>
 ```
 
