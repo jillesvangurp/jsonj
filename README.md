@@ -210,6 +210,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
+- 1.47
+  - make array and set remove a bit smarter. Now handles primitive values as you would expect.
+  - add custom id strategy to JsonSet. This allows you to override the equals behavior of JsonElements in the set and influence the behavior of the add and contains methods.
 - 1.46 add getOrCreateSet method to JsonObject
 - 1.45 array and set now accept any iterable and do the right thing when the Iterable is a JsonElement. In that case the element is added instead of behaving like an addAll. Both methods now also accept java arrays of various types. If you used array(array(1,2,3)) and were relying on the addAll behavior, things are going to break for you.
 - 1.44 Add a few convenient methods to JsonSet and JsonArray to allow for conversion between the two and easy element replacement.
