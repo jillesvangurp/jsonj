@@ -207,15 +207,11 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
 
     /**
      * May be used to override the default equals behavior of JsonElements that are part of the set.
-     *
-     * @author jilles
-     *
-     * @param <T>
      */
     public interface IdStrategy {
         /**
-         * @param t1
-         * @param t2
+         * @param t1 first element
+         * @param t2 second element
          * @return true if t1 equals t2
          */
         boolean equals(JsonElement t1, JsonElement t2);
