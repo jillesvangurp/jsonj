@@ -210,6 +210,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
+- 1.48 add and remove now replace and remove using the id strategy instead of object equals in JsonSet.
 - 1.47
   - make array and set remove a bit smarter. Now handles primitive values as you would expect.
   - add custom id strategy to JsonSet. This allows you to override the equals behavior of JsonElements in the set and influence the behavior of the add and contains methods.

@@ -132,5 +132,4 @@ public class JsonSetTest {
         assertThat(set.size(), is(1));
         assertThat(set.get(0).asObject().getString("value"), is("bar"));
     }
-
 }
