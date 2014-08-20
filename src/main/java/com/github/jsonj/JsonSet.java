@@ -27,6 +27,7 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
@@ -75,6 +76,23 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     }
 
     @Override
+    public boolean remove(Object o) {
+        if(strategy == null) {
+            return super.remove(o);
+        } else {
+            Iterator<JsonElement> it = this.iterator();
+            while (it.hasNext()) {
+                JsonElement jsonElement = it.next();
+                if(strategy.equals((JsonElement)o,jsonElement)) {
+                    it.remove();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean add(JsonElement e) {
         if (e == null) {
             e = nullValue();
@@ -82,6 +100,9 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         if (!contains(e)) {
             super.add(e);
             return true;
+        } else if(strategy != null){
+            remove(e); // remove the old element that is identical according to the strategy
+            super.add(e);
         }
         return false;
     }

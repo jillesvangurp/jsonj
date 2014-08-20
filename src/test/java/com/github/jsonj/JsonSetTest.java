@@ -121,4 +121,16 @@ public class JsonSetTest {
         set = set.applyIdStrategy("id");
         assertThat(set.size(), is(1));
     }
+
+    public void shouldReplaceElementAfterSettingStrategy() {
+        JsonObject object1 = object(field("id",1), field("value", "foo"));
+        JsonObject object2 = object(field("id",1), field("value", "bar"));
+        JsonSet set = set();
+        set = set.applyIdStrategy("id");
+        set.add(object1);
+        set.add(object2);
+        assertThat(set.size(), is(1));
+        assertThat(set.get(0).asObject().getString("value"), is("bar"));
+    }
+
 }
