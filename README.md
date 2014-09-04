@@ -107,7 +107,6 @@ This works by chaining method calls that all return a `JsonBuilder` and then usi
 ```java
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.object;
-
 ...
 
 JsonObject o=object()
@@ -189,7 +188,7 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 ## Parsing and serialization
 
-- A thread safe `JsonParser` class is provided based on json-simple, and another `JsonParserNg` that is based on jackson. There’s little difference between them and they both use the same handler class for handling parse events, which is really the most critical thing in terms of performance.
+- A thread safe `JsonParser` class is provided based on jackson's streaming parser.
 - You can serialize using `toString()` or `prettyPrint()` on any JsonElement, or you can use the `JsonSerializer` class directly.
 
 ## JRuby integration
@@ -210,6 +209,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
+- 1.49 switch parser backend to jackson and remove dependency on json-simple. Reason for this is that I stumbled upon a bit of invalid json that was actually parsing successfully with json simple. The jackson parser fails as expected. This should not impact anyone since this is an internal change and the API stays the same.
 - 1.48 add and remove now replace and remove using the id strategy instead of object equals in JsonSet.
 - 1.47
   - make array and set remove a bit smarter. Now handles primitive values as you would expect.
@@ -350,5 +350,4 @@ The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.
 # Acknowledgements
 
 1.  I’ve been greatly influenced by the classes representing the json primitives in the GSon framework. If only they implemented Map and List and weren’t final. But lovely framework and would use it again.
-2.  I spend quite a bit of time figuring out a way of parsing Json that didn’t involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for JsonJ in under two hours using a custom json-simple content handler. It seems to work and json-simple is pretty fast as well. I later experimented with a jackson backend that does the same and was not able to make it faster or slower than my original approach. Either implementation gets the job done.
-3.  This code is very loosely based on work I did at work with several colleagues some years ago. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
+2.  This code is very loosely based on work I did at work with several colleagues some years ago. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
