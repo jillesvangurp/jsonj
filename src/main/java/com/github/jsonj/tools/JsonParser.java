@@ -32,7 +32,9 @@ import java.util.LinkedList;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonToken;
+import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
 
 /**
@@ -101,6 +103,28 @@ public class JsonParser {
             parser.close();
         }
 	}
+
+    public JsonObject parseObject(String json) {
+        return parse(json).asObject();
+    }
+    public JsonObject parseObject(InputStream is) throws IOException {
+        return parse(is).asObject();
+    }
+
+    public JsonObject parseObject(Reader r) throws IOException {
+        return parse(r).asObject();
+    }
+
+    public JsonArray parseArray(String json) {
+        return parse(json).asArray();
+    }
+    public JsonArray parseArray(InputStream json) throws IOException {
+        return parse(json).asArray();
+    }
+
+    public JsonArray parseArray(Reader r) throws IOException {
+        return parse(r).asArray();
+    }
 
     private JsonElement parseContent(com.fasterxml.jackson.core.JsonParser parser) throws IOException, com.fasterxml.jackson.core.JsonParseException {
         JsonHandler handler = new JsonHandler();
