@@ -28,6 +28,8 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Callable;
@@ -46,11 +48,11 @@ import org.testng.annotations.Test;
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
+import com.github.jsonj.exceptions.JsonParseException;
 
 @Test
 public class JsonParserTest {
     private final JsonParser jsonParser = new JsonParser();
-    private final JsonParserNg jsonParserNg = new JsonParserNg();
 
 	@DataProvider
 	public Object[][] goodJson() {
@@ -92,8 +94,6 @@ public class JsonParserTest {
         JsonElement parsed = jsonParser.parse(input);
         Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
         // check with the other parser as well
-        parsed = jsonParserNg.parse(input);
-        Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
 	}
 
 	@Test
@@ -127,6 +127,23 @@ public class JsonParserTest {
 	public void shouldParseLongValue() {
 	    long l=Long.MAX_VALUE;
         assertThat(jsonParser.parse(""+l).asLong(), is(l));
-        assertThat(jsonParserNg.parse(""+l).asLong(), is(l));
 	}
+
+	@DataProvider
+	public Object[][] malformedJson() {
+	    return new String[][] {
+                {"samplejson/test_malformed_1.json"},
+                {"samplejson/test_malformed_2.json"},
+                {"samplejson/test_malformed_3.json"}
+	    };
+	}
+
+	@Test(expectedExceptions=JsonParseException.class, dataProvider="malformedJson")
+	public void shouldNotParseMalformedJson(String resource) throws IOException {
+	    parseResource(resource);
+	}
+
+    private void parseResource(String resource) throws IOException {
+        jsonParser.parse(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(resource)));
+    }
 }

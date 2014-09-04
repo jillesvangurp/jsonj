@@ -23,14 +23,8 @@ package com.github.jsonj.exceptions;
 
 import java.io.IOException;
 
-import org.json.simple.parser.ParseException;
-
 public class JsonParseException extends RuntimeException {
 	private static final long serialVersionUID = 7845937154309209454L;
-
-	public JsonParseException(final ParseException e) {
-		super(e);
-	}
 
     public JsonParseException(com.fasterxml.jackson.core.JsonParseException e) {
         super(e);

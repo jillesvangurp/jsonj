@@ -28,35 +28,25 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.LinkedList;
 
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonToken;
 import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
 
 /**
  * Parser based on json-simple. This class is thread safe so you can safely
  * inject your JsonParser object everywhere.
+ *
+ * Experimental alternative for JsonParser based on jackson's Stream parser.
  */
 public class JsonParser {
-	private final ThreadLocal<JSONParser> parserTL = new ThreadLocal<JSONParser>() {
-		// the parser is not thread safe
-		@Override
-		protected JSONParser initialValue() {
-			return new JSONParser();
-		};
-	};
 
-	private final ThreadLocal<JsonHandler> handlerTL = new ThreadLocal<JsonHandler>() {
-		// the handler is stateful and should not be used from more than one
-		// thread
-		@Override
-		public JsonHandler initialValue() {
-			return new JsonHandler();
-		}
-	};
+    JsonFactory jsonFactory = new JsonFactory();
+
+    public JsonParser() {
+    }
 
 	/**
 	 * @param s
@@ -66,35 +56,25 @@ public class JsonParser {
 	 *             if the json cannot be parsed
 	 */
 	public JsonElement parse(final String s) {
-		JsonHandler handler = handlerTL.get();
-		try {
-			parserTL.get().parse(s, handler);
-		} catch (ParseException e) {
-			throw new JsonParseException(e);
-		}
-		return handler.get();
+	    try {
+	        com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(s);
+	        try {
+                return parseContent(parser);
+            } finally {
+                parser.close();
+            }
+        } catch (com.fasterxml.jackson.core.JsonParseException e) {
+            throw new JsonParseException(e);
+        } catch (IOException e) {
+            throw new JsonParseException(e);
+        }
 	}
 
-	/**
-	 * Convenience method that returns a JsonObject instead of a JsonArray. Useful for the common case where top level json
-	 * element is an object. Same as calling JsonObject o = parse(s).asObject();
-	 * @param s a json string
-	 * @return the parsed JsonObject
-	 */
-	public JsonObject parseObject(String s) {
-	    return parse(s).asObject();
-	}
-
-	/**
-	 * @param resource a classpath resource or file
-	 * @return the parsed {@link JsonElement}
-	 * @throws IOException if there is a problem accessing the resource
-	 */
-	public JsonElement parseResource(String resource) throws IOException {
-	    InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
-	    if(is==null) {
-	        is = new FileInputStream(resource);
-	    }
+    public JsonElement parseResource(String resource) throws IOException {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
+        if(is==null) {
+            is = new FileInputStream(resource);
+        }
         return parse(is);
 	}
 
@@ -107,28 +87,85 @@ public class JsonParser {
 	 *            reader with some json input
 	 * @return JsonElement
 	 * @throws IOException
-	 *             if there is some problem reading the reader
+	 *             if there is some problem reading the input
 	 * @throws JsonParseException
 	 *             if the json cannot be parsed
 	 */
 	public JsonElement parse(final Reader r) throws IOException {
-		JsonHandler handler = handlerTL.get();
-		try {
-			parserTL.get().parse(r, handler);
-		} catch (ParseException e) {
-			throw new JsonParseException(e);
-		}
-		return handler.get();
+	    com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(r);
+	    try {
+            return parseContent(parser);
+        } catch(com.fasterxml.jackson.core.JsonParseException e) {
+            throw new JsonParseException(e);
+        } finally {
+            parser.close();
+        }
 	}
 
-    /**
-     * @param r
-     *            reader with some json input
-     * @return the parsed JsonObject
-     * @throws IOException if there is a problem accessing the reader
-     */
-    public JsonObject parseObject(final Reader r) throws IOException {
-        return parse(r).asObject();
+    private JsonElement parseContent(com.fasterxml.jackson.core.JsonParser parser) throws IOException, com.fasterxml.jackson.core.JsonParseException {
+        JsonHandler handler = new JsonHandler();
+
+        LinkedList<Boolean> stack = new LinkedList<>();
+        JsonToken nextToken;
+        handler.startJSON();
+        while((nextToken = parser.nextToken()) != null) {
+            switch (nextToken) {
+            case START_OBJECT:
+                handler.startObject();
+                break;
+            case END_OBJECT:
+                handler.endObject();
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case START_ARRAY:
+                handler.startArray();
+                stack.push(false);
+                break;
+            case END_ARRAY:
+                handler.endArray();
+                stack.pop();
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case FIELD_NAME:
+                handler.startObjectEntry(parser.getText());
+                stack.push(true);
+                break;
+            case VALUE_NUMBER_INT:
+                handler.primitive(parser.getLongValue());
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case VALUE_NUMBER_FLOAT:
+                handler.primitive(parser.getDoubleValue());
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case VALUE_STRING:
+                handler.primitive(parser.getText());
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case VALUE_NULL:
+                handler.primitive(null);
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case VALUE_TRUE:
+                handler.primitive(true);
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            case VALUE_FALSE:
+                handler.primitive(false);
+                endObjEntryIfNeeded(handler, stack);
+                break;
+            default:
+                throw new IllegalStateException("unexpected token " + nextToken);
+            }
+        }
+        handler.endJSON();
+        return handler.get();
     }
 
+    private void endObjEntryIfNeeded(JsonHandler handler, LinkedList<Boolean> stack) {
+        if(stack.size()>0 && stack.peek()) {
+            handler.endObjectEntry();
+            stack.pop();
+        }
+    }
 }
