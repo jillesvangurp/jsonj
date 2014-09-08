@@ -209,6 +209,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
+- 1.51 Fix minor issue with parsing empty string. Now throws a JsonParseException if you try this. 
 - 1.50 add missing parseObject and parseArray methods to JsonParser. These methods disappeared because of the change in the last release.
 - 1.49 switch parser backend to jackson and remove dependency on json-simple. Reason for this is that I stumbled upon a bit of invalid json that was actually parsing successfully with json simple. The jackson parser fails as expected. This should not impact anyone since this is an internal change and the API stays the same.
 - 1.48 add and remove now replace and remove using the id strategy instead of object equals in JsonSet.
