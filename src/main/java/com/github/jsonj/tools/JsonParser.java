@@ -178,6 +178,11 @@ public class JsonParser {
                 handler.primitive(false);
                 endObjEntryIfNeeded(handler, stack);
                 break;
+            case NOT_AVAILABLE:
+                // non blocking parser may sometimes fail to produce token: ignore
+                break;
+            case VALUE_EMBEDDED_OBJECT:
+                throw new IllegalStateException("unexpected VALUE_EMBEDDED_OBJECT (should not happen) " + nextToken);
             default:
                 throw new IllegalStateException("unexpected token " + nextToken);
             }

@@ -6,6 +6,7 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
+import com.github.jsonj.exceptions.JsonParseException;
 
 final class JsonHandler {
     // use a simple stack mechanism to reconstruct the tree
@@ -15,6 +16,10 @@ final class JsonHandler {
     public JsonElement get() {
         // the remaining element on the stack is the fully parsed
         // JsonElement
+        if(stack.size() == 0) {
+            // happens when parsing empty string or just whitespace
+            throw new JsonParseException("no elements parsed");
+        }
         return stack.getLast();
     }
 

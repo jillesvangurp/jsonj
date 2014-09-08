@@ -26,6 +26,10 @@ import java.io.IOException;
 public class JsonParseException extends RuntimeException {
 	private static final long serialVersionUID = 7845937154309209454L;
 
+    public JsonParseException(String msg) {
+        super(msg);
+    }
+
     public JsonParseException(com.fasterxml.jackson.core.JsonParseException e) {
         super(e);
     }

@@ -146,4 +146,9 @@ public class JsonParserTest {
     private void parseResource(String resource) throws IOException {
         jsonParser.parse(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(resource)));
     }
+
+    @Test(expectedExceptions=JsonParseException.class)
+    public void shouldNotParseEmptyString() {
+        jsonParser.parse("");
+    }
 }
