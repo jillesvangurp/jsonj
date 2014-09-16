@@ -44,27 +44,27 @@ import com.github.jsonj.JsonSet;
 
 @Test
 public class JsonBuilderTest {
-	public void shouldConstructInteger() {
-		JsonPrimitive p1 = primitive(1234);
-		double d1 = p1.asDouble();
-		JsonPrimitive p2 = primitive(d1);
-		Assert.assertEquals(1234, p2.asInt());
-	}
+    public void shouldConstructInteger() {
+        JsonPrimitive p1 = primitive(1234);
+        double d1 = p1.asDouble();
+        JsonPrimitive p2 = primitive(d1);
+        Assert.assertEquals(1234, p2.asInt());
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void shouldConvertCollectionToJsonElement() {
-	    Map m = new HashMap();
-	    List l = new LinkedList();
-	    l.add("some string");
-	    l.add(new Integer(1));
-	    m.put("list", l);
-	    m.put("nr", new Double(0.2));
-	    assertThat(fromObject(m).asObject(), is(object().put("nr", 0.2).put("list", array(primitive("some string"), primitive(1))).get()));
-	}
+        Map m = new HashMap();
+        List l = new LinkedList();
+        l.add("some string");
+        l.add(new Integer(1));
+        m.put("list", l);
+        m.put("nr", new Double(0.2));
+        assertThat(fromObject(m).asObject(), is(object().put("nr", 0.2).put("list", array(primitive("some string"), primitive(1))).get()));
+    }
 
-	public void shouldConvertPrimitiveProperly() {
-	    assertThat(primitive(primitive("42")), is(primitive("42")));
-	}
+    public void shouldConvertPrimitiveProperly() {
+        assertThat(primitive(primitive("42")), is(primitive("42")));
+    }
 
     public void shouldConvertPrimitiveProperlyOnFromObject() {
         assertThat(fromObject(primitive("42")), is((JsonElement)primitive("42")));

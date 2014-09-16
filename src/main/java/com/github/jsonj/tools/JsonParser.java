@@ -50,17 +50,17 @@ public class JsonParser {
     public JsonParser() {
     }
 
-	/**
-	 * @param s
-	 *            input string with some json
-	 * @return JsonElement
-	 * @throws JsonParseException
-	 *             if the json cannot be parsed
-	 */
-	public JsonElement parse(final String s) {
-	    try {
-	        com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(s);
-	        try {
+    /**
+     * @param s
+     *            input string with some json
+     * @return JsonElement
+     * @throws JsonParseException
+     *             if the json cannot be parsed
+     */
+    public JsonElement parse(final String s) {
+        try {
+            com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(s);
+            try {
                 return parseContent(parser);
             } finally {
                 parser.close();
@@ -70,7 +70,7 @@ public class JsonParser {
         } catch (IOException e) {
             throw new JsonParseException(e);
         }
-	}
+    }
 
     public JsonElement parseResource(String resource) throws IOException {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
@@ -78,31 +78,31 @@ public class JsonParser {
             is = new FileInputStream(resource);
         }
         return parse(is);
-	}
+    }
 
     private JsonElement parse(InputStream resourceAsStream) throws IOException {
         return parse(new BufferedReader(new InputStreamReader(resourceAsStream, Charset.forName("UTF-8"))));
     }
 
     /**
-	 * @param r
-	 *            reader with some json input
-	 * @return JsonElement
-	 * @throws IOException
-	 *             if there is some problem reading the input
-	 * @throws JsonParseException
-	 *             if the json cannot be parsed
-	 */
-	public JsonElement parse(final Reader r) throws IOException {
-	    com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(r);
-	    try {
+     * @param r
+     *            reader with some json input
+     * @return JsonElement
+     * @throws IOException
+     *             if there is some problem reading the input
+     * @throws JsonParseException
+     *             if the json cannot be parsed
+     */
+    public JsonElement parse(final Reader r) throws IOException {
+        com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(r);
+        try {
             return parseContent(parser);
         } catch(com.fasterxml.jackson.core.JsonParseException e) {
             throw new JsonParseException(e);
         } finally {
             parser.close();
         }
-	}
+    }
 
     public JsonObject parseObject(String json) {
         return parse(json).asObject();

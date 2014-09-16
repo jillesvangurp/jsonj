@@ -60,88 +60,88 @@ import com.github.jsonj.JsonPrimitive;
  */
 public class JsonXmlConverter {
 
-	private static void append(Element e, JsonPrimitive p) {
-		e.appendChild(p.asString());
-	}
+    private static void append(Element e, JsonPrimitive p) {
+        e.appendChild(p.asString());
+    }
 
-	private static void append(Element e, JsonObject o) {
-		for(Entry<String, JsonElement> entry:o.entrySet()) {
-			Element child;
-			try {
-				child = new Element(entry.getKey());
-			} catch (IllegalNameException exc1) {
-				child = new Element("_" + entry.getKey());
-			}
-			JsonElement value = entry.getValue();
-			if(value.isArray()) {
-				append(child, value.asArray());
-			} else if(value.isObject()) {
-				append(child, value.asObject());
-			} else {
-				append(child, value.asPrimitive());
-			}
+    private static void append(Element e, JsonObject o) {
+        for(Entry<String, JsonElement> entry:o.entrySet()) {
+            Element child;
+            try {
+                child = new Element(entry.getKey());
+            } catch (IllegalNameException exc1) {
+                child = new Element("_" + entry.getKey());
+            }
+            JsonElement value = entry.getValue();
+            if(value.isArray()) {
+                append(child, value.asArray());
+            } else if(value.isObject()) {
+                append(child, value.asObject());
+            } else {
+                append(child, value.asPrimitive());
+            }
 
-			e.appendChild(child);
-		}
-	}
+            e.appendChild(child);
+        }
+    }
 
-	private static void append(Element e, JsonArray p) {
-		Element list = new Element("ol");
-		for(JsonElement value: p) {
-			Element li = new Element("li");
-			if(value.isArray()) {
-				append(li, value.asArray());
-			} else if(value.isObject()) {
-				append(li, value.asObject());
-			} else {
-				append(li, value.asPrimitive());
-			}
-			list.appendChild(li);
+    private static void append(Element e, JsonArray p) {
+        Element list = new Element("ol");
+        for(JsonElement value: p) {
+            Element li = new Element("li");
+            if(value.isArray()) {
+                append(li, value.asArray());
+            } else if(value.isObject()) {
+                append(li, value.asObject());
+            } else {
+                append(li, value.asPrimitive());
+            }
+            list.appendChild(li);
 
-		}
-		e.appendChild(list);
-	}
-
-
-	/**
-	 * Convert any JsonElement into an w3c DOM tree with a default root tag of &lt;root&gt;.
-	 * @param value a json element
-	 * @return a Document with a default root tag of &lt;root&gt;
-	 */
-	public static org.w3c.dom.Document getW3cDocument(JsonElement value) {
-		return getW3cDocument(value,"root");
-	}
+        }
+        e.appendChild(list);
+    }
 
 
-	/**
-	 * Convert any JsonElement into an w3c DOM tree.
-	 * @param value a json element
-	 * @param rootName the root name of the xml
-	 * @return a Document
-	 */
-	public static org.w3c.dom.Document getW3cDocument(JsonElement value, String rootName) {
-		Element root = getElement(value, rootName);
-		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			factory.setNamespaceAware(true);
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			DOMImplementation impl = builder.getDOMImplementation();
+    /**
+     * Convert any JsonElement into an w3c DOM tree with a default root tag of &lt;root&gt;.
+     * @param value a json element
+     * @return a Document with a default root tag of &lt;root&gt;
+     */
+    public static org.w3c.dom.Document getW3cDocument(JsonElement value) {
+        return getW3cDocument(value,"root");
+    }
 
-			return DOMConverter.convert(new Document(root), impl);
-		} catch (ParserConfigurationException e) {
-			throw new IllegalStateException(e);
-		}
-	}
 
-	static Element getElement(JsonElement value, String rootName) {
-		Element root = new Element(rootName);
-		if(value.isArray()) {
-			append(root, value.asArray());
-		} else if(value.isObject()) {
-			append(root, value.asObject());
-		} else {
-			append(root, value.asPrimitive());
-		}
-		return root;
-	}
+    /**
+     * Convert any JsonElement into an w3c DOM tree.
+     * @param value a json element
+     * @param rootName the root name of the xml
+     * @return a Document
+     */
+    public static org.w3c.dom.Document getW3cDocument(JsonElement value, String rootName) {
+        Element root = getElement(value, rootName);
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setNamespaceAware(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            DOMImplementation impl = builder.getDOMImplementation();
+
+            return DOMConverter.convert(new Document(root), impl);
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    static Element getElement(JsonElement value, String rootName) {
+        Element root = new Element(rootName);
+        if(value.isArray()) {
+            append(root, value.asArray());
+        } else if(value.isObject()) {
+            append(root, value.asObject());
+        } else {
+            append(root, value.asPrimitive());
+        }
+        return root;
+    }
 }

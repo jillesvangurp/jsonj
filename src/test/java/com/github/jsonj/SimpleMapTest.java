@@ -71,25 +71,25 @@ public class SimpleMapTest {
         }
     }
 
-//    public void shouldCalculateSize() throws IOException {
-//        SimpleMap<Integer , JsonElement> m1 = new SimpleMap<>();
-//        LinkedHashMap<Integer , JsonElement> m2 = new LinkedHashMap<>();
-//        for(int i=0;i<42;i++) {
-//            m1.put(i, primitive(i));
-//            m2.put(i, primitive(i));
-//        }
-//
-//        System.out.println(getSerializedSize(m));
-//        System.out.println(getSerializedSize(m2));
-//    }
+    //    public void shouldCalculateSize() throws IOException {
+    //        SimpleMap<Integer , JsonElement> m1 = new SimpleMap<>();
+    //        LinkedHashMap<Integer , JsonElement> m2 = new LinkedHashMap<>();
+    //        for(int i=0;i<42;i++) {
+    //            m1.put(i, primitive(i));
+    //            m2.put(i, primitive(i));
+    //        }
+    //
+    //        System.out.println(getSerializedSize(m));
+    //        System.out.println(getSerializedSize(m2));
+    //    }
 
-//    private int getSerializedSize(Object o) throws IOException {
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        ObjectOutputStream oos = new ObjectOutputStream(baos);
-//        oos.writeObject(o);
-//        oos.close();
-//        int size = baos.size();
-//        return size;
-//    }
+    //    private int getSerializedSize(Object o) throws IOException {
+    //        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    //        ObjectOutputStream oos = new ObjectOutputStream(baos);
+    //        oos.writeObject(o);
+    //        oos.close();
+    //        int size = baos.size();
+    //        return size;
+    //    }
 
 }

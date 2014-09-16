@@ -36,77 +36,77 @@ import com.github.jsonj.tools.JsonSerializer;
  * Representation of json primitives.
  */
 public class JsonPrimitive implements JsonElement, Serializable {
-	private static final long serialVersionUID = 111536854493507209L;
+    private static final long serialVersionUID = 111536854493507209L;
     private static final Charset UTF8 = Charset.forName("utf-8");
 
-	private final Object value;
-	private final JsonType type;
+    private final Object value;
+    private final JsonType type;
 
-	/** Null object in json, no point creating this over and over again */
-	public static final JsonPrimitive JSON_NULL = new JsonPrimitive((String)null);
+    /** Null object in json, no point creating this over and over again */
+    public static final JsonPrimitive JSON_NULL = new JsonPrimitive((String)null);
 
-	private JsonPrimitive(Object value, JsonType type) {
-		this.value = value;
-		this.type = type;
-	}
+    private JsonPrimitive(Object value, JsonType type) {
+        this.value = value;
+        this.type = type;
+    }
 
-	public JsonPrimitive(final String s) {
-		if(s==null) {
-			type = JsonType.nullValue;
-			value = null;
-		} else {
-		    type=JsonType.string;
+    public JsonPrimitive(final String s) {
+        if(s==null) {
+            type = JsonType.nullValue;
+            value = null;
+        } else {
+            type=JsonType.string;
             value = s.getBytes(UTF8);
-		}
-	}
+        }
+    }
 
-	public JsonPrimitive(final Boolean b) {
-		if(b == null) {
-			type = JsonType.nullValue;
-			value = null;
-		} else {
-			type = JsonType.bool;
-			value = b;
-		}
-	}
+    public JsonPrimitive(final Boolean b) {
+        if(b == null) {
+            type = JsonType.nullValue;
+            value = null;
+        } else {
+            type = JsonType.bool;
+            value = b;
+        }
+    }
 
-	public JsonPrimitive(final Number n) {
-		if(n == null) {
-			type = JsonType.nullValue;
-			value = null;
-		} else {
-			type = JsonType.number;
-			if(n instanceof Integer) {
-				// make sure to handle Integers and Longs consistently with json simple (always a long)
-				value = n.longValue();
-			} else {
-				value = n;
-			}
-		}
-	}
+    public JsonPrimitive(final Number n) {
+        if(n == null) {
+            type = JsonType.nullValue;
+            value = null;
+        } else {
+            type = JsonType.number;
+            if(n instanceof Integer) {
+                // make sure to handle Integers and Longs consistently with json simple (always a long)
+                value = n.longValue();
+            } else {
+                value = n;
+            }
+        }
+    }
 
-	public JsonPrimitive(final Object object) {
-		if(object == null) {
-			type = JsonType.nullValue;
-			value = null;
-		} else if(object instanceof Number) {
-			type = JsonType.number;
-			if(object instanceof Integer) {
-				// make sure to handle Integers and Longs consistently with json simple (always a long)
-				value = ((Number)object).longValue();
-			} else {
-				value = object;
-			}
-		} else if(object instanceof Boolean) {
-			type = JsonType.bool;
-			value = object;
-		} else {
-			type = JsonType.string;
+    public JsonPrimitive(final Object object) {
+        if(object == null) {
+            type = JsonType.nullValue;
+            value = null;
+        } else if(object instanceof Number) {
+            type = JsonType.number;
+            if(object instanceof Integer) {
+                // make sure to handle Integers and Longs consistently with json simple (always a long)
+                value = ((Number)object).longValue();
+            } else {
+                value = object;
+            }
+        } else if(object instanceof Boolean) {
+            type = JsonType.bool;
+            value = object;
+        } else {
+            type = JsonType.string;
             value = object.toString().getBytes(UTF8);
-		}
-	}
+        }
+    }
 
-   @Override
+    @Override
     public long asLong() {
         if(type == JsonType.number) {
             return ((Number)value).longValue();
@@ -115,16 +115,16 @@ public class JsonPrimitive implements JsonElement, Serializable {
         }
     }
 
-	@Override
+    @Override
     public int asInt() {
-		if(type == JsonType.number) {
-			return ((Number)value).intValue();
-		} else {
-			throw new JsonTypeMismatchException("not a number '"+value+"'");
-		}
-	}
+        if(type == JsonType.number) {
+            return ((Number)value).intValue();
+        } else {
+            throw new JsonTypeMismatchException("not a number '"+value+"'");
+        }
+    }
 
-   @Override
+    @Override
     public float asFloat() {
         if(type == JsonType.number) {
             return ((Number)value).floatValue();
@@ -133,25 +133,25 @@ public class JsonPrimitive implements JsonElement, Serializable {
         }
     }
 
-	@Override
+    @Override
     public double asDouble() {
-		if(type == JsonType.number) {
-			return ((Number)value).doubleValue();
-		} else {
-			throw new JsonTypeMismatchException("not a number '"+value+"'");
-		}
-	}
+        if(type == JsonType.number) {
+            return ((Number)value).doubleValue();
+        } else {
+            throw new JsonTypeMismatchException("not a number '"+value+"'");
+        }
+    }
 
-	@Override
+    @Override
     public boolean asBoolean() {
-		if(type == JsonType.bool) {
-			return ((Boolean)value).booleanValue();
-		} else{
-			throw new JsonTypeMismatchException("not a boolean '"+value+"'");
-		}
-	}
+        if(type == JsonType.bool) {
+            return ((Boolean)value).booleanValue();
+        } else{
+            throw new JsonTypeMismatchException("not a boolean '"+value+"'");
+        }
+    }
 
-	@Override
+    @Override
     public String asString() {
         if( null == value ) {
             return null;
@@ -161,38 +161,38 @@ public class JsonPrimitive implements JsonElement, Serializable {
         } else {
             return value.toString();
         }
-	}
+    }
 
-	@Override
-	public JsonType type() {
-		return type;
-	}
-	@Override
-	public JsonObject asObject() {
-		throw new JsonTypeMismatchException("not an object");
-	}
+    @Override
+    public JsonType type() {
+        return type;
+    }
+    @Override
+    public JsonObject asObject() {
+        throw new JsonTypeMismatchException("not an object");
+    }
 
-	@Override
-	public JsonArray asArray() {
-		throw new JsonTypeMismatchException("not an array");
-	}
+    @Override
+    public JsonArray asArray() {
+        throw new JsonTypeMismatchException("not an array");
+    }
 
     @Override
     public JsonSet asSet() {
         throw new JsonTypeMismatchException("not an array");
     }
 
-	@Override
-	public JsonPrimitive asPrimitive() {
-		return this;
-	}
+    @Override
+    public JsonPrimitive asPrimitive() {
+        return this;
+    }
 
-	/**
-	 * @return the raw value as an Object.
-	 */
-	public Object value() {
-	    return value;
-	}
+    /**
+     * @return the raw value as an Object.
+     */
+    public Object value() {
+        return value;
+    }
 
     @Override
     public String toString() {
@@ -240,27 +240,27 @@ public class JsonPrimitive implements JsonElement, Serializable {
         return JsonSerializer.serialize(this, true);
     }
 
-	@Override
-	public boolean isObject() {
-		return false;
-	}
+    @Override
+    public boolean isObject() {
+        return false;
+    }
 
-	@Override
-	public boolean isArray() {
-		return false;
-	}
+    @Override
+    public boolean isArray() {
+        return false;
+    }
 
-	@Override
-	public boolean isPrimitive() {
-		return true;
-	}
+    @Override
+    public boolean isPrimitive() {
+        return true;
+    }
 
-	@Override
+    @Override
     public boolean isNumber() {
-	    return JsonType.number.equals(type);
-	}
+        return JsonType.number.equals(type);
+    }
 
-	@Override
+    @Override
     public boolean isBoolean() {
         return JsonType.bool.equals(type);
     }
@@ -275,61 +275,61 @@ public class JsonPrimitive implements JsonElement, Serializable {
         return JsonType.string.equals(type);
     }
 
-	@Override
-	public boolean equals(final Object o) {
-		if(o == null) {
-			return false;
-		}
-		if(!(o instanceof JsonPrimitive)) {
-			return false;
-		}
-		JsonPrimitive primitive = (JsonPrimitive) o;
-		if(type == primitive.type && value == null && primitive.value == null) {
-			return true;
-		}
-		if(type == primitive.type && type != JsonType.string && value.equals(primitive.value)) {
-			return true;
-		} else if(type == primitive.type && type == JsonType.string) {
-		    return Arrays.equals((byte[]) value, (byte[])primitive.value);
-		}
+    @Override
+    public boolean equals(final Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(!(o instanceof JsonPrimitive)) {
+            return false;
+        }
+        JsonPrimitive primitive = (JsonPrimitive) o;
+        if(type == primitive.type && value == null && primitive.value == null) {
+            return true;
+        }
+        if(type == primitive.type && type != JsonType.string && value.equals(primitive.value)) {
+            return true;
+        } else if(type == primitive.type && type == JsonType.string) {
+            return Arrays.equals((byte[]) value, (byte[])primitive.value);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int hashCode() {
 
-		int hashCode = 49*type.hashCode();
-		if(value != null && type != JsonType.string) {
-			hashCode = hashCode * value.hashCode();
-		} else if (value != null) {
-		    hashCode = hashCode * Arrays.hashCode((byte[]) value);
-		}
-		return hashCode;
-	}
+        int hashCode = 49*type.hashCode();
+        if(value != null && type != JsonType.string) {
+            hashCode = hashCode * value.hashCode();
+        } else if (value != null) {
+            hashCode = hashCode * Arrays.hashCode((byte[]) value);
+        }
+        return hashCode;
+    }
 
-	@Override
-	public Object clone() {
-		return deepClone();
-	}
+    @Override
+    public Object clone() {
+        return deepClone();
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public JsonPrimitive deepClone() {
-		// all supported value types are immutable so no need to clone those.
-		return new JsonPrimitive(value,type);
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public JsonPrimitive deepClone() {
+        // all supported value types are immutable so no need to clone those.
+        return new JsonPrimitive(value,type);
+    }
 
-	@Override
-	public boolean isEmpty() {
-		if(value == null) {
-			return true;
-		} else {
-			return StringUtils.isEmpty(asString());
-		}
-	}
+    @Override
+    public boolean isEmpty() {
+        if(value == null) {
+            return true;
+        } else {
+            return StringUtils.isEmpty(asString());
+        }
+    }
 
-	@Override
-	public void removeEmpty() {
-	}
+    @Override
+    public void removeEmpty() {
+    }
 }

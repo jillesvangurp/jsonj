@@ -54,94 +54,94 @@ import com.github.jsonj.exceptions.JsonParseException;
 public class JsonParserTest {
     private final JsonParser jsonParser = new JsonParser();
 
-	@DataProvider
-	public Object[][] goodJson() {
-		return new Object[][] {
-				{object().put("a", 1).get()},
-				{object().put("a", true).get()},
-				{object().put("a", "text").get()},
-				{object().put("a", "text\n\t").get()},
-				{object().put("a", (String)null).get()},
-				{object().put("a", array("1")).get()},
-				{object().put("a", array("1","2")).get()},
-				{object().put("a", array("1","2")).put("b","c").get()},
-				{object().put("b","c").put("a", array("1","2")).get()},
-				{object().put("b","c").put("a", array("1","2")).put("c", object().get()).get()},
-				{object().get()},
-				{new JsonArray()},
-				{primitive(true)},
-				{primitive(false)},
-				{primitive(42)},
-				{primitive(42.0)},
-				{primitive("foo")},
-				{array("1")},
-				{array("1","2")},
-				{object()
-					.put("its", "just a hash map")
-					.put("and", array(primitive("adding"), primitive("stuff"), object().put("is", "easy").get(), array("another array")))
-					.put("numbers", 42)
-					.put("including_this_one", 42.0)
-					.put("booleanstoo", true)
-					.put("nulls_if_you_insist", nullValue())
-					.put("arrays_are_easy", array("1", "2", "etc", "varargs are nice")).get()},
-				{object().put("o1", object().get()).put("o2", object().put("a1", array()).get()).get()},
-		};
-	}
+    @DataProvider
+    public Object[][] goodJson() {
+        return new Object[][] {
+                {object().put("a", 1).get()},
+                {object().put("a", true).get()},
+                {object().put("a", "text").get()},
+                {object().put("a", "text\n\t").get()},
+                {object().put("a", (String)null).get()},
+                {object().put("a", array("1")).get()},
+                {object().put("a", array("1","2")).get()},
+                {object().put("a", array("1","2")).put("b","c").get()},
+                {object().put("b","c").put("a", array("1","2")).get()},
+                {object().put("b","c").put("a", array("1","2")).put("c", object().get()).get()},
+                {object().get()},
+                {new JsonArray()},
+                {primitive(true)},
+                {primitive(false)},
+                {primitive(42)},
+                {primitive(42.0)},
+                {primitive("foo")},
+                {array("1")},
+                {array("1","2")},
+                {object()
+                    .put("its", "just a hash map")
+                    .put("and", array(primitive("adding"), primitive("stuff"), object().put("is", "easy").get(), array("another array")))
+                    .put("numbers", 42)
+                    .put("including_this_one", 42.0)
+                    .put("booleanstoo", true)
+                    .put("nulls_if_you_insist", nullValue())
+                    .put("arrays_are_easy", array("1", "2", "etc", "varargs are nice")).get()},
+                    {object().put("o1", object().get()).put("o2", object().put("a1", array()).get()).get()},
+        };
+    }
 
-	@Test(dataProvider="goodJson")
-	public void shouldParse(final JsonElement element) {
-		String input = JsonSerializer.serialize(element, false);
+    @Test(dataProvider="goodJson")
+    public void shouldParse(final JsonElement element) {
+        String input = JsonSerializer.serialize(element, false);
         JsonElement parsed = jsonParser.parse(input);
         Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);
         // check with the other parser as well
-	}
+    }
 
-	@Test
-	public void shouldParseConcurrently() throws InterruptedException, ExecutionException, TimeoutException {
-		JsonObject json = object().put("b","c").put("a", array("1","2")).put("c", object().get()).get();
-		final String input = JsonSerializer.serialize(json, false);
+    @Test
+    public void shouldParseConcurrently() throws InterruptedException, ExecutionException, TimeoutException {
+        JsonObject json = object().put("b","c").put("a", array("1","2")).put("c", object().get()).get();
+        final String input = JsonSerializer.serialize(json, false);
 
-		ExecutorService tp = Executors.newFixedThreadPool(100);
+        ExecutorService tp = Executors.newFixedThreadPool(100);
 
-		Queue<Callable<Boolean>> tasks = new ConcurrentLinkedQueue<Callable<Boolean>>();
-		for(int i = 0; i<100000; i++) {
-			tasks.add(new Callable<Boolean>() {
+        Queue<Callable<Boolean>> tasks = new ConcurrentLinkedQueue<Callable<Boolean>>();
+        for(int i = 0; i<100000; i++) {
+            tasks.add(new Callable<Boolean>() {
 
-				@Override
-				public Boolean call() throws Exception {
-					JsonElement output;
-					output = jsonParser.parse(input);
-					String serialized = JsonSerializer.serialize(output, false);
-					return input.equals(serialized);
-				}
-			});
-		}
-		List<Future<Boolean>> results = tp.invokeAll(tasks);
-		for (Future<Boolean> future : results) {
-			Assert.assertTrue(future.get(1, TimeUnit.SECONDS));
-		}
-		tp.shutdown();
-		tp.awaitTermination(10, TimeUnit.SECONDS);
-	}
+                @Override
+                public Boolean call() throws Exception {
+                    JsonElement output;
+                    output = jsonParser.parse(input);
+                    String serialized = JsonSerializer.serialize(output, false);
+                    return input.equals(serialized);
+                }
+            });
+        }
+        List<Future<Boolean>> results = tp.invokeAll(tasks);
+        for (Future<Boolean> future : results) {
+            Assert.assertTrue(future.get(1, TimeUnit.SECONDS));
+        }
+        tp.shutdown();
+        tp.awaitTermination(10, TimeUnit.SECONDS);
+    }
 
-	public void shouldParseLongValue() {
-	    long l=Long.MAX_VALUE;
+    public void shouldParseLongValue() {
+        long l=Long.MAX_VALUE;
         assertThat(jsonParser.parse(""+l).asLong(), is(l));
-	}
+    }
 
-	@DataProvider
-	public Object[][] malformedJson() {
-	    return new String[][] {
+    @DataProvider
+    public Object[][] malformedJson() {
+        return new String[][] {
                 {"samplejson/test_malformed_1.json"},
                 {"samplejson/test_malformed_2.json"},
                 {"samplejson/test_malformed_3.json"}
-	    };
-	}
+        };
+    }
 
-	@Test(expectedExceptions=JsonParseException.class, dataProvider="malformedJson")
-	public void shouldNotParseMalformedJson(String resource) throws IOException {
-	    parseResource(resource);
-	}
+    @Test(expectedExceptions=JsonParseException.class, dataProvider="malformedJson")
+    public void shouldNotParseMalformedJson(String resource) throws IOException {
+        parseResource(resource);
+    }
 
     private void parseResource(String resource) throws IOException {
         jsonParser.parse(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(resource)));

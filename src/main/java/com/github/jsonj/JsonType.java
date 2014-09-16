@@ -25,5 +25,5 @@ package com.github.jsonj;
  * All the types that json has.
  */
 public enum JsonType {
-	object, array, string, bool, number, nullValue
+    object, array, string, bool, number, nullValue
 }

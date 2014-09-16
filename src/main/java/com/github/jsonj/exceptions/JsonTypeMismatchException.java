@@ -22,9 +22,9 @@
 package com.github.jsonj.exceptions;
 
 public class JsonTypeMismatchException extends IllegalArgumentException {
-	private static final long serialVersionUID = 3714595790951144032L;
+    private static final long serialVersionUID = 3714595790951144032L;
 
-	public JsonTypeMismatchException(final String message) {
-		super(message);
-	}
+    public JsonTypeMismatchException(final String message) {
+        super(message);
+    }
 }

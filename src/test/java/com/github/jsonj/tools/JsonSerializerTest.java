@@ -40,26 +40,26 @@ import com.github.jsonj.JsonObject;
 
 @Test
 public class JsonSerializerTest {
-	private final JsonParser jsonParser = new JsonParser();
+    private final JsonParser jsonParser = new JsonParser();
 
-	public void shouldDoSerializeParseRoundTrip() {
-		JsonObject original = object().put("a", object().get()).put("b", "test").putArray("c", "1","2","3").get();
-		String json = JsonSerializer.serialize(original, true);
-		String json2 = JsonSerializer.serialize(original, false);
-		// there should be a difference (pretty printing)
-		AssertJUnit.assertNotSame(json, json2);
-		// if we parse it back and reprint it they should be identical to each other and the original
-		AssertJUnit.assertEquals(
-				JsonSerializer.serialize(jsonParser.parse(json), false),
-				JsonSerializer.serialize(jsonParser.parse(json2), false));
-		AssertJUnit.assertEquals(
-				JsonSerializer.serialize(original, false),
-				JsonSerializer.serialize(jsonParser.parse(json2), false));
-	}
+    public void shouldDoSerializeParseRoundTrip() {
+        JsonObject original = object().put("a", object().get()).put("b", "test").putArray("c", "1","2","3").get();
+        String json = JsonSerializer.serialize(original, true);
+        String json2 = JsonSerializer.serialize(original, false);
+        // there should be a difference (pretty printing)
+        AssertJUnit.assertNotSame(json, json2);
+        // if we parse it back and reprint it they should be identical to each other and the original
+        AssertJUnit.assertEquals(
+                JsonSerializer.serialize(jsonParser.parse(json), false),
+                JsonSerializer.serialize(jsonParser.parse(json2), false));
+        AssertJUnit.assertEquals(
+                JsonSerializer.serialize(original, false),
+                JsonSerializer.serialize(jsonParser.parse(json2), false));
+    }
 
-	@DataProvider
-	public Object[][] strings() {
-	    return new Object[][] {
+    @DataProvider
+    public Object[][] strings() {
+        return new Object[][] {
                 {"x"},
                 {"xx"},
                 {"xxx"},
@@ -72,24 +72,24 @@ public class JsonSerializerTest {
                 {"\txx"},
                 {"\txxx"},
                 {"\txxxx"},
-	            {"e^r is irrational for r\\in\\mathbbQ\\setminus\\0\\"},
-	            {"\"value\""},
-	            {"'value'"},
-	            {"\"'\t\n\r"},
+                {"e^r is irrational for r\\in\\mathbbQ\\setminus\\0\\"},
+                {"\"value\""},
+                {"'value'"},
+                {"\"'\t\n\r"},
                 {"\\\\\\"},
                 {"''''"},
                 {"Töölö"}
-	    };
-	}
+        };
+    }
 
-	@Test(dataProvider="strings")
-	public void shouldParseSerializedAndHandleEscapingBothWays(String text) {
+    @Test(dataProvider="strings")
+    public void shouldParseSerializedAndHandleEscapingBothWays(String text) {
         JsonElement e = object().put(text, "value").put("stringval", text).put("array", array(text,text)).get();
 
-	    String json = JsonSerializer.serialize(e);
-	    JsonElement parsed = new JsonParser().parse(json);
-	    AssertJUnit.assertEquals(e, parsed);
-	}
+        String json = JsonSerializer.serialize(e);
+        JsonElement parsed = new JsonParser().parse(json);
+        AssertJUnit.assertEquals(e, parsed);
+    }
 
     @Test(dataProvider = "strings")
     public void shouldParseSerializedAndHandleEscapingBothWaysWithOutputStream(String text) throws IOException {
@@ -102,12 +102,12 @@ public class JsonSerializerTest {
     }
 
     @Test(dataProvider="strings")
-	public void shouldEscapeAndUnescape(String string) throws IOException {
+    public void shouldEscapeAndUnescape(String string) throws IOException {
         String escaped = JsonSerializer.jsonEscape(string);
 
         String unEscaped = JsonSerializer.jsonUnescape(escaped);
         assertThat(unEscaped, is(string));
-	}
+    }
 
     public void shouldEscapeControlCharacters() {
         // use separate test for this because StringEscapeUtils doesn't unescape these the way you would expect

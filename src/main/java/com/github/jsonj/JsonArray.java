@@ -40,11 +40,11 @@ import com.github.jsonj.tools.JsonSerializer;
  * Representation of json arrays.
  */
 public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
-	private static final long serialVersionUID = -1269731858619421388L;
+    private static final long serialVersionUID = -1269731858619421388L;
 
-	public JsonArray() {
-	    super();
-	}
+    public JsonArray() {
+        super();
+    }
 
     @SuppressWarnings("rawtypes")
     public JsonArray(Collection existing) {
@@ -55,66 +55,66 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     }
 
 
-	/**
-	 * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
-	 * @param s string
-	 */
-	public void add(final String s) {
-		add(primitive(s));
-	}
+    /**
+     * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
+     * @param s string
+     */
+    public void add(final String s) {
+        add(primitive(s));
+    }
 
-	/**
-	 * Variant of add that adds one or more strings.
-	 * @param strings values
-	 */
-	public void add(final String...strings) {
-		for (String s : strings) {
-			add(primitive(s));
-		}
-	}
+    /**
+     * Variant of add that adds one or more strings.
+     * @param strings values
+     */
+    public void add(final String...strings) {
+        for (String s : strings) {
+            add(primitive(s));
+        }
+    }
 
     /**
      * Variant of add that adds one or more numbers (float/int).
      * @param numbers values
      */
-   public void add(final Number...numbers) {
+    public void add(final Number...numbers) {
         for (Number n : numbers) {
             add(primitive(n));
         }
     }
 
-   /**
-    * Variant of add that adds one or more booleans.
-    * @param booleans values
-    */
-   public void add(final Boolean...booleans) {
-       for (Boolean b : booleans) {
-           add(primitive(b));
-       }
-   }
+    /**
+     * Variant of add that adds one or more booleans.
+     * @param booleans values
+     */
+    public void add(final Boolean...booleans) {
+        for (Boolean b : booleans) {
+            add(primitive(b));
+        }
+    }
 
-	/**
-	 * Variant of add that adds one or more JsonElements.
-	 * @param elements elements
-	 */
-	public void add(final JsonElement...elements) {
-		for (JsonElement element : elements) {
-			add(element);
-		}
-	}
+    /**
+     * Variant of add that adds one or more JsonElements.
+     * @param elements elements
+     */
+    public void add(final JsonElement...elements) {
+        for (JsonElement element : elements) {
+            add(element);
+        }
+    }
 
-	/**
+    /**
      * Variant of add that adds one or more JsonBuilders. This means you don't have to call get() on the builder when adding object builders.
-	 * @param elements builders
-	 */
-	public void add(JsonBuilder...elements) {
+     * @param elements builders
+     */
+    public void add(JsonBuilder...elements) {
         for (JsonBuilder element : elements) {
             add(element.get());
         }
-	}
+    }
 
-	@Override
-	public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
+    @Override
+    public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
         for (Object element : c) {
             if(element instanceof JsonElement) {
                 add((JsonElement)element);
@@ -123,85 +123,85 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
             }
         }
         return c.size() != 0;
-	}
+    }
 
-	/**
-	 * Convenient method providing a few alternate ways of extracting elements
-	 * from a JsonArray.
-	 *
-	 * @param label label
-	 * @return the first element in the array matching the label or the n-th
-	 *         element if the label is an integer and the element an object or
-	 *         an array.
-	 */
-	public JsonElement get(final String label) {
-		int i = 0;
-		try{
-			for (JsonElement e : this) {
-				if(e.isPrimitive() && e.asPrimitive().asString().equals(label)) {
-					return e;
-				} else if((e.isObject() || e.isArray())  && Integer.valueOf(label).equals(i)) {
-					return e;
-				}
-				i++;
-			}
-		} catch(NumberFormatException e) {
-			// fail gracefully
-			return null;
-		}
-		// the element was not found
-		return null;
-	}
+    /**
+     * Convenient method providing a few alternate ways of extracting elements
+     * from a JsonArray.
+     *
+     * @param label label
+     * @return the first element in the array matching the label or the n-th
+     *         element if the label is an integer and the element an object or
+     *         an array.
+     */
+    public JsonElement get(final String label) {
+        int i = 0;
+        try{
+            for (JsonElement e : this) {
+                if(e.isPrimitive() && e.asPrimitive().asString().equals(label)) {
+                    return e;
+                } else if((e.isObject() || e.isArray())  && Integer.valueOf(label).equals(i)) {
+                    return e;
+                }
+                i++;
+            }
+        } catch(NumberFormatException e) {
+            // fail gracefully
+            return null;
+        }
+        // the element was not found
+        return null;
+    }
 
-	public JsonElement first() {
-	    return get(0);
-	}
+    public JsonElement first() {
+        return get(0);
+    }
 
-	public JsonElement last() {
-	    return get(size()-1);
-	}
+    public JsonElement last() {
+        return get(size()-1);
+    }
 
-	/**
-	 * Variant of contains that checks if the array contains something that can be extracted with JsonElement get(final String label).
-	 * @param label label
-	 * @return true if the array contains the element
-	 */
-	public boolean contains(final String label) {
-		return get(label) != null;
-	}
+    /**
+     * Variant of contains that checks if the array contains something that can be extracted with JsonElement get(final String label).
+     * @param label label
+     * @return true if the array contains the element
+     */
+    public boolean contains(final String label) {
+        return get(label) != null;
+    }
 
-	@Override
-	public JsonType type() {
-		return JsonType.array;
-	}
+    @Override
+    public JsonType type() {
+        return JsonType.array;
+    }
 
-	@Override
-	public JsonObject asObject() {
-		throw new JsonTypeMismatchException("not an object");
-	}
+    @Override
+    public JsonObject asObject() {
+        throw new JsonTypeMismatchException("not an object");
+    }
 
-	@Override
-	public JsonArray asArray() {
-		return this;
-	}
+    @Override
+    public JsonArray asArray() {
+        return this;
+    }
 
-	@Override
+    @Override
     public JsonSet asSet() {
-	    JsonSet set = JsonBuilder.set();
-	    set.addAll(this);
-	    return set;
-	}
+        JsonSet set = JsonBuilder.set();
+        set.addAll(this);
+        return set;
+    }
 
-	public double[] asDoubleArray() {
-	    double[] result = new double[size()];
-	    int i=0;
-	    for(JsonElement e: this) {
-	        result[i++] = e.asPrimitive().asDouble();
-	    }
-	    return result;
-	}
+    public double[] asDoubleArray() {
+        double[] result = new double[size()];
+        int i=0;
+        for(JsonElement e: this) {
+            result[i++] = e.asPrimitive().asDouble();
+        }
+        return result;
+    }
 
-   public int[] asIntArray() {
+    public int[] asIntArray() {
         int[] result = new int[size()];
         int i=0;
         for(JsonElement e: this) {
@@ -210,21 +210,21 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return result;
     }
 
-   public String[] asStringArray() {
-       String[] result = new String[size()];
-       int i=0;
-       for(JsonElement e: this) {
-           result[i++] = e.asPrimitive().asString();
-       }
-       return result;
-   }
+    public String[] asStringArray() {
+        String[] result = new String[size()];
+        int i=0;
+        for(JsonElement e: this) {
+            result[i++] = e.asPrimitive().asString();
+        }
+        return result;
+    }
 
-	@Override
-	public JsonPrimitive asPrimitive() {
-		throw new JsonTypeMismatchException("not a primitive");
-	}
+    @Override
+    public JsonPrimitive asPrimitive() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
 
-	@Override
+    @Override
     public float asFloat() {
         throw new JsonTypeMismatchException("not a primitive");
     }
@@ -249,120 +249,120 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         throw new JsonTypeMismatchException("not a primitive");
     }
 
-   @Override
+    @Override
     public String asString() {
         throw new JsonTypeMismatchException("not a primitive");
     }
 
-	@Override
-	public boolean isObject() {
-		return false;
-	}
+    @Override
+    public boolean isObject() {
+        return false;
+    }
 
-	@Override
-	public boolean isArray() {
-		return true;
-	}
+    @Override
+    public boolean isArray() {
+        return true;
+    }
 
-	@Override
-	public boolean isPrimitive() {
-		return false;
-	}
+    @Override
+    public boolean isPrimitive() {
+        return false;
+    }
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o == null) {
-			return false;
-		}
-		if (!(o instanceof JsonArray)) {
-			return false;
-		}
-		JsonArray array = (JsonArray) o;
-		if (size() != array.size()) {
-			return false;
-		}
-		for(int i=0; i<size();i++) {
-		    JsonElement e1 = get(i);
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof JsonArray)) {
+            return false;
+        }
+        JsonArray array = (JsonArray) o;
+        if (size() != array.size()) {
+            return false;
+        }
+        for(int i=0; i<size();i++) {
+            JsonElement e1 = get(i);
             JsonElement e2 = array.get(i);
             if(!e1.equals(e2)) {
-		        return false;
-		    }
-		}
-		return true;
-	}
+                return false;
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int code = 7;
-		for (JsonElement e : this) {
-			code += e.hashCode();
-		}
-		return code;
-	}
+    @Override
+    public int hashCode() {
+        int code = 7;
+        for (JsonElement e : this) {
+            code += e.hashCode();
+        }
+        return code;
+    }
 
-	@Override
-	public Object clone() {
-		return deepClone();
-	}
+    @Override
+    public Object clone() {
+        return deepClone();
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public JsonArray deepClone() {
-		JsonArray array = new JsonArray();
-		for (JsonElement jsonElement : this) {
-			array.add(jsonElement.deepClone());
-		}
-		return array;
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public JsonArray deepClone() {
+        JsonArray array = new JsonArray();
+        for (JsonElement jsonElement : this) {
+            array.add(jsonElement.deepClone());
+        }
+        return array;
+    }
 
-	public boolean isNotEmpty() {
-	    return !isEmpty();
-	}
+    public boolean isNotEmpty() {
+        return !isEmpty();
+    }
 
-	@Override
-	public boolean isEmpty() {
-		boolean empty = true;
-		if(size() > 0) {
-			for (JsonElement element : this) {
-				empty = empty && element.isEmpty();
-				if(!empty) {
-					return false;
-				}
-			}
-		}
-		return empty;
-	}
+    @Override
+    public boolean isEmpty() {
+        boolean empty = true;
+        if(size() > 0) {
+            for (JsonElement element : this) {
+                empty = empty && element.isEmpty();
+                if(!empty) {
+                    return false;
+                }
+            }
+        }
+        return empty;
+    }
 
-	@Override
-	public boolean remove(Object o) {
-	    if(o instanceof JsonElement) {
-	        return super.remove(o);
-	    } else {
-	        // try remove it as a primitive.
-	        return super.remove(primitive(o));
-	    }
-	}
+    @Override
+    public boolean remove(Object o) {
+        if(o instanceof JsonElement) {
+            return super.remove(o);
+        } else {
+            // try remove it as a primitive.
+            return super.remove(primitive(o));
+        }
+    }
 
-	@Override
-	public void removeEmpty() {
-		Iterator<JsonElement> iterator = iterator();
-		while (iterator.hasNext()) {
-			JsonElement jsonElement = iterator.next();
-			if(jsonElement.isEmpty()) {
-				iterator.remove();
-			} else {
-				jsonElement.removeEmpty();
-			}
-		}
-	}
+    @Override
+    public void removeEmpty() {
+        Iterator<JsonElement> iterator = iterator();
+        while (iterator.hasNext()) {
+            JsonElement jsonElement = iterator.next();
+            if(jsonElement.isEmpty()) {
+                iterator.remove();
+            } else {
+                jsonElement.removeEmpty();
+            }
+        }
+    }
 
-	@Override
-	public String toString() {
-	    return JsonSerializer.serialize(this,false);
-	}
+    @Override
+    public String toString() {
+        return JsonSerializer.serialize(this,false);
+    }
 
-	@Override
-	public void serialize(OutputStream out) throws IOException {
+    @Override
+    public void serialize(OutputStream out) throws IOException {
         out.write(JsonSerializer.OPEN_BRACKET);
         Iterator<JsonElement> it = iterator();
         while (it.hasNext()) {
@@ -373,7 +373,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
             }
         }
         out.write(JsonSerializer.CLOSE_BRACKET);
-	}
+    }
 
     @Override
     public String prettyPrint() {

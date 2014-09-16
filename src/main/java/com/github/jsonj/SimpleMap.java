@@ -180,7 +180,7 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
                     if(hasNext()) {
                         EntryImpl next = new EntryImpl(keys.get(index), values.get(index));
                         index++;
-                    return next;
+                        return next;
                     } else {
                         throw new NoSuchElementException();
                     }

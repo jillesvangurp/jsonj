@@ -31,53 +31,53 @@ import com.github.jsonj.exceptions.JsonTypeMismatchException;
  * Super type of all Json elements (object, list, and primitive).
  */
 public interface JsonElement extends Cloneable, Serializable {
-	/**
-	 * @return the type of this json element
-	 */
-	JsonType type();
+    /**
+     * @return the type of this json element
+     */
+    JsonType type();
 
-	/**
-	 * @return a JsonObject
-	 * @throws JsonTypeMismatchException if the element is not an object
-	 */
-	JsonObject asObject();
+    /**
+     * @return a JsonObject
+     * @throws JsonTypeMismatchException if the element is not an object
+     */
+    JsonObject asObject();
 
-	/**
-	 * @return a JsonArray
-	 * @throws JsonTypeMismatchException if the element is not an array
-	 */
-	JsonArray asArray();
+    /**
+     * @return a JsonArray
+     * @throws JsonTypeMismatchException if the element is not an array
+     */
+    JsonArray asArray();
 
-	/**
-	 * @return a JsonPrimitive
-	 * @throws JsonTypeMismatchException if the element is not a primitive type
-	 */
-	JsonPrimitive asPrimitive();
+    /**
+     * @return a JsonPrimitive
+     * @throws JsonTypeMismatchException if the element is not a primitive type
+     */
+    JsonPrimitive asPrimitive();
 
-	String asString();
+    String asString();
 
-	double asDouble();
-	float asFloat();
+    double asDouble();
+    float asFloat();
 
     int asInt();
-	long asLong();
+    long asLong();
 
     boolean asBoolean();
 
-	/**
-	 * @return true if the JsonElement is a JsonObject.
-	 */
-	boolean isObject();
+    /**
+     * @return true if the JsonElement is a JsonObject.
+     */
+    boolean isObject();
 
-	/**
-	 * @return true if the JsonElement is a JsonArray
-	 */
-	boolean isArray();
+    /**
+     * @return true if the JsonElement is a JsonArray
+     */
+    boolean isArray();
 
-	/**
-	 * @return true if the JsonElement is a JsonPrimitive
-	 */
-	boolean isPrimitive();
+    /**
+     * @return true if the JsonElement is a JsonPrimitive
+     */
+    boolean isPrimitive();
 
     /**
      * @param <T> an implementation of {@link JsonElement}
@@ -85,19 +85,19 @@ public interface JsonElement extends Cloneable, Serializable {
      */
     <T extends JsonElement> T deepClone();
 
-	/**
-	 * @return true if the JsonElement is effectively empty.
-	 */
-	boolean isEmpty();
+    /**
+     * @return true if the JsonElement is effectively empty.
+     */
+    boolean isEmpty();
 
-	/**
-	 * Removes empty elements from a json tree. An object is empty if it
-	 * contains no elements or if all the entries in it are empty. Likewise a
-	 * list is empty if it has no elements or only empty elements. Finally,
-	 * primitives are considered empty if the value is null or if the string
-	 * value is equal to "".
-	 */
-	void removeEmpty();
+    /**
+     * Removes empty elements from a json tree. An object is empty if it
+     * contains no elements or if all the entries in it are empty. Likewise a
+     * list is empty if it has no elements or only empty elements. Finally,
+     * primitives are considered empty if the value is null or if the string
+     * value is equal to "".
+     */
+    void removeEmpty();
 
     /**
      * @return pretty printed serialized version of this element. Use toString to get the non pretty printed version.

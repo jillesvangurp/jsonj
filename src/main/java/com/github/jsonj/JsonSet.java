@@ -80,7 +80,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         if(strategy == null) {
             return super.remove(o);
         } else {
-            Iterator<JsonElement> it = this.iterator();
+            Iterator<JsonElement> it = iterator();
             while (it.hasNext()) {
                 JsonElement jsonElement = it.next();
                 if(strategy.equals((JsonElement)o,jsonElement)) {

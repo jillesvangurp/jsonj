@@ -42,11 +42,10 @@ public class GeoJsonSupport {
      */
     public static JsonArray toJsonJLineString(double[][] lineString) {
         JsonArray points = array();
-        for (int i=0;i<lineString.length ; i++) {
-            double[] values = lineString[i];
+        for (double[] values : lineString) {
             JsonArray subArray = array();
-            for (int j = 0; j < values.length; j++) {
-                subArray.add(primitive(values[j]));
+            for (double value : values) {
+                subArray.add(primitive(value));
             }
             points.add(subArray);
         }
@@ -77,8 +76,8 @@ public class GeoJsonSupport {
 
     public static JsonArray toJsonJPolygon(double[][][] polygon) {
         JsonArray result = array();
-        for (int i = 0; i < polygon.length; i++) {
-            result.add(toJsonJLineString(polygon[i]));
+        for (double[][] element : polygon) {
+            result.add(toJsonJLineString(element));
         }
         return result;
     }
@@ -95,8 +94,8 @@ public class GeoJsonSupport {
 
     public static JsonArray toJsonJMultiPolygon(double[][][][] multiPolygon) {
         JsonArray result = array();
-        for (int i = 0; i < multiPolygon.length; i++) {
-            result.add(toJsonJPolygon(multiPolygon[i]));
+        for (double[][][] element : multiPolygon) {
+            result.add(toJsonJPolygon(element));
         }
         return result;
     }

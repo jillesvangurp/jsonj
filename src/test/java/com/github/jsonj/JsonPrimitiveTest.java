@@ -35,66 +35,66 @@ import org.testng.annotations.Test;
 @Test
 public class JsonPrimitiveTest {
 
-	@DataProvider
-	public JsonPrimitive[][] primitives() {
-		return new JsonPrimitive[][] {
-				{primitive(true)},
-				{primitive(false)},
-				{primitive(42)},
-				{primitive(42.0)},
-				{primitive("abc")},
-				{primitive((Object)null)}
-		};
-	}
+    @DataProvider
+    public JsonPrimitive[][] primitives() {
+        return new JsonPrimitive[][] {
+                {primitive(true)},
+                {primitive(false)},
+                {primitive(42)},
+                {primitive(42.0)},
+                {primitive("abc")},
+                {primitive((Object)null)}
+        };
+    }
 
-	@Test(dataProvider="primitives")
-	public void shouldBeEqualWithSelf(final JsonElement element) {
-		Assert.assertTrue(element.equals(element));
-	}
+    @Test(dataProvider="primitives")
+    public void shouldBeEqualWithSelf(final JsonElement element) {
+        Assert.assertTrue(element.equals(element));
+    }
 
-	@Test(dataProvider="primitives")
-	public void shouldHaveSameHashcode(final JsonElement element) {
-		Assert.assertEquals(element.hashCode(), element.hashCode());
-	}
+    @Test(dataProvider="primitives")
+    public void shouldHaveSameHashcode(final JsonElement element) {
+        Assert.assertEquals(element.hashCode(), element.hashCode());
+    }
 
-	@DataProvider
-	public Object[][] notEqual() {
-		return new Object[][] {
-				{primitive(true), primitive(false)},
-				{primitive(true), primitive("true")},
-				{primitive("true"), primitive(true)},
-				{primitive(42), primitive(41)},
-				{primitive("abc"), primitive(" abc")},
-				{primitive("x"), array("x")},
-				{primitive("x"), object().put("x", "x").get()},
-				{primitive("x"), null}
-		};
-	}
+    @DataProvider
+    public Object[][] notEqual() {
+        return new Object[][] {
+                {primitive(true), primitive(false)},
+                {primitive(true), primitive("true")},
+                {primitive("true"), primitive(true)},
+                {primitive(42), primitive(41)},
+                {primitive("abc"), primitive(" abc")},
+                {primitive("x"), array("x")},
+                {primitive("x"), object().put("x", "x").get()},
+                {primitive("x"), null}
+        };
+    }
 
-	@Test(dataProvider="notEqual")
-	public void shouldNotBeEqual(final JsonPrimitive primitive, final Object o) {
-		Assert.assertNotSame(primitive, o);
-	}
+    @Test(dataProvider="notEqual")
+    public void shouldNotBeEqual(final JsonPrimitive primitive, final Object o) {
+        Assert.assertNotSame(primitive, o);
+    }
 
 
-	@Test(dataProvider="primitives")
-	public void shouldBeEqualWithClone(JsonPrimitive p) {
-		Assert.assertTrue(p.equals(p.clone()));
-	}
+    @Test(dataProvider="primitives")
+    public void shouldBeEqualWithClone(JsonPrimitive p) {
+        Assert.assertTrue(p.equals(p.clone()));
+    }
 
-	public void shouldReturnAsString() {
-	    assertThat(primitive(1).asString(), is("1"));
-	}
+    public void shouldReturnAsString() {
+        assertThat(primitive(1).asString(), is("1"));
+    }
 
-   public void shouldReturnJsonString() {
+    public void shouldReturnJsonString() {
         assertThat(primitive(1).toString(), is("1"));
-   }
+    }
 
-   public void shouldHandleUtf8Correctly() {
-       assertThat(primitive("hello").asString(), is("hello"));
-       assertThat(((JsonPrimitive) primitive("hello").clone()).asString(), is("hello"));
-       assertThat(primitive("hello"), is(primitive("hello")));
-   }
+    public void shouldHandleUtf8Correctly() {
+        assertThat(primitive("hello").asString(), is("hello"));
+        assertThat(((JsonPrimitive) primitive("hello").clone()).asString(), is("hello"));
+        assertThat(primitive("hello"), is(primitive("hello")));
+    }
 
     public void shouldHandleConversions() {
         JsonPrimitive pi = primitive(Math.PI);

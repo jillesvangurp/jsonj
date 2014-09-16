@@ -39,15 +39,15 @@ public class BuilderCodeGenerationTest {
         parser.parse(json);
         // builder code below was actually pasted from the output
         // System.out.println(parsed.builderCode());
-//        JsonObject builderResult = $(_("filter", $(_("range", $(_("updatedAt", $(_("gt", "2014-01-01"))))))),
-//                _("aggregations",
-//                        $(_("events",
-//                                $(_("terms", $(_("field", "userId"))),
-//                                        _("aggregations",
-//                                                $(_("weekly activity for user",
-//                                                        $(_("date_histogram", $(_("field", "updatedAt"), _("interval", "month"), _("format", "yyyy-MM-dd"))),
-//                                                                _("aggregations", $(_("event types", $(_("terms", $(_("field", "type"))))))))))))))));
-//        assertThat(builderResult, is(parsed));
+        //        JsonObject builderResult = $(_("filter", $(_("range", $(_("updatedAt", $(_("gt", "2014-01-01"))))))),
+        //                _("aggregations",
+        //                        $(_("events",
+        //                                $(_("terms", $(_("field", "userId"))),
+        //                                        _("aggregations",
+        //                                                $(_("weekly activity for user",
+        //                                                        $(_("date_histogram", $(_("field", "updatedAt"), _("interval", "month"), _("format", "yyyy-MM-dd"))),
+        //                                                                _("aggregations", $(_("event types", $(_("terms", $(_("field", "type"))))))))))))))));
+        //        assertThat(builderResult, is(parsed));
 
     }
 }

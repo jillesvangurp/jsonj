@@ -51,112 +51,112 @@ import com.jillesvangurp.efficientstring.EfficientString;
 
 @Test
 public class JsonObjectTest {
-	@DataProvider
-	public Object[][] equalPairs() {
-		return new Object[][] {
-			{ object().put("a", object().put("b", object().put("c", "d").get()).get()).get(),
-				object().put("a", object().put("b", object().put("c", "d").get()).get()).get() },
-			{ object().get(), object().get() },
-			{ object().put("a", "a").put("b", 42).put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get(),
-				object().put("b", 42).put("a", "a").put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get() } };
-	}
+    @DataProvider
+    public Object[][] equalPairs() {
+        return new Object[][] {
+                { object().put("a", object().put("b", object().put("c", "d").get()).get()).get(),
+                    object().put("a", object().put("b", object().put("c", "d").get()).get()).get() },
+                    { object().get(), object().get() },
+                    { object().put("a", "a").put("b", 42).put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get(),
+                        object().put("b", 42).put("a", "a").put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get() } };
+    }
 
-	@Test(dataProvider = "equalPairs")
-	public void shouldBeEqualToSelf(final JsonObject left, final JsonObject right) {
-		Assert.assertTrue(left.equals(left)); // reflexive
-		Assert.assertTrue(right.equals(right)); // reflexive
-		Assert.assertTrue(left.equals(right)); // symmetric
-		Assert.assertTrue(right.equals(left)); // symmetric
-	}
+    @Test(dataProvider = "equalPairs")
+    public void shouldBeEqualToSelf(final JsonObject left, final JsonObject right) {
+        Assert.assertTrue(left.equals(left)); // reflexive
+        Assert.assertTrue(right.equals(right)); // reflexive
+        Assert.assertTrue(left.equals(right)); // symmetric
+        Assert.assertTrue(right.equals(left)); // symmetric
+    }
 
-	@Test(dataProvider="equalPairs")
-	public void shouldHaveSameHashCode(final JsonObject left, final JsonObject right) {
-		Assert.assertEquals(left.hashCode(), right.hashCode());
-	}
+    @Test(dataProvider="equalPairs")
+    public void shouldHaveSameHashCode(final JsonObject left, final JsonObject right) {
+        Assert.assertEquals(left.hashCode(), right.hashCode());
+    }
 
-	@DataProvider
-	public Object[][] unEqualPairs() {
-		return new Object[][] {
-				{ object().put("a", "b").get(),
-					object().put("a", "b").put("b", 42).get() },
-					{ object().put("a", "b").get(), null },
-					{ object().put("a", "b").get(), primitive(42) },
-					{ object().put("a", 42).get(), object().put("a", 41).get() } };
-	}
+    @DataProvider
+    public Object[][] unEqualPairs() {
+        return new Object[][] {
+                { object().put("a", "b").get(),
+                    object().put("a", "b").put("b", 42).get() },
+                    { object().put("a", "b").get(), null },
+                    { object().put("a", "b").get(), primitive(42) },
+                    { object().put("a", 42).get(), object().put("a", 41).get() } };
+    }
 
-	@Test(dataProvider = "unEqualPairs")
-	public void shouldNotBeEqual(final JsonObject o, final JsonElement e) {
-		Assert.assertNotSame(o, e);
-	}
+    @Test(dataProvider = "unEqualPairs")
+    public void shouldNotBeEqual(final JsonObject o, final JsonElement e) {
+        Assert.assertNotSame(o, e);
+    }
 
-	public void shouldExtractValue() {
-		JsonObject o = object().put("a",
-				object().put("b", object().put("c", "d").get()).get()).get();
-		Assert.assertEquals("d", o.get("a", "b", "c").asPrimitive().asString());
-	}
+    public void shouldExtractValue() {
+        JsonObject o = object().put("a",
+                object().put("b", object().put("c", "d").get()).get()).get();
+        Assert.assertEquals("d", o.get("a", "b", "c").asPrimitive().asString());
+    }
 
-	public void shouldCreateArray() {
-		JsonObject object = new JsonObject();
-		JsonArray createdArray = object.getOrCreateArray("a","b","c");
-		createdArray.add("1");
-		Assert.assertTrue(object.getArray("a","b","c").contains("1"), "array should have been added to the object");
-	}
+    public void shouldCreateArray() {
+        JsonObject object = new JsonObject();
+        JsonArray createdArray = object.getOrCreateArray("a","b","c");
+        createdArray.add("1");
+        Assert.assertTrue(object.getArray("a","b","c").contains("1"), "array should have been added to the object");
+    }
 
-	public void shouldReturnExistingArray() {
-		JsonObject object = object().put("a", object().put("b", array("foo")).get()).get();
-		Assert.assertTrue(object.getOrCreateArray("a","b").contains("foo"));
-	}
+    public void shouldReturnExistingArray() {
+        JsonObject object = object().put("a", object().put("b", array("foo")).get()).get();
+        Assert.assertTrue(object.getOrCreateArray("a","b").contains("foo"));
+    }
 
-	@Test(expectedExceptions=JsonTypeMismatchException.class)
-	public void shouldThrowExceptionOnElementThatIsNotAnArray() {
-		JsonObject object = object().put("a", object().put("b", 42).get()).get();
-		object.getOrCreateArray("a","b");
-	}
+    @Test(expectedExceptions=JsonTypeMismatchException.class)
+    public void shouldThrowExceptionOnElementThatIsNotAnArray() {
+        JsonObject object = object().put("a", object().put("b", 42).get()).get();
+        object.getOrCreateArray("a","b");
+    }
 
-	public void shouldCreateObject() {
-		JsonObject object = new JsonObject();
-		JsonObject createdObject = object.getOrCreateObject("a","b","c");
-		createdObject.put("foo", "bar");
-		Assert.assertTrue(object.getString("a","b","c", "foo").equals("bar"), "object should have been added");
-	}
+    public void shouldCreateObject() {
+        JsonObject object = new JsonObject();
+        JsonObject createdObject = object.getOrCreateObject("a","b","c");
+        createdObject.put("foo", "bar");
+        Assert.assertTrue(object.getString("a","b","c", "foo").equals("bar"), "object should have been added");
+    }
 
-	public void shouldReturnExistingObject() {
-		JsonObject object = object().put("a", object().put("b", object().put("foo","bar").get()).get()).get();
-		JsonObject orCreateObject = object.getOrCreateObject("a","b");
-		Assert.assertTrue(orCreateObject.getString("foo").equals("bar"), "return the object with foo=bar");
-	}
+    public void shouldReturnExistingObject() {
+        JsonObject object = object().put("a", object().put("b", object().put("foo","bar").get()).get()).get();
+        JsonObject orCreateObject = object.getOrCreateObject("a","b");
+        Assert.assertTrue(orCreateObject.getString("foo").equals("bar"), "return the object with foo=bar");
+    }
 
-	@Test(expectedExceptions=JsonTypeMismatchException.class)
-	public void shouldThrowExceptionOnElementThatIsNotAnObject() {
-		JsonObject object = object().put("a", object().put("b", 42).get()).get();
-		object.getOrCreateObject("a","b");
-	}
+    @Test(expectedExceptions=JsonTypeMismatchException.class)
+    public void shouldThrowExceptionOnElementThatIsNotAnObject() {
+        JsonObject object = object().put("a", object().put("b", 42).get()).get();
+        object.getOrCreateObject("a","b");
+    }
 
-	public void shouldDoDeepClone() {
-		JsonObject o = object().put("1", 42).put("2", "Hello world").get();
-		JsonObject cloneOfO = o.deepClone();
-		Assert.assertTrue(o.equals(cloneOfO));
-		o.remove("1");
-		Assert.assertFalse(o.equals(cloneOfO));
-		o.put("1", cloneOfO);
-		Object clone = o.clone();
-		Assert.assertTrue(o.equals(clone));
-		cloneOfO.remove("2");
-		Assert.assertFalse(o.equals(clone));
-	}
+    public void shouldDoDeepClone() {
+        JsonObject o = object().put("1", 42).put("2", "Hello world").get();
+        JsonObject cloneOfO = o.deepClone();
+        Assert.assertTrue(o.equals(cloneOfO));
+        o.remove("1");
+        Assert.assertFalse(o.equals(cloneOfO));
+        o.put("1", cloneOfO);
+        Object clone = o.clone();
+        Assert.assertTrue(o.equals(clone));
+        cloneOfO.remove("2");
+        Assert.assertFalse(o.equals(clone));
+    }
 
-	public void shouldRemoveEmptyElements() {
-		JsonObject jsonObject = object().put("empty", object().get()).put("empty2", nullValue()).put("empty3", new JsonArray()).get();
-		Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
-		jsonObject.removeEmpty();
-		assertThat("should leave empty objects",jsonObject.getObject("empty"), is(object().get()));
-		Assert.assertEquals(jsonObject.get("empty2"), null);
-		Assert.assertEquals(jsonObject.get("empty3"), null);
-	}
+    public void shouldRemoveEmptyElements() {
+        JsonObject jsonObject = object().put("empty", object().get()).put("empty2", nullValue()).put("empty3", new JsonArray()).get();
+        Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
+        jsonObject.removeEmpty();
+        assertThat("should leave empty objects",jsonObject.getObject("empty"), is(object().get()));
+        Assert.assertEquals(jsonObject.get("empty2"), null);
+        Assert.assertEquals(jsonObject.get("empty3"), null);
+    }
 
-	public void shouldReturn2ndEntry() {
-	    assertThat(object().put("1", 1).put("2", 2).put("3", 3).get().get(1).getValue(), is((JsonElement)primitive(2)));
-	}
+    public void shouldReturn2ndEntry() {
+        assertThat(object().put("1", 1).put("2", 2).put("3", 3).get().get(1).getValue(), is((JsonElement)primitive(2)));
+    }
 
     public void shouldReturnFirstEntry() {
         assertThat(object().put("1", 1).put("2", 2).put("3", 3).get().first().getValue(), is((JsonElement)primitive(1)));
@@ -219,16 +219,16 @@ public class JsonObjectTest {
         assertThat(object.getArray("list").get(0).asString(), is("stuff"));
     }
 
-//    public void shouldAddFieldsShortNotation() {
-//        JsonObject object = $(
-//            _("meaningoflife", 42),
-//            _("foo", primitive("bar")),
-//            _("list",$("stuff"))
-//        );
-//        assertThat(object.getInt("meaningoflife"), is(42));
-//        assertThat(object.getString("foo"), is("bar"));
-//        assertThat(object.getArray("list").get(0).asString(), is("stuff"));
-//    }
+    //    public void shouldAddFieldsShortNotation() {
+    //        JsonObject object = $(
+    //            _("meaningoflife", 42),
+    //            _("foo", primitive("bar")),
+    //            _("list",$("stuff"))
+    //        );
+    //        assertThat(object.getInt("meaningoflife"), is(42));
+    //        assertThat(object.getString("foo"), is("bar"));
+    //        assertThat(object.getArray("list").get(0).asString(), is("stuff"));
+    //    }
 
     public void shouldSupportConcurrentlyCreatingNewKeys() throws InterruptedException {
         // note. this test did never actually trigger the race condition so only limited confidence here.

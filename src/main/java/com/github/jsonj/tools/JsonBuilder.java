@@ -197,7 +197,7 @@ public class JsonBuilder {
             public JsonElement setValue(JsonElement value) {
                 throw new UnsupportedOperationException("entries are immutable");
             }};
-        return entry;
+            return entry;
     }
 
     /**

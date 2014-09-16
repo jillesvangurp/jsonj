@@ -90,11 +90,11 @@ public class JsonArrayTest {
     @DataProvider
     public Object[][] unEqualPairs() {
         return new Object[][] { { array("foo"), new JsonArray() }, { array("foo"), array("foo", "foo") }, // different
-                                                                                                          // because
-                                                                                                          // second
-                                                                                                          // array has
-                                                                                                          // more
-                                                                                                          // elements
+                // because
+                // second
+                // array has
+                // more
+                // elements
                 { array("foo"), array("bar") }, // element is different
                 { array("foo", "bar"), array("foo", "bbbbbar") } // not same
         };

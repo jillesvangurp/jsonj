@@ -24,7 +24,7 @@ package com.github.jsonj.exceptions;
 import java.io.IOException;
 
 public class JsonParseException extends RuntimeException {
-	private static final long serialVersionUID = 7845937154309209454L;
+    private static final long serialVersionUID = 7845937154309209454L;
 
     public JsonParseException(String msg) {
         super(msg);

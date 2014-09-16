@@ -57,17 +57,17 @@ public class JsonSerializer {
     public static final byte[] QUOTE="\"".getBytes(UTF8);
     public static final byte[] COMMA=",".getBytes(UTF8);
 
-	private JsonSerializer() {
-		// utility class, don't instantiate
-	}
+    private JsonSerializer() {
+        // utility class, don't instantiate
+    }
 
-	/**
-	 * @param json a {@link JsonElement}
-	 * @return string representation of the json
-	 */
-	public static String serialize(final JsonElement json) {
-		return serialize(json, false);
-	}
+    /**
+     * @param json a {@link JsonElement}
+     * @return string representation of the json
+     */
+    public static String serialize(final JsonElement json) {
+        return serialize(json, false);
+    }
 
     /**
      * @param json a {@link JsonElement}
@@ -81,28 +81,28 @@ public class JsonSerializer {
         }
     }
 
-	/**
+    /**
      * @param json a {@link JsonElement}
-	 * @param pretty if true, a properly indented version of the json is returned
-	 * @return string representation of the json
-	 */
-	public static String serialize(final JsonElement json, final boolean pretty) {
-	    if(pretty) {
-    		StringWriter sw = new StringWriter();
-    		try {
-    			write(sw,json,pretty);
-    		} catch (IOException e) {
-    			throw new IllegalStateException("cannot serialize json to a string", e);
-    		} finally {
-    			try {
-    				sw.close();
-    			} catch (IOException e) {
-    				throw new IllegalStateException("cannot serialize json to a string", e);
-    			}
-    		}
-    		return sw.getBuffer().toString();
-	    } else {
-	        try {
+     * @param pretty if true, a properly indented version of the json is returned
+     * @return string representation of the json
+     */
+    public static String serialize(final JsonElement json, final boolean pretty) {
+        if(pretty) {
+            StringWriter sw = new StringWriter();
+            try {
+                write(sw,json,pretty);
+            } catch (IOException e) {
+                throw new IllegalStateException("cannot serialize json to a string", e);
+            } finally {
+                try {
+                    sw.close();
+                } catch (IOException e) {
+                    throw new IllegalStateException("cannot serialize json to a string", e);
+                }
+            }
+            return sw.getBuffer().toString();
+        } else {
+            try {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 BufferedOutputStream buffered = new BufferedOutputStream(bos);
                 json.serialize(buffered);
@@ -112,24 +112,24 @@ public class JsonSerializer {
             } catch (IOException e) {
                 throw new IllegalStateException("cannot serialize json to a string", e);
             }
-	    }
-	}
+        }
+    }
 
-	/**
-	 * Writes the object out as json.
-	 * @param out output writer
+    /**
+     * Writes the object out as json.
+     * @param out output writer
      * @param json a {@link JsonElement}
-	 * @param pretty if true, a properly indented version of the json is written
-	 * @throws IOException if there is a problem writing to the writer
-	 */
-	public static void write(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
-		BufferedWriter bw = new BufferedWriter(out);
-		write(bw, json, pretty, 0);
-		if(pretty) {
-			out.write('\n');
-		}
-		bw.flush();
-	}
+     * @param pretty if true, a properly indented version of the json is written
+     * @throws IOException if there is a problem writing to the writer
+     */
+    public static void write(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
+        BufferedWriter bw = new BufferedWriter(out);
+        write(bw, json, pretty, 0);
+        if(pretty) {
+            out.write('\n');
+        }
+        bw.flush();
+    }
 
     /**
      * Writes the object out as json.
@@ -138,80 +138,80 @@ public class JsonSerializer {
      * @param pretty if true, a properly indented version of the json is written
      * @throws IOException if there is a problem writing to the stream
      */
-	public static void write(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
-	    if(pretty) {
+    public static void write(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
+        if(pretty) {
             write(new OutputStreamWriter(out, Charset.forName("UTF-8")), json, pretty);
         } else {
             BufferedOutputStream bufferedOut = new BufferedOutputStream(out);
             json.serialize(bufferedOut);
             bufferedOut.flush();
         }
-	}
+    }
 
-	private static void write(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
-		if(json==null) {
+    private static void write(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
+        if(json==null) {
             return;
         }
-	    JsonType type = json.type();
-		switch (type) {
-		case object:
-			bw.write('{');
-			newline(bw, indent+1, pretty);
-			Iterator<Entry<String, JsonElement>> iterator = json.asObject().entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<String, JsonElement> entry = iterator.next();
-				String key = entry.getKey();
-				JsonElement value = entry.getValue();
-				if(value != null) {
-    				bw.write('"');
-    				bw.write(jsonEscape(key));
-    				bw.write("\":");
-    				write(bw,value,pretty,indent+1);
-    				if(iterator.hasNext()) {
-    					bw.write(',');
-    					newline(bw, indent+1, pretty);
-    				}
-				}
-			}
-			newline(bw, indent, pretty);
-			bw.write('}');
-			break;
-		case array:
-			bw.write('[');
-			newline(bw, indent+1, pretty);
-			Iterator<JsonElement> arrayIterator = json.asArray().iterator();
-			while (arrayIterator.hasNext()) {
-				JsonElement value = arrayIterator.next();
-				boolean nestedPretty=false;
-				if(value.isObject()) {
-				    nestedPretty=true;
-				}
-				write(bw,value,nestedPretty,indent+1);
-				if(arrayIterator.hasNext()) {
-					bw.write(',');
-					newline(bw, indent+1, nestedPretty);
-				}
-			}
-			newline(bw, indent, pretty);
-			bw.write(']');
-			break;
-		case string:
-			bw.write(json.toString());
-			break;
-		case bool:
+        JsonType type = json.type();
+        switch (type) {
+        case object:
+            bw.write('{');
+            newline(bw, indent+1, pretty);
+            Iterator<Entry<String, JsonElement>> iterator = json.asObject().entrySet().iterator();
+            while (iterator.hasNext()) {
+                Entry<String, JsonElement> entry = iterator.next();
+                String key = entry.getKey();
+                JsonElement value = entry.getValue();
+                if(value != null) {
+                    bw.write('"');
+                    bw.write(jsonEscape(key));
+                    bw.write("\":");
+                    write(bw,value,pretty,indent+1);
+                    if(iterator.hasNext()) {
+                        bw.write(',');
+                        newline(bw, indent+1, pretty);
+                    }
+                }
+            }
+            newline(bw, indent, pretty);
+            bw.write('}');
+            break;
+        case array:
+            bw.write('[');
+            newline(bw, indent+1, pretty);
+            Iterator<JsonElement> arrayIterator = json.asArray().iterator();
+            while (arrayIterator.hasNext()) {
+                JsonElement value = arrayIterator.next();
+                boolean nestedPretty=false;
+                if(value.isObject()) {
+                    nestedPretty=true;
+                }
+                write(bw,value,nestedPretty,indent+1);
+                if(arrayIterator.hasNext()) {
+                    bw.write(',');
+                    newline(bw, indent+1, nestedPretty);
+                }
+            }
+            newline(bw, indent, pretty);
+            bw.write(']');
+            break;
+        case string:
             bw.write(json.toString());
-			break;
-		case number:
+            break;
+        case bool:
             bw.write(json.toString());
-			break;
-		case nullValue:
+            break;
+        case number:
             bw.write(json.toString());
-			break;
+            break;
+        case nullValue:
+            bw.write(json.toString());
+            break;
 
-		default:
-			throw new IllegalArgumentException("unhandled type " + type);
-		}
-	}
+        default:
+            throw new IllegalArgumentException("unhandled type " + type);
+        }
+    }
 
     /**
      * The xml specification defines these character hex codes as allowed: #x9 | #xA | #xD | [#x20-#xD7FF] |
@@ -307,11 +307,11 @@ public class JsonSerializer {
         return Integer.toHexString(ch).toUpperCase(Locale.ENGLISH);
     }
 
-	/**
-	 * @param escaped a json string that may contain escaped characters
-	 * @return the unescaped String
-	 */
-	public static String jsonUnescape(String escaped) {
+    /**
+     * @param escaped a json string that may contain escaped characters
+     * @return the unescaped String
+     */
+    public static String jsonUnescape(String escaped) {
         StringBuilder buf=new StringBuilder(escaped.length());
         char[] chars = escaped.toCharArray();
         if(chars.length >= 2) {
@@ -351,14 +351,14 @@ public class JsonSerializer {
         } else {
             return escaped;
         }
-	}
+    }
 
     private static void newline(final BufferedWriter bw, final int n, final boolean pretty) throws IOException {
-		if(pretty) {
-			bw.write('\n');
-			for(int i=0;i<n;i++) {
-				bw.write('\t');
-			}
-		}
-	}
+        if(pretty) {
+            bw.write('\n');
+            for(int i=0;i<n;i++) {
+                bw.write('\t');
+            }
+        }
+    }
 }

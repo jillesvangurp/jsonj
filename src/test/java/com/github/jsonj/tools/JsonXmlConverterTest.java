@@ -33,30 +33,30 @@ import com.github.jsonj.JsonObject;
 
 @Test
 public class JsonXmlConverterTest {
-	public void shouldConvertToXml() {
-		JsonObject object = sampleJson();
-		Element element = JsonXmlConverter.getElement(object, "r");
-		Document document = new Document(element);
-		String xml = document.toXML();
-		Assert.assertTrue(xml.contains("<r>"), "should contain the opening tag <r>");
-	}
+    public void shouldConvertToXml() {
+        JsonObject object = sampleJson();
+        Element element = JsonXmlConverter.getElement(object, "r");
+        Document document = new Document(element);
+        String xml = document.toXML();
+        Assert.assertTrue(xml.contains("<r>"), "should contain the opening tag <r>");
+    }
 
-	public void shouldGetW3cDomTree() {
-		JsonObject sampleJson = sampleJson();
-		org.w3c.dom.Document domNode = JsonXmlConverter.getW3cDocument(sampleJson, "sample");
-		Assert.assertNotNull(domNode);
-		Assert.assertEquals(domNode.getElementsByTagName("sample").getLength(), 1);
-	}
+    public void shouldGetW3cDomTree() {
+        JsonObject sampleJson = sampleJson();
+        org.w3c.dom.Document domNode = JsonXmlConverter.getW3cDocument(sampleJson, "sample");
+        Assert.assertNotNull(domNode);
+        Assert.assertEquals(domNode.getElementsByTagName("sample").getLength(), 1);
+    }
 
-	public void shouldGetW3cDomTreeWithDefaultRoot() {
-		JsonObject sampleJson = sampleJson();
-		org.w3c.dom.Document domNode = JsonXmlConverter.getW3cDocument(sampleJson, "root");
-		Assert.assertNotNull(domNode);
-		Assert.assertEquals(domNode.getElementsByTagName("root").getLength(), 1);
-	}
+    public void shouldGetW3cDomTreeWithDefaultRoot() {
+        JsonObject sampleJson = sampleJson();
+        org.w3c.dom.Document domNode = JsonXmlConverter.getW3cDocument(sampleJson, "root");
+        Assert.assertNotNull(domNode);
+        Assert.assertEquals(domNode.getElementsByTagName("root").getLength(), 1);
+    }
 
-	private JsonObject sampleJson() {
-		JsonObject object = object().put("foo", "bar").put("bar", array("foo","bar")).put("foobar", object().put("1", 1).put("2", 2).get()).put("escapeme", "><").get();
-		return object;
-	}
+    private JsonObject sampleJson() {
+        JsonObject object = object().put("foo", "bar").put("bar", array("foo","bar")).put("foobar", object().put("1", 1).put("2", 2).get()).put("escapeme", "><").get();
+        return object;
+    }
 }
