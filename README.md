@@ -5,8 +5,8 @@ JsonJ is a library for working with json in Java without mappings or model class
 There are several reasons why you might like jsonj
 
 - it provides really convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
-- it provides powerful extensions to the Collections API that makes extracting things from lists and maps dictionaries a lot easier.
-- it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic hashmaps or huge amounts of strings in memory, you might appreciate some of these optimizations.
+- it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps dictionaries a lot easier.
+- it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
 - it's simple to use and lacks the complexity of other solutions.
 - it uses the excellent jackson parser for parsing data structures.
 
@@ -180,8 +180,7 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 ## Java 8
 
-Java 8 added lambda functions and the streaming API. While 1.x already works fine with this due to the fact that JsonJ fully supports the Collections framework, 2.0 adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
- 
+Java 8 added lambda functions and the streaming API. While 1.x already works fine with this due to the fact that JsonJ fully supports the Collections framework. JsonJ 2.x adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
 
 ## JRuby integration
 
@@ -201,7 +200,13 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
-- 2.0 New release that requires Java 8 and adds convenient integration with Java 8 specific features. Since this breaks compatibility somewhate, I've bumped the version to 2.0. The last 1.x release should be fine for usage and there is a 1.x branch in git as well. However, it is unlikely that I will support this branch in the future.
+- 2.0 New release that requires Java 8
+  - adds convenient integration with Java 8 specific features. Since this breaks compatibility somewhate, I've bumped the version to 2.0. The last 1.x release should be fine for usage and there is a 1.x branch in git as well. However, it is unlikely that I will support this branch in the future.
+  - JsonjCollectors provides collectors for the stream API that can collect elements of any type into a JsonArray or JsonSet. The implementation uses fromObject to convert anything that is not a JsonElement.
+  - streamObjects and streamStrings methods added to JsonArray that allows you to manipulate streams of JsonObject and streams of String.
+  - forEachObject method added to JsonArray
+  - forEachString added to JsonObject, useful for manipulating properties of String->String
+  - Serialize now takes a writer instead of an outputstream. OutputStreams are still supported but you should be using writers everywhere.
 - 1.51 Fix minor issue with parsing empty string. Now throws a JsonParseException if you try this.
 - 1.50 add missing parseObject and parseArray methods to JsonParser. These methods disappeared because of the change in the last release.
 - 1.49 switch parser backend to jackson and remove dependency on json-simple. Reason for this is that I stumbled upon a bit of invalid json that was actually parsing successfully with json simple. The jackson parser fails as expected. This should not impact anyone since this is an internal change and the API stays the same.
