@@ -316,19 +316,13 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 It’s pronounced json-j, or jasonjay. It doesn’t mean anything in particular other than”json for java“, or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
 
-
 ## For whom is this framework intended
 
 Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn’t wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
 
-## Which version should I use?
-
-The latest release or snapshot typically. Releases are tagged in git and I deploy them to maven central.
-Beyond the version number, there is not much difference between a release and a snapshot. I tend to release often. Basically every time I add a feature or fix something, it is usually because I need it right away. When I release, the tests pass.
-
 ## Will there be a Java 8 version of JsonJ with closures?
 
-Yes, very likely. I've not yet started using Java 8 in production but I will probably very soon start taking a look at it shortly after the release. JsonJ will very likely evolve to blend right in with the new goodies in Java 8.
+Version 2 is Java 8 specific and provides integration with the new Streams api.
 
 ## I found a bug, what should I do
 
