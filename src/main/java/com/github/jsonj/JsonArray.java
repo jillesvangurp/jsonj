@@ -29,6 +29,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -54,13 +57,27 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         }
     }
 
+    public JsonArray(Stream<Object> s) {
+        super();
+        s.forEach(o -> this.addObject(o));
+    }
+
+    /**
+     * Allows you to add any kind of object.
+     * @param o the value; will be passed through fromObject()
+     * @return true if object was added
+     */
+    public boolean addObject(Object o) {
+        return this.add(fromObject(o));
+    }
+
 
     /**
      * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
      * @param s string
      */
-    public void add(final String s) {
-        add(primitive(s));
+    public boolean add(final String s) {
+        return add(primitive(s));
     }
 
     /**
@@ -310,7 +327,8 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     public JsonArray deepClone() {
         JsonArray array = new JsonArray();
         for (JsonElement jsonElement : this) {
-            array.add(jsonElement.deepClone());
+            JsonElement e = jsonElement.deepClone();
+            array.add(e);
         }
         return array;
     }
@@ -487,6 +505,32 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
                 };
             }
         };
+    }
+
+    public Stream<JsonObject> streamObjects() {
+        return stream().map(e -> e.asObject());
+    }
+
+    public Stream<JsonArray> streamArrays() {
+        return stream().map(e -> e.asArray());
+    }
+
+    public Stream<String> streamStrings() {
+        return stream().map(e -> e.asString());
+    }
+
+    public Stream<JsonElement> map(Function<JsonElement,JsonElement> f) {
+        return stream().map(f);
+    }
+
+    public Stream<JsonObject> mapObjects(Function<JsonObject, JsonObject> f) {
+        return streamObjects().map(f);
+    }
+
+    public void forEachObject(Consumer<? super JsonObject> action) {
+        for (JsonElement e : this) {
+            action.accept(e.asObject());
+        }
     }
 
     /**

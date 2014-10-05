@@ -34,6 +34,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang.Validate;
 
@@ -686,7 +689,8 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         JsonObject object = new JsonObject();
         Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
         for (Entry<String, JsonElement> entry : es) {
-            object.put(entry.getKey(), entry.getValue().deepClone());
+            JsonElement e = entry.getValue().deepClone();
+            object.put(entry.getKey(), e);
         }
         return object;
     }
@@ -911,6 +915,14 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     @Override
     public Collection<JsonElement> values() {
         return map.values();
+    }
+
+    public Stream<JsonElement> map(BiFunction<String, JsonElement, JsonElement> f) {
+        return entrySet().stream().map(e -> f.apply(e.getKey(), e.getValue()));
+    }
+
+    public void forEachString(BiConsumer<String, String> f) {
+        forEach((k,v) -> {f.accept(k, v.asString());});
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {

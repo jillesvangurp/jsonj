@@ -134,7 +134,8 @@ public class GeoJsonSupport {
      */
     public static JsonArray lineStringToPolygon(JsonArray lineString) {
         if(!lineString.first().equals(lineString.last())) {
-            lineString.add(lineString.first().deepClone());
+            JsonElement e = lineString.first().deepClone();
+            lineString.add(e);
         }
         return array(lineString);
     }

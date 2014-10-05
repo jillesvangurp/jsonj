@@ -56,9 +56,45 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         }
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public JsonSet deepClone() {
+        // TODO Auto-generated method stub
+        return super.deepClone().asSet();
+    }
+
     @SuppressWarnings("rawtypes")
     public JsonSet(Set existing) {
         super(existing);
+    }
+
+    /**
+     * Variant of add that adds multiple JsonElements.
+     *
+     * @param elements
+     *            elements
+     */
+    @Override
+    public void add(final JsonElement... elements) {
+        for (JsonElement element : elements) {
+            add(element);
+        }
+    }
+
+    /**
+     * Variant of add that adds multiple strings.
+     *
+     * @param elements
+     *            elements
+     */
+    @Override
+    public void add(final String... elements) {
+        for (String s : elements) {
+            JsonPrimitive primitive = primitive(s);
+            if (!contains(primitive)) {
+                add(primitive);
+            }
+        }
     }
 
     /**
@@ -68,11 +104,34 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
      *            element
      */
     @Override
-    public void add(final String s) {
+    public boolean add(final String s) {
         JsonPrimitive primitive = primitive(s);
         if (!contains(primitive)) {
-            add(primitive);
+            return add(primitive);
+        } else {
+            return false;
         }
+    }
+
+    @Override
+    public void add(final JsonBuilder... elements) {
+        for (JsonBuilder element : elements) {
+            JsonObject object = element.get();
+            add(object);
+        }
+    }
+
+    @Override
+    public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
+        for (Object element : c) {
+            if (element instanceof JsonElement) {
+                add((JsonElement) element);
+            } else {
+                JsonPrimitive primitive = primitive(element);
+                add(primitive);
+            }
+        }
+        return c.size() != 0;
     }
 
     @Override
@@ -117,56 +176,6 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     @Override
     public JsonSet asSet() {
         return this;
-    }
-
-    /**
-     * Variant of add that adds multiple strings.
-     *
-     * @param elements
-     *            elements
-     */
-    @Override
-    public void add(final String... elements) {
-        for (String s : elements) {
-            JsonPrimitive primitive = primitive(s);
-            if (!contains(primitive)) {
-                add(primitive);
-            }
-        }
-    }
-
-    /**
-     * Variant of add that adds multiple JsonElements.
-     *
-     * @param elements
-     *            elements
-     */
-    @Override
-    public void add(final JsonElement... elements) {
-        for (JsonElement element : elements) {
-            add(element);
-        }
-    }
-
-    @Override
-    public void add(final JsonBuilder... elements) {
-        for (JsonBuilder element : elements) {
-            JsonObject object = element.get();
-            add(object);
-        }
-    }
-
-    @Override
-    public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
-        for (Object element : c) {
-            if (element instanceof JsonElement) {
-                add((JsonElement) element);
-            } else {
-                JsonPrimitive primitive = primitive(element);
-                add(primitive);
-            }
-        }
-        return c.size() != 0;
     }
 
     /**
@@ -230,6 +239,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
      * May be used to override the default equals behavior of JsonElements that are part of the set.
      */
     public interface IdStrategy {
+
         /**
          * @param t1 first element
          * @param t2 second element
