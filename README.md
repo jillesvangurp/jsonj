@@ -1,13 +1,14 @@
 # Introduction
 
-JsonJ is a framework for working with json in Java the "proper" way without mappings or model classes. This means a json array is represented as a java.util.List, a dictionary is represented as a java.util.Map, etc.
+JsonJ is a library for working with json in Java without mappings or model classes. Instead JsonJ backs the very simple json types with the Collections framework that comes with Java. JsonJ makes this both easy and intuitive and generally takes the pain out of manipulating json structures in Java.  
 
 There are several reasons why you might like jsonj
 
-- it provides really convenient builder classes for quickly constructing json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, generics juggling. JsonJ makes this very easy.
-- it provides powerful extensions to the Collections API that makes extracting things from lists and nested dictionaries a lot easier.
+- it provides really convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
+- it provides powerful extensions to the Collections API that makes extracting things from lists and maps dictionaries a lot easier.
 - it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic hashmaps or huge amounts of strings in memory, you might appreciate some of these optimizations.
 - it's simple to use and lacks the complexity of other solutions.
+- it uses the excellent jackson parser for parsing data structures.
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not) or let me know it should be changed in some way.
 
@@ -23,32 +24,17 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 
 Note. check for the latest version. I do not always update the readme.
 
-For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the deep integration with the new Streams API.
-
-# Why JsonJ
-
-The whole point of json is a straightforward serialization and deserialization of simple, data structures consisting of primitives, lists and dictionaries that you will find in a lot of languages other than Java. In Java things are slightly more complicated because lists and dictionaries are mere classes rather than native types. This means for example that you have to deal with generics; you may want to pick alternate implementations of the Map interface or skip that altogether and instead use a completely different framework. For that reason, dealing with json in Java is a lot less straightforward than it would be in for example Ruby, Python, or Javascript.
-
-There are many frameworks for handling Json in java. So why create another one? From my point of view these frameworks are all flawed in one or more of the following ways:
-
-- They assume the user has model classes that need to be serialized and deserialized to and from java. IMHO this is often an antipattern that leads to large amounts of completely pointless code that needs to be tested and maintained.
-- They use an internal representation of the various json types that is not very friendly to work with if you want to manipulate them directly. For example lists or maps that handle bare Objects.
-- They don’t treat json as a first class entity and merely try to hide the fact that your data is stored as json.
-- They don’t use the Java collections framework and mostly for no good reason. If you are going to implement something that looks like a list or a map, you might as well implement the interface.
-- They use final classes, so your options to work around any limitations are limited and you are stuck with whatever is included.
-
-Despite this, some of these frameworks are excellent and indeed widely used. I've used both Gson and Jackson extensively for exampel. Also, some of these frameworks are quite OK even if you do use them the way I want to use them. However, I still find them lacking in usability. JsonJ is my attempt to fix usability from the point of view of a coder who doesn't want to create model classes and who likes compact, type safe, non cluttered Java code. JsonJ delivers a highly usable framework that enables you to write code that has a low amount of verbosity and that gets out of the way.
-
-The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
-
-I regard this as the key selling point of the library. When manipulating and creating json structures programmatically, it is important that you don't have to jump through hoops to extract elements, iterate over things, etc. To facilitate this, the framework provides a large amount of convenient methods that help *prevent verbosity* in the form of unnecessary class casts, null checks, type conversions, generic types, etc. No other Json framework for Java comes close to the level of usability of this framework when it comes to this. Most leave you to either develop your own classes or with the bare bones API of the Java collections framework.
-
+For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the integration with the new Streams API in java 8.
 
 # Features
 
 The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures, that has a low amount of verbosity compared to other frameworks.
 
 I’ve used it for large scale data processing, which involves processing millions of objects, retaining large amounts of objects in memory, and loads of parsing and serialization.
+
+The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
+
+I regard this as the key selling point of the library. When manipulating and creating json structures programmatically, it is important that you don't have to jump through hoops to extract elements, iterate over things, etc. To facilitate this, the framework provides a large amount of convenient methods that help *prevent verbosity* in the form of unnecessary class casts, null checks, type conversions, generic types, etc. No other Json framework for Java comes close to the level of usability of this framework when it comes to this. Most leave you to either develop your own classes or with the bare bones API of the Java collections framework.
 
 ## Design overview and API
 
@@ -187,11 +173,15 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 ```
 
-
 ## Parsing and serialization
 
-- A thread safe `JsonParser` class is provided based on jackson's streaming parser.
-- You can serialize using `toString()` or `prettyPrint()` on any JsonElement, or you can use the `JsonSerializer` class directly.
+- A thread safe `JsonParser` class is provided that uses jackson's streaming parser.
+- You can serialize using `toString()` or `prettyPrint()` or `serialize()` on any JsonElement, or you can use the `JsonSerializer` class directly.
+
+## Java 8
+
+Java 8 added lambda functions and the streaming API. While 1.x already works fine with this due to the fact that JsonJ fully supports the Collections framework, 2.0 adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
+ 
 
 ## JRuby integration
 
@@ -211,8 +201,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
-- 2.0 Major new release that requires Java 8 and adds convenient integration with Java 8 specific features.
-- 1.51 Fix minor issue with parsing empty string. Now throws a JsonParseException if you try this. 
+- 2.0 New release that requires Java 8 and adds convenient integration with Java 8 specific features. Since this breaks compatibility somewhate, I've bumped the version to 2.0. The last 1.x release should be fine for usage and there is a 1.x branch in git as well. However, it is unlikely that I will support this branch in the future.
+- 1.51 Fix minor issue with parsing empty string. Now throws a JsonParseException if you try this.
 - 1.50 add missing parseObject and parseArray methods to JsonParser. These methods disappeared because of the change in the last release.
 - 1.49 switch parser backend to jackson and remove dependency on json-simple. Reason for this is that I stumbled upon a bit of invalid json that was actually parsing successfully with json simple. The jackson parser fails as expected. This should not impact anyone since this is an internal change and the API stays the same.
 - 1.48 add and remove now replace and remove using the id strategy instead of object equals in JsonSet.
