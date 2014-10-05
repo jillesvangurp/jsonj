@@ -17,11 +17,13 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>1.48</version>
+    <version>2.0</version>
 </dependency>
 ```
 
 Note. check for the latest version. I do not always update the readme.
+
+For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the deep integration with the new Streams API.
 
 # Why JsonJ
 
@@ -209,6 +211,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
+- 2.0 Major new release that requires Java 8 and adds convenient integration with Java 8 specific features.
 - 1.51 Fix minor issue with parsing empty string. Now throws a JsonParseException if you try this. 
 - 1.50 add missing parseObject and parseArray methods to JsonParser. These methods disappeared because of the change in the last release.
 - 1.49 switch parser backend to jackson and remove dependency on json-simple. Reason for this is that I stumbled upon a bit of invalid json that was actually parsing successfully with json simple. The jackson parser fails as expected. This should not impact anyone since this is an internal change and the API stays the same.
