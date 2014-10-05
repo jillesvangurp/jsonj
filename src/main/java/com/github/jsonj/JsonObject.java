@@ -26,7 +26,7 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.Collection;
@@ -152,23 +152,23 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     @Override
-    public void serialize(OutputStream out) throws IOException {
-        out.write(JsonSerializer.OPEN_BRACE);
+    public void serialize(Writer w) throws IOException {
+        w.append(JsonSerializer.OPEN_BRACE);
         Iterator<Entry<EfficientString, JsonElement>> iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<EfficientString, JsonElement> entry = iterator.next();
             EfficientString key = entry.getKey();
             JsonElement value = entry.getValue();
-            out.write(JsonSerializer.QUOTE);
-            out.write(JsonSerializer.jsonEscape(key.toString()).getBytes(UTF8));
-            out.write(JsonSerializer.QUOTE);
-            out.write(JsonSerializer.COLON);
-            value.serialize(out);
+            w.append(JsonSerializer.QUOTE);
+            w.append(JsonSerializer.jsonEscape(key.toString()));
+            w.append(JsonSerializer.QUOTE);
+            w.append(JsonSerializer.COLON);
+            value.serialize(w);
             if (iterator.hasNext()) {
-                out.write(JsonSerializer.COMMA);
+                w.append(JsonSerializer.COMMA);
             }
         }
-        out.write(JsonSerializer.CLOSE_BRACE);
+        w.append(JsonSerializer.CLOSE_BRACE);
     }
 
     @Override

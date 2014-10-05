@@ -23,7 +23,6 @@ package com.github.jsonj.tools;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -44,18 +43,18 @@ import com.github.jsonj.JsonType;
  */
 public class JsonSerializer {
     public static final Charset UTF8=Charset.forName("utf-8");
-    public static final byte[] ESCAPED_CARRIAGE_RETURN = "\\r".getBytes(UTF8);
-    public static final byte[] ESCAPED_TAB = "\\t".getBytes(UTF8);
-    public static final byte[] ESCAPED_BACKSLASH = "\\\\".getBytes(UTF8);
-    public static final byte[] ESCAPED_NEWLINE = "\\n".getBytes(UTF8);
-    public static final byte[] ESCAPED_QUOTE = "\\\"".getBytes(UTF8);
-    public static final byte[] OPEN_BRACKET="[".getBytes(UTF8);
-    public static final byte[] CLOSE_BRACKET="]".getBytes(UTF8);
-    public static final byte[] OPEN_BRACE="{".getBytes(UTF8);
-    public static final byte[] CLOSE_BRACE="}".getBytes(UTF8);
-    public static final byte[] COLON=":".getBytes(UTF8);
-    public static final byte[] QUOTE="\"".getBytes(UTF8);
-    public static final byte[] COMMA=",".getBytes(UTF8);
+    public static final String ESCAPED_CARRIAGE_RETURN = "\\r";
+    public static final String ESCAPED_TAB = "\\t";
+    public static final String ESCAPED_BACKSLASH = "\\\\";
+    public static final String ESCAPED_NEWLINE = "\\n";
+    public static final String ESCAPED_QUOTE = "\\\"";
+    public static final String OPEN_BRACKET="[";
+    public static final String CLOSE_BRACKET="]";
+    public static final String OPEN_BRACE="{";
+    public static final String CLOSE_BRACE="}";
+    public static final String COLON=":";
+    public static final String QUOTE="\"";
+    public static final String COMMA=",";
 
     private JsonSerializer() {
         // utility class, don't instantiate
@@ -75,7 +74,15 @@ public class JsonSerializer {
      */
     public static void serialize(final JsonElement json, OutputStream out) {
         try {
-            write(out, json, false);
+            json.serialize(out);
+        } catch (IOException e) {
+            throw new IllegalStateException("cannot serialize json to output stream", e);
+        }
+    }
+
+    public static void serialize(final JsonElement json, Writer out) {
+        try {
+            json.serialize(out);
         } catch (IOException e) {
             throw new IllegalStateException("cannot serialize json to output stream", e);
         }
@@ -87,10 +94,10 @@ public class JsonSerializer {
      * @return string representation of the json
      */
     public static String serialize(final JsonElement json, final boolean pretty) {
+        StringWriter sw = new StringWriter();
         if(pretty) {
-            StringWriter sw = new StringWriter();
             try {
-                write(sw,json,pretty);
+                serialize(sw,json,pretty);
             } catch (IOException e) {
                 throw new IllegalStateException("cannot serialize json to a string", e);
             } finally {
@@ -103,12 +110,8 @@ public class JsonSerializer {
             return sw.getBuffer().toString();
         } else {
             try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                BufferedOutputStream buffered = new BufferedOutputStream(bos);
-                json.serialize(buffered);
-                buffered.flush();
-                bos.close();
-                return bos.toString("utf8");
+                json.serialize(sw);
+                return sw.getBuffer().toString();
             } catch (IOException e) {
                 throw new IllegalStateException("cannot serialize json to a string", e);
             }
@@ -122,9 +125,9 @@ public class JsonSerializer {
      * @param pretty if true, a properly indented version of the json is written
      * @throws IOException if there is a problem writing to the writer
      */
-    public static void write(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
+    public static void serialize(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
         BufferedWriter bw = new BufferedWriter(out);
-        write(bw, json, pretty, 0);
+        serialize(bw, json, pretty, 0);
         if(pretty) {
             out.write('\n');
         }
@@ -138,17 +141,18 @@ public class JsonSerializer {
      * @param pretty if true, a properly indented version of the json is written
      * @throws IOException if there is a problem writing to the stream
      */
-    public static void write(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
+    public static void serialize(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
+        BufferedOutputStream bufferedOut = new BufferedOutputStream(out);
+        OutputStreamWriter w = new OutputStreamWriter(bufferedOut, UTF8);
         if(pretty) {
-            write(new OutputStreamWriter(out, Charset.forName("UTF-8")), json, pretty);
+            serialize(w, json, pretty);
         } else {
-            BufferedOutputStream bufferedOut = new BufferedOutputStream(out);
-            json.serialize(bufferedOut);
+            json.serialize(w);
             bufferedOut.flush();
         }
     }
 
-    private static void write(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
+    private static void serialize(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
         if(json==null) {
             return;
         }
@@ -166,7 +170,7 @@ public class JsonSerializer {
                     bw.write('"');
                     bw.write(jsonEscape(key));
                     bw.write("\":");
-                    write(bw,value,pretty,indent+1);
+                    serialize(bw,value,pretty,indent+1);
                     if(iterator.hasNext()) {
                         bw.write(',');
                         newline(bw, indent+1, pretty);
@@ -186,7 +190,7 @@ public class JsonSerializer {
                 if(value.isObject()) {
                     nestedPretty=true;
                 }
-                write(bw,value,nestedPretty,indent+1);
+                serialize(bw,value,nestedPretty,indent+1);
                 if(arrayIterator.hasNext()) {
                     bw.write(',');
                     newline(bw, indent+1, nestedPretty);

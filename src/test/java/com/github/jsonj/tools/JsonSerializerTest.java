@@ -23,6 +23,7 @@ package com.github.jsonj.tools;
 
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -30,7 +31,9 @@ import static org.hamcrest.Matchers.is;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 
+import org.hamcrest.Matchers;
 import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -94,11 +97,21 @@ public class JsonSerializerTest {
     @Test(dataProvider = "strings")
     public void shouldParseSerializedAndHandleEscapingBothWaysWithOutputStream(String text) throws IOException {
         JsonElement e = object().put(text, "value").put("stringval", text).put("array", array(text, text)).get();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        JsonSerializer.serialize(e, bos);
-        String string = bos.toString("utf-8");
+        StringWriter sw = new StringWriter();
+
+        JsonSerializer.serialize(e, sw);
+        String string = sw.getBuffer().toString();
         JsonElement parsed = new JsonParser().parse(string);
         AssertJUnit.assertEquals(e, parsed);
+    }
+
+    public void shouldUseOutputStream() throws IOException {
+        JsonObject object = object(field("hi", "wrld"));
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        object.serialize(bos);
+        byte[] string = bos.toByteArray();
+        assertThat(string.length, Matchers.greaterThan(0));
+        assertThat(jsonParser.parse(bos.toString()), is(object));
     }
 
     @Test(dataProvider="strings")

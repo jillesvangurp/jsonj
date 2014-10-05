@@ -25,7 +25,7 @@ import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -379,17 +379,17 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     }
 
     @Override
-    public void serialize(OutputStream out) throws IOException {
-        out.write(JsonSerializer.OPEN_BRACKET);
+    public void serialize(Writer w) throws IOException {
+        w.append(JsonSerializer.OPEN_BRACKET);
         Iterator<JsonElement> it = iterator();
         while (it.hasNext()) {
             JsonElement jsonElement = it.next();
-            jsonElement.serialize(out);
+            jsonElement.serialize(w);
             if(it.hasNext()) {
-                out.write(JsonSerializer.COMMA);
+                w.append(JsonSerializer.COMMA);
             }
         }
-        out.write(JsonSerializer.CLOSE_BRACKET);
+        w.append(JsonSerializer.CLOSE_BRACKET);
     }
 
     @Override

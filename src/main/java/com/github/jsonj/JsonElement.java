@@ -23,7 +23,9 @@ package com.github.jsonj;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
 
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
@@ -124,12 +126,18 @@ public interface JsonElement extends Cloneable, Serializable {
      */
     boolean isString();
 
+    default void serialize(OutputStream out) throws IOException {
+        try(OutputStreamWriter w = new OutputStreamWriter(out, "UTF-8")) {
+            serialize(w);
+        }
+    }
+
     /**
-     * Serialize a utf8 encoded representation to the output stream.
-     * @param out stream
-     * @throws IOException when there is a problem with the stream
+     * Serialize a utf8 encoded representation to the writer.
+     * @param w writer
+     * @throws IOException when there is a problem with the writer
      */
-    void serialize(OutputStream out) throws IOException;
+    void serialize(Writer w) throws IOException;
 
     JsonSet asSet();
 }

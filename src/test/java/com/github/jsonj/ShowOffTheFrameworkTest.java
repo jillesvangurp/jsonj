@@ -26,7 +26,7 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static com.github.jsonj.tools.JsonSerializer.serialize;
-import static com.github.jsonj.tools.JsonSerializer.write;
+import static com.github.jsonj.tools.JsonSerializer.serialize;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -130,7 +130,7 @@ public class ShowOffTheFrameworkTest {
         JsonElement json = jsonParser.parse(serialized);
 
         // and write it straight to some stream
-        write(System.out, json, false);
+        serialize(System.out, json, false);
         System.out.println();
 
         // or pretty print it like this

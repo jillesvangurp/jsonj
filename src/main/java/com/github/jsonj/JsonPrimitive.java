@@ -22,8 +22,8 @@
 package com.github.jsonj;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -213,22 +213,22 @@ public class JsonPrimitive implements JsonElement, Serializable {
     }
 
     @Override
-    public void serialize(OutputStream out) throws IOException {
+    public void serialize(Writer w) throws IOException {
         switch (type) {
         case string:
-            out.write(JsonSerializer.QUOTE);
+            w.append(JsonSerializer.QUOTE);
             byte[] bytes = (byte[]) value;
-            out.write(JsonSerializer.jsonEscape(new String(bytes, UTF8)).getBytes(UTF8));
-            out.write(JsonSerializer.QUOTE);
+            w.append(JsonSerializer.jsonEscape(new String(bytes, UTF8)));
+            w.append(JsonSerializer.QUOTE);
             return;
         case bool:
-            out.write(value.toString().getBytes(UTF8));
+            w.append(value.toString());
             return;
         case number:
-            out.write(value.toString().getBytes(UTF8));
+            w.append(value.toString());
             return;
         case nullValue:
-            out.write("null".getBytes(UTF8));
+            w.append("null");
             return;
         default:
             throw new IllegalArgumentException("value has to be a primitive");
