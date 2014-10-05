@@ -41,6 +41,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -255,7 +256,8 @@ public class JsonObjectTest {
 
         executorService.shutdown();
         executorService.awaitTermination(2, TimeUnit.SECONDS);
-        assertThat(EfficientString.nextIndex()-startIndex, is(total/factor+1));
+        // check greater than so that it won't clash with concurrent executions of other tests in surefire
+        assertThat(EfficientString.nextIndex()-startIndex, Matchers.greaterThan(total/factor));
     }
 
     public void shouldGetPrimitiveDefaultValues() {

@@ -10,21 +10,14 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.jillesvangurp.efficientstring.EfficientString;
 
 @Test
 public class SimpleMapTest {
-    private SimpleMap<EfficientString,JsonElement> m;
-
-    @BeforeMethod
-    public void before() {
-        m = new SimpleMap<>();
-    }
-
     public void shouldPutGetRemove() {
+        SimpleMap<EfficientString,JsonElement> m = new SimpleMap<>();
         assertThat(m.size(), is(0));
         EfficientString key = fromString("42");
         JsonElement value = primitive(42);
@@ -37,6 +30,7 @@ public class SimpleMapTest {
     }
 
     public void shouldIterate() {
+        SimpleMap<EfficientString,JsonElement> m = new SimpleMap<>();
         for(int i=0;i<42;i++) {
             m.put(fromString(""+i), primitive(i));
         }
@@ -50,6 +44,7 @@ public class SimpleMapTest {
     }
 
     public void shouldRemove() {
+        SimpleMap<EfficientString,JsonElement> m = new SimpleMap<>();
         for(int i=0;i<42;i++) {
             m.put(fromString(""+i), primitive(i));
         }
@@ -63,6 +58,7 @@ public class SimpleMapTest {
 
     @Test(expectedExceptions=ConcurrentModificationException.class)
     public void shouldThrowConcurrentModificationException() {
+        SimpleMap<EfficientString,JsonElement> m = new SimpleMap<>();
         for(int i=0;i<42;i++) {
             m.put(fromString(""+i), primitive(i));
         }
@@ -70,26 +66,4 @@ public class SimpleMapTest {
             m.put(fromString("oops"), primitive(42));
         }
     }
-
-    //    public void shouldCalculateSize() throws IOException {
-    //        SimpleMap<Integer , JsonElement> m1 = new SimpleMap<>();
-    //        LinkedHashMap<Integer , JsonElement> m2 = new LinkedHashMap<>();
-    //        for(int i=0;i<42;i++) {
-    //            m1.put(i, primitive(i));
-    //            m2.put(i, primitive(i));
-    //        }
-    //
-    //        System.out.println(getSerializedSize(m));
-    //        System.out.println(getSerializedSize(m2));
-    //    }
-
-    //    private int getSerializedSize(Object o) throws IOException {
-    //        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    //        ObjectOutputStream oos = new ObjectOutputStream(baos);
-    //        oos.writeObject(o);
-    //        oos.close();
-    //        int size = baos.size();
-    //        return size;
-    //    }
-
 }

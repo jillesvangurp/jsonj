@@ -49,8 +49,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         super();
     }
 
-    @SuppressWarnings("rawtypes")
-    public JsonArray(Collection existing) {
+    public JsonArray(Collection<?> existing) {
         super();
         for(Object o: existing) {
             add(fromObject(o));
