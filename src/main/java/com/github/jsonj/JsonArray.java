@@ -74,6 +74,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     /**
      * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
      * @param s string
+     * @return true if element was added successfully
      */
     public boolean add(final String s) {
         return add(primitive(s));
