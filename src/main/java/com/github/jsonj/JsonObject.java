@@ -62,7 +62,8 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     // private final LinkedHashMap<EfficientString, JsonElement> map = new LinkedHashMap<EfficientString,
     // JsonElement>();
-    private final Map<EfficientString, JsonElement> map = new SimpleMap<>();
+//    private final Map<EfficientString, JsonElement> map = new SimpleMap<>();
+    private final Map<Integer,JsonElement> intMap = new SimpleIntKeyMap<>();
 
     private String idField = null;
 
@@ -154,10 +155,11 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     @Override
     public void serialize(Writer w) throws IOException {
         w.append(JsonSerializer.OPEN_BRACE);
-        Iterator<Entry<EfficientString, JsonElement>> iterator = map.entrySet().iterator();
+
+        Iterator<Entry<Integer, JsonElement>> iterator = intMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Entry<EfficientString, JsonElement> entry = iterator.next();
-            EfficientString key = entry.getKey();
+            Entry<Integer, JsonElement> entry = iterator.next();
+            EfficientString key = EfficientString.get(entry.getKey());
             JsonElement value = entry.getValue();
             w.append(JsonSerializer.QUOTE);
             w.append(JsonSerializer.jsonEscape(key.toString()));
@@ -213,7 +215,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         if (value == null) {
             value = nullValue();
         }
-        return map.put(EfficientString.fromString(key), value);
+        return intMap.put(EfficientString.fromString(key).index(), value);
     }
 
     public JsonElement put(String key, JsonBuilder value) {
@@ -273,7 +275,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     @Override
     public JsonElement get(Object key) {
         if (key != null && key instanceof String) {
-            return map.get(EfficientString.fromString(key.toString()));
+            return intMap.get(EfficientString.fromString(key.toString()).index());
         } else {
             throw new IllegalArgumentException();
         }
@@ -745,7 +747,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @Override
     public void clear() {
-        map.clear();
+        intMap.clear();
     }
 
     @Override
@@ -755,12 +757,12 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @Override
     public boolean containsValue(Object value) {
-        return map.containsValue(value);
+        return intMap.containsValue(value);
     }
 
     @Override
     public Set<Entry<String, JsonElement>> entrySet() {
-        final Set<Entry<EfficientString, JsonElement>> entrySet = map.entrySet();
+        final Set<Entry<Integer, JsonElement>> entrySet = intMap.entrySet();
         return new Set<Map.Entry<String, JsonElement>>() {
 
             @Override
@@ -796,7 +798,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             @Override
             public Iterator<Entry<String, JsonElement>> iterator() {
                 return new Iterator<Entry<String, JsonElement>>() {
-                    private final Iterator<Entry<EfficientString, JsonElement>> it = entrySet.iterator();
+                    private final Iterator<Entry<Integer, JsonElement>> it = entrySet.iterator();
 
                     @Override
                     public boolean hasNext() {
@@ -805,12 +807,13 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
                     @Override
                     public Entry<String, JsonElement> next() {
-                        final Entry<EfficientString, JsonElement> next = it.next();
+                        final Entry<Integer, JsonElement> next = it.next();
                         return new Entry<String, JsonElement>() {
 
                             @Override
                             public String getKey() {
-                                return next.getKey().toString();
+                                EfficientString es = EfficientString.get(next.getKey());
+                                return es.toString();
                             }
 
                             @Override
@@ -857,12 +860,13 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                 @SuppressWarnings("unchecked")
                 Entry<String, JsonElement>[] result = new Entry[entrySet.size()];
                 int i = 0;
-                for (final Entry<EfficientString, JsonElement> e : entrySet) {
+                for (final Entry<Integer, JsonElement> e : entrySet) {
                     result[i] = new Entry<String, JsonElement>() {
 
                         @Override
                         public String getKey() {
-                            return e.getKey().toString();
+                            EfficientString es = EfficientString.get(e.getKey());
+                            return es.toString();
                         }
 
                         @Override
@@ -890,10 +894,10 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @Override
     public Set<String> keySet() {
-        Set<EfficientString> keySet = map.keySet();
+        Set<Integer> keySet = intMap.keySet();
         Set<String> keys = new HashSet<String>();
-        for (EfficientString es : keySet) {
-            keys.add(es.toString());
+        for (Integer idx : keySet) {
+            keys.add(EfficientString.get(idx).toString());
         }
         return keys;
     }
@@ -901,7 +905,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     @Override
     public JsonElement remove(Object key) {
         if (key != null && key instanceof String) {
-            return map.remove(EfficientString.fromString(key.toString()));
+            return intMap.remove(EfficientString.fromString(key.toString()).index());
         } else {
             throw new IllegalArgumentException();
         }
@@ -909,12 +913,12 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @Override
     public int size() {
-        return map.size();
+        return intMap.size();
     }
 
     @Override
     public Collection<JsonElement> values() {
-        return map.values();
+        return intMap.values();
     }
 
     public Stream<JsonElement> map(BiFunction<String, JsonElement, JsonElement> f) {
@@ -944,9 +948,9 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                 parser = new JsonParser();
             }
             JsonElement o = parser.parse(new String(buf, UTF8));
-            Field f = getClass().getDeclaredField("map");
+            Field f = getClass().getDeclaredField("intMap");
             f.setAccessible(true);
-            f.set(this, new SimpleMap<>());
+            f.set(this, new SimpleIntKeyMap<>());
 
             for (Entry<String, JsonElement> e : o.asObject().entrySet()) {
                 put(e.getKey(), e.getValue());

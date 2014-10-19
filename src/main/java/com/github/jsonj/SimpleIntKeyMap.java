@@ -2,9 +2,11 @@ package com.github.jsonj;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -13,34 +15,36 @@ import java.util.Set;
 
 import org.apache.commons.lang.Validate;
 
-import com.google.common.collect.Sets;
-import com.jillesvangurp.efficientstring.EfficientString;
-
 /**
  * Performant array list based map for small number of entries. Get performs linearly for number of entries however, it
  * uses vastly less memory and it is actually fast enough for small numbers of entries.
  */
-public class SimpleMap<K,V> implements Map<K,V>, Serializable {
+public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
-    private static final long serialVersionUID = 320985071159254522L;
+    private static final long serialVersionUID = 7650009698202273725L;
 
-    private final ArrayList<K> keys = new ArrayList<>();
+    int[] keysArr=new int[3];
     private final ArrayList<V> values = new ArrayList<>();
 
     @Override
     public int size() {
-        return keys.size();
+        return values.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return keys.size() == 0;
+        return values.size() == 0;
     }
 
     @Override
     public boolean containsKey(Object key) {
-        for(K k:keys) {
-            if(key.equals(k)) {
+        return containsIntKey((Integer)key);
+    }
+
+    public boolean containsIntKey(int key) {
+        for(int i=0; i<values.size();i++) {
+            int k = keysArr[i];
+            if(key == k) {
                 return true;
             }
         }
@@ -59,6 +63,10 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
 
     @Override
     public V get(Object key) {
+        return getWithIntKey((Integer)key);
+    }
+
+    public V getWithIntKey(int key) {
         int index = getIndex(key);
         if(index>=0) {
             return values.get(index);
@@ -67,25 +75,30 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         }
     }
 
-    private int getIndex(Object key) {
-        int i=0;
-        for(K k:keys) {
-            if(key.equals(k)) {
-                return i;
+    private int getIndex(int key) {
+        int j=0;
+        for(int i=0; i<values.size();i++) {
+            int k = keysArr[i];
+            if(key == k) {
+                return j;
             }
-            i++;
+            j++;
         }
         return -1;
     }
 
     @Override
-    public V put(K key, V value) {
+    public V put(Integer key, V value) {
         Validate.notNull(key);
         int index = getIndex(key);
         if(index >=0) {
             values.set(index, value);
         } else {
-            keys.add(key);
+            if(values.size()+1<keysArr.length) {
+                // dynamically grow array
+                keysArr = Arrays.copyOf(keysArr, keysArr.length + 3);
+            }
+            keysArr[values.size()] = key;
             values.add(value);
         }
         return value;
@@ -93,9 +106,9 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
 
     @Override
     public V remove(Object key) {
-        int index = getIndex(key);
+        int index = getIndex((Integer)key);
         if(index >=0) {
-            keys.remove(index);
+            System.arraycopy(keysArr,index+1,keysArr,index,keysArr.length-1-index);
             return values.remove(index);
         } else {
             return null;
@@ -103,21 +116,25 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
     }
 
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
-        for(Map.Entry<? extends K, ? extends V> e: m.entrySet()) {
-            put(e.getKey(),e.getValue());
+    public void putAll(java.util.Map<? extends Integer, ? extends V> m) {
+        for (Entry<? extends Integer, ? extends V> e : m.entrySet()) {
+            put(e.getKey(), e.getValue());
         }
-    }
+    };
 
     @Override
     public void clear() {
-        keys.clear();
+        keysArr = new int[5];
         values.clear();
     }
 
     @Override
-    public Set<K> keySet() {
-        return Sets.newHashSet(keys);
+    public Set<Integer> keySet() {
+        Set<Integer> result = new HashSet<>();
+        for(int i=0; i<values.size();i++) {
+            result.add(keysArr[i]);
+        }
+        return result;
     }
 
     @Override
@@ -126,16 +143,16 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<Integer, V>> entrySet() {
 
         return new EntrySet(this);
     }
 
-    private class EntrySet implements Set<Entry<K, V>> {
+    private class EntrySet implements Set<Entry<Integer, V>> {
 
-        private final SimpleMap<K,V> owner;
+        private final SimpleIntKeyMap<V> owner;
 
-        public EntrySet(SimpleMap<K,V> simpleMap) {
+        public EntrySet(SimpleIntKeyMap<V> simpleMap) {
             this.owner = simpleMap;
         }
 
@@ -152,7 +169,7 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         @Override
         public boolean contains(Object o) {
             @SuppressWarnings("unchecked")
-            Entry<EfficientString, JsonElement> e = (Entry<EfficientString, JsonElement>) o;
+            Entry<Integer, JsonElement> e = (Entry<Integer, JsonElement>) o;
             int index = owner.getIndex(e.getKey());
             if(index >=0) {
                 return values.get(index).equals(e.getValue());
@@ -162,8 +179,8 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         }
 
         @Override
-        public Iterator<Entry<K, V>> iterator() {
-            return new Iterator<Map.Entry<K,V>>() {
+        public Iterator<Entry<Integer, V>> iterator() {
+            return new Iterator<Map.Entry<Integer,V>>() {
                 int startSize=size();
                 int index=0;
 
@@ -172,13 +189,13 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
                     if(size() != startSize) {
                         throw new ConcurrentModificationException();
                     }
-                    return index < keys.size();
+                    return index < values.size();
                 }
 
                 @Override
-                public Entry<K, V> next() {
+                public Entry<Integer, V> next() {
                     if(hasNext()) {
-                        EntryImpl next = new EntryImpl(keys.get(index), values.get(index));
+                        EntryImpl next = new EntryImpl(keysArr[index], values.get(index));
                         index++;
                         return next;
                     } else {
@@ -194,8 +211,9 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
                     if(index == 0) {
                         throw new IllegalStateException("next has not been called yet");
                     }
-                    keys.remove(index-1);
-                    values.remove(index-1);
+                    int removeIndex = index-1;
+                    System.arraycopy(keysArr,removeIndex+1,keysArr,removeIndex,keysArr.length-1-removeIndex);
+                    values.remove(removeIndex);
                     index--;
                     startSize--;
                 }
@@ -205,9 +223,9 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         @Override
         public Object[] toArray() {
             @SuppressWarnings("unchecked")
-            Entry<K,V>[] result = new Entry[owner.size()];
+            Entry<Integer,V>[] result = new Entry[owner.size()];
             int i=0;
-            for(Entry<K,V> e: this) {
+            for(Entry<Integer,V> e: this) {
                 result[i] = e;
                 i++;
             }
@@ -221,7 +239,7 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         }
 
         @Override
-        public boolean add(Entry<K, V> e) {
+        public boolean add(Entry<Integer, V> e) {
             throw new UnsupportedOperationException();
         }
 
@@ -241,7 +259,7 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         }
 
         @Override
-        public boolean addAll(Collection<? extends java.util.Map.Entry<K, V>> c) {
+        public boolean addAll(Collection<? extends java.util.Map.Entry<Integer, V>> c) {
             throw new UnsupportedOperationException();
         }
 
@@ -261,17 +279,17 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         }
     }
 
-    private class EntryImpl implements Entry<K, V> {
-        private final K key;
+    private class EntryImpl implements Entry<Integer, V> {
+        private final int key;
         private final V value;
 
-        public EntryImpl(K key, V value) {
+        public EntryImpl(int key, V value) {
             this.key = key;
             this.value = value;
         }
 
         @Override
-        public K getKey() {
+        public Integer getKey() {
             return key;
         }
 
@@ -293,6 +311,11 @@ public class SimpleMap<K,V> implements Map<K,V>, Serializable {
         @Override
         public int hashCode() {
             return Objects.hash(key,value);
+        }
+
+        @Override
+        public String toString() {
+            return key +":"+value;
         }
     }
 }
