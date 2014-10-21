@@ -29,8 +29,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang.StringUtils;
@@ -44,6 +47,7 @@ import com.github.jsonj.tools.JsonSerializer;
  */
 public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     private static final long serialVersionUID = -1269731858619421388L;
+    private boolean immutable=false;
 
     public JsonArray() {
         super();
@@ -128,6 +132,22 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         for (JsonBuilder element : elements) {
             add(element.get());
         }
+    }
+
+    @Override
+    public boolean add(JsonElement e) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.add(e);
+    }
+
+    @Override
+    public void add(int index, JsonElement element) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        super.add(index, element);
     }
 
     @Override
@@ -333,6 +353,17 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return array;
     }
 
+    @Override
+    public JsonArray immutableClone() {
+        JsonArray array = new JsonArray();
+        for (JsonElement jsonElement : this) {
+            JsonElement e = jsonElement.immutableClone();
+            array.add(e);
+        }
+        array.immutable=true;
+        return array;
+    }
+
     public boolean isNotEmpty() {
         return !isEmpty();
     }
@@ -353,6 +384,10 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
     @Override
     public boolean remove(Object o) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+
         if(o instanceof JsonElement) {
             return super.remove(o);
         } else {
@@ -363,6 +398,10 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
 
     @Override
     public void removeEmpty() {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+
         Iterator<JsonElement> iterator = iterator();
         while (iterator.hasNext()) {
             JsonElement jsonElement = iterator.next();
@@ -471,6 +510,112 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
             i++;
         }
         return false;
+    }
+
+    @Override
+    public JsonElement set(int index, JsonElement element) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.set(index, element);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends JsonElement> c) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.addAll(index, c);
+    }
+
+    @Override
+    public void ensureCapacity(int minCapacity) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        super.ensureCapacity(minCapacity);
+    }
+
+    @Override
+    public Iterator<JsonElement> iterator() {
+        if(immutable) {
+            Iterator<JsonElement> it = super.iterator();
+            return new Iterator<JsonElement>() {
+
+                @Override
+                public boolean hasNext() {
+                    return it.hasNext();
+                }
+
+                @Override
+                public JsonElement next() {
+                    return it.next();
+                }
+
+                @Override
+                public void remove() {
+                    throw new IllegalStateException("object is immutable");
+                }
+            };
+        } else {
+            return super.iterator();
+        }
+    }
+
+    @Override
+    public JsonElement remove(int index) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.remove(index);
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.removeAll(c);
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super JsonElement> filter) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.removeIf(filter);
+    }
+
+    @Override
+    public ListIterator<JsonElement> listIterator() {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.listIterator();
+    }
+
+    @Override
+    public ListIterator<JsonElement> listIterator(int index) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.listIterator(index);
+    }
+
+    @Override
+    public void replaceAll(UnaryOperator<JsonElement> operator) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        super.replaceAll(operator);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+        return super.retainAll(c);
     }
 
     /**

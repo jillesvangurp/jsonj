@@ -321,6 +321,11 @@ public class JsonPrimitive implements JsonElement, Serializable {
     }
 
     @Override
+    public JsonElement immutableClone() {
+        return this;
+    }
+
+    @Override
     public boolean isEmpty() {
         if(value == null) {
             return true;

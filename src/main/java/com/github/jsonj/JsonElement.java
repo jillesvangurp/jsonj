@@ -140,4 +140,9 @@ public interface JsonElement extends Cloneable, Serializable {
     void serialize(Writer w) throws IOException;
 
     JsonSet asSet();
+
+    /**
+     * @return a clone of the JsonElement that is immutable. Note, JsonPrimitive instances are already immutable so they return themselves.
+     */
+    JsonElement immutableClone();
 }

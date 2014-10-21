@@ -26,9 +26,9 @@ import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -50,19 +50,19 @@ public class JsonArrayTest {
 
     public void shouldGetByLabel() {
         JsonElement element = array("foo", "bar").get("bar");
-        Assert.assertNotNull(element);
-        Assert.assertEquals("bar", element.asPrimitive().asString());
+        AssertJUnit.assertNotNull(element);
+        AssertJUnit.assertEquals("bar", element.asPrimitive().asString());
     }
 
     public void shouldGetObjectByIndex() {
         JsonElement element = array(primitive("foo"), object().put("bar", true).get()).get("1");
-        Assert.assertNotNull(element);
-        Assert.assertTrue(element.isObject());
+        AssertJUnit.assertNotNull(element);
+        AssertJUnit.assertTrue(element.isObject());
     }
 
     public void shouldReturnNull() {
         JsonElement element = array(primitive("foo"), object().put("bar", true).get()).get("x");
-        Assert.assertNull(element);
+        AssertJUnit.assertNull(element);
     }
 
     @DataProvider
@@ -76,15 +76,15 @@ public class JsonArrayTest {
 
     @Test(dataProvider = "equalPairs")
     public void shouldBeEqual(final JsonElement left, final JsonElement right) {
-        Assert.assertTrue(left.equals(left)); // reflexive
-        Assert.assertTrue(right.equals(right)); // reflexive
-        Assert.assertTrue(left.equals(right)); // symmetric
-        Assert.assertTrue(right.equals(left)); // symmetric
+        AssertJUnit.assertTrue(left.equals(left)); // reflexive
+        AssertJUnit.assertTrue(right.equals(right)); // reflexive
+        AssertJUnit.assertTrue(left.equals(right)); // symmetric
+        AssertJUnit.assertTrue(right.equals(left)); // symmetric
     }
 
     @Test(dataProvider = "equalPairs")
     public void shouldHaveSameHashCode(final JsonElement left, final JsonElement right) {
-        Assert.assertEquals(left.hashCode(), right.hashCode());
+        AssertJUnit.assertEquals(left.hashCode(), right.hashCode());
     }
 
     @DataProvider
@@ -102,26 +102,26 @@ public class JsonArrayTest {
 
     @Test(dataProvider = "unEqualPairs")
     public void shouldNotBeEqual(final JsonArray left, final JsonArray right) {
-        Assert.assertFalse(left.equals(right));
+        AssertJUnit.assertFalse(left.equals(right));
     }
 
     public void shouldDoDeepClone() {
         JsonArray a = array(1, 2, 3);
         JsonArray cloneOfA = a.deepClone();
-        Assert.assertTrue(a.equals(cloneOfA), "a's clone should be equal");
+        assertThat(a).isEqualTo(cloneOfA);
         a.remove(1);
-        Assert.assertFalse(a.equals(cloneOfA), "a was modified so clone is different");
+        assertThat(a).isNotEqualTo(cloneOfA);
         JsonArray b = array();
         b.addAll(cloneOfA);
-        Assert.assertTrue(b.equals(b.clone()), "b's clone should be equal");
-        Assert.assertTrue(b.equals(cloneOfA), "b's clone should be equal to clone of A");
+        assertThat(b).isEqualTo(b.clone());
+        assertThat(b).isEqualTo(cloneOfA);
     }
 
     public void shouldRemoveEmpty() {
         JsonArray array = array(object().get(), array(), nullValue());
-        Assert.assertTrue(array.isEmpty(), "array should be empty");
+        assertThat(array).isEmpty();
         array.removeEmpty();
-        Assert.assertEquals(array.size(), 0);
+        AssertJUnit.assertEquals(array.size(), 0);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class JsonArrayTest {
                 found = true;
             }
         }
-        Assert.assertTrue(found, "jsonObject with display name is found in jsonArray");
+        assertThat(found).isTrue();
 
         // try a different approach to building the array
         // assume a different library (e.g jdbctemplate) has returned an ArrayList of JsonObjects
@@ -158,7 +158,7 @@ public class JsonArrayTest {
                 found = true;
             }
         }
-        Assert.assertTrue(found, "jsonObject with display name is found in jsonArray created from ArrayList ");
+        assertThat(found).isTrue();
     }
 
     public void shouldConvertToDoubleArray() {
@@ -185,7 +185,7 @@ public class JsonArrayTest {
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);
         Object object2 = ois.readObject();
-        assertTrue(object.equals(object2));
+        AssertJUnit.assertTrue(object.equals(object2));
     }
 
     public void shouldIterateOverObjects() {
@@ -306,4 +306,18 @@ public class JsonArrayTest {
         assertThat("should be removed", !array.contains(primitive("3")));
         assertThat("should be removed", !array.contains("3"));
     }
+
+    @Test(expectedExceptions=IllegalStateException.class)
+    public void shouldNotAllowMutations() {
+        JsonArray list = array(1).immutableClone();
+        list.add(2);
+    }
+
+    @Test(expectedExceptions=IllegalStateException.class)
+    public void shouldNotAllowMutationsOnElement() {
+        JsonArray list = array(array(1)).immutableClone();
+        JsonArray l2=list.first().asArray();
+        l2.add(2);
+    }
+
 }

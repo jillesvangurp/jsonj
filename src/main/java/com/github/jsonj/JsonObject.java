@@ -63,7 +63,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     // private final LinkedHashMap<EfficientString, JsonElement> map = new LinkedHashMap<EfficientString,
     // JsonElement>();
 //    private final Map<EfficientString, JsonElement> map = new SimpleMap<>();
-    private final Map<Integer,JsonElement> intMap = new SimpleIntKeyMap<>();
+    private final SimpleIntKeyMap<JsonElement> intMap = new SimpleIntKeyMap<>();
 
     private String idField = null;
 
@@ -696,6 +696,19 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
         return object;
     }
+
+    @Override
+    public JsonObject immutableClone() {
+        JsonObject object = new JsonObject();
+        Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
+        for (Entry<String, JsonElement> entry : es) {
+            JsonElement e = entry.getValue().immutableClone();
+            object.put(entry.getKey(), e);
+        }
+        object.intMap.makeImmutable();
+        return object;
+    }
+
 
     @Override
     public boolean isEmpty() {

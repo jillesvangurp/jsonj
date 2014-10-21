@@ -27,6 +27,7 @@ import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertTrue;
@@ -285,5 +286,29 @@ public class JsonObjectTest {
         assertThat(object.getArray("f").size(), is(1));
         object.getArray("f").add(1);
         assertThat(object.getArray("f").size(), is(1));
+    }
+
+    @Test(expectedExceptions=IllegalStateException.class)
+    public void shouldNotAllowMutations() {
+        JsonObject object = object(field("f", array(1,1,1,1,1)));
+        JsonObject clone = object.immutableClone();
+        assertThat(clone).isEqualTo(object);
+        clone.put("x", "y");
+    }
+
+    @Test(expectedExceptions=IllegalStateException.class)
+    public void shouldNotAllowMutationsOnArrayInObject() {
+        JsonObject object = object(field("f", array(1,1,1,1,1)));
+        JsonObject clone = object.immutableClone();
+        assertThat(clone).isEqualTo(object);
+        clone.getArray("f").add(1);
+    }
+
+    @Test(expectedExceptions=IllegalStateException.class)
+    public void shouldNotAllowMutationsOnObjectInObject() {
+        JsonObject object = object(field("f", object(field("1",1))));
+        JsonObject clone = object.immutableClone();
+        assertThat(clone).isEqualTo(object);
+        clone.getObject("f").put("2",2);
     }
 }

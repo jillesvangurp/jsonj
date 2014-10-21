@@ -22,9 +22,14 @@ import org.apache.commons.lang.Validate;
 public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
     private static final long serialVersionUID = 7650009698202273725L;
+    private boolean immutable=false;
 
     int[] keysArr=new int[3];
     private final ArrayList<V> values = new ArrayList<>();
+
+    public void makeImmutable() {
+        immutable=true;
+    }
 
     @Override
     public int size() {
@@ -89,6 +94,9 @@ public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
     @Override
     public V put(Integer key, V value) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
         Validate.notNull(key);
         int index = getIndex(key);
         if(index >=0) {
@@ -106,6 +114,10 @@ public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
     @Override
     public V remove(Object key) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+
         int index = getIndex((Integer)key);
         if(index >=0) {
             System.arraycopy(keysArr,index+1,keysArr,index,keysArr.length-1-index);
@@ -117,6 +129,10 @@ public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
     @Override
     public void putAll(java.util.Map<? extends Integer, ? extends V> m) {
+        if(immutable) {
+            throw new IllegalStateException("object is immutable");
+        }
+
         for (Entry<? extends Integer, ? extends V> e : m.entrySet()) {
             put(e.getKey(), e.getValue());
         }
@@ -205,6 +221,10 @@ public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
                 @Override
                 public void remove() {
+                    if(immutable) {
+                        throw new IllegalStateException("object is immutable");
+                    }
+
                     if(owner.size() == 0) {
                         throw new NoSuchElementException("The entry set is empty");
                     }
