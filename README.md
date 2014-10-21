@@ -200,6 +200,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
 
 # Changelog
+- 2.2 Add immutableClone method to JsonElement that allows you to get an immutable json element.
 - 2.1 Improve memory footprint of JsonObject by refactoring the SimpleMap to use an int array to store EffecientString references instead of object references.
 - 2.0 New release that requires Java 8
   - adds convenient integration with Java 8 specific features. Since this breaks compatibility somewhate, I've bumped the version to 2.0. The last 1.x release should be fine for usage and there is a 1.x branch in git as well. However, it is unlikely that I will support this branch in the future.
