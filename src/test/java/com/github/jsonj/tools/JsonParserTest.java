@@ -151,4 +151,11 @@ public class JsonParserTest {
     public void shouldNotParseEmptyString() {
         jsonParser.parse("");
     }
+
+    public void shouldParseEmoji() {
+        String stringWithEmoji = "\"qweqw \\ud83d\\ude00 a\"";
+        JsonElement parsed = jsonParser.parse(stringWithEmoji);
+        System.out.println(parsed);
+        assertThat(parsed.toString().toLowerCase(), is(stringWithEmoji));
+    }
 }

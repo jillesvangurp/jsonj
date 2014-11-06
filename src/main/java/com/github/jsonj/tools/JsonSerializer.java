@@ -302,6 +302,9 @@ public class JsonSerializer {
                     buf.append(c);
                     break;
                 }
+            } else {
+                // simply escape; emojis are apparently outside the xml friendly range
+                buf.append("\\u" + hex(c));
             }
         }
         return buf.toString();
