@@ -296,7 +296,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             if (e == null) {
                 return null;
             }
-            if (n == labels.length - 1 && e != null) {
+            if (n == labels.length - 1) {
                 return e;
             }
             if (!e.isObject()) {
@@ -543,7 +543,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      */
     public JsonArray getOrCreateArray(final String... labels) {
         JsonObject parent = this;
-        JsonElement decendent;
+        JsonElement decendent = null;
         int index = 0;
         for (String label : labels) {
             decendent = parent.get(label);
@@ -558,6 +558,9 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                 } else {
                     return decendent.asArray();
                 }
+            }
+            if(decendent == null) {
+                throw new IllegalStateException("decendant should not be null here");
             }
             parent = decendent.asObject();
             index++;
@@ -598,6 +601,9 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                     return set;
                 }
             }
+            if(decendent == null) {
+                throw new IllegalStateException("decendant should not be null here");
+            }
             parent = decendent.asObject();
             index++;
         }
@@ -631,6 +637,9 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                 } else {
                     return decendent.asObject();
                 }
+            }
+            if(decendent == null) {
+                throw new IllegalStateException("decendant should not be null here");
             }
             parent = decendent.asObject();
             index++;
