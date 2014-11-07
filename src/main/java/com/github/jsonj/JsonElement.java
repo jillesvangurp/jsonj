@@ -145,4 +145,8 @@ public interface JsonElement extends Cloneable, Serializable {
      * @return a clone of the JsonElement that is immutable. Note, JsonPrimitive instances are already immutable so they return themselves.
      */
     JsonElement immutableClone();
+
+    default Number asNumber() {
+        throw new JsonTypeMismatchException("not a primitive");
+    }
 }

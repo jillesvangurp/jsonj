@@ -142,6 +142,14 @@ public class JsonPrimitive implements JsonElement, Serializable {
         }
     }
 
+    public Number asNumber() {
+        if(type == JsonType.number) {
+            return ((Number)value).doubleValue();
+        } else {
+            throw new JsonTypeMismatchException("not a number '"+value+"'");
+        }
+    }
+
     @Override
     public boolean asBoolean() {
         if(type == JsonType.bool) {

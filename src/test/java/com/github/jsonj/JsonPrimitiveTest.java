@@ -57,6 +57,12 @@ public class JsonPrimitiveTest {
         Assert.assertEquals(element.hashCode(), element.hashCode());
     }
 
+    @Test
+    public void shouldGetNumber() {
+        JsonPrimitive primitive = primitive(42);
+        assertThat(primitive.asNumber().intValue(), is(42));
+    }
+
     @DataProvider
     public Object[][] notEqual() {
         return new Object[][] {
