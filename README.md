@@ -13,13 +13,17 @@ There are several reasons why you might like jsonj
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
-# Get it from Maven Central
+# JsonJ at Inbot
+
+I developed JsonJ while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json.
+
+# Get JsonJ from Maven Central
 
 ```
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.5</version>
+    <version>2.6</version>
 </dependency>
 ```
 
