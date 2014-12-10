@@ -5,12 +5,12 @@ JsonJ is a library for working with json in Java without mappings or model class
 There are several reasons why you might like jsonj
 
 - it provides really convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
-- it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps dictionaries a lot easier.
-- it's memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
-- it's simple to use and lacks the complexity of other solutions.
+- it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps a lot easier.
+- it is memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
+- it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes.
 - it uses the excellent jackson parser for parsing data structures.
 
-There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not) or let me know it should be changed in some way.
+There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
 # Get it from Maven Central
 
@@ -22,15 +22,13 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 </dependency>
 ```
 
-Note. check for the latest version. I do not always update the readme.
+Note. always check for the latest version. I do not always update the readme.
 
 For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the integration with the new Streams API in java 8.
 
 # Features
 
 The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures, that has a low amount of verbosity compared to other frameworks.
-
-I’ve used it for large scale data processing, which involves processing millions of objects, retaining large amounts of objects in memory, and loads of parsing and serialization.
 
 The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
 
