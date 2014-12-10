@@ -176,6 +176,7 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 - A thread safe `JsonParser` class is provided that uses jackson's streaming parser.
 - You can serialize using `toString()` or `prettyPrint()` or `serialize()` on any JsonElement, or you can use the `JsonSerializer` class directly.
+- There's a YamlParser, YamlSerializer, JsonjPlistParser, and JsonjPlistSerializer as well.
 
 ## Java 8
 
