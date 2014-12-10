@@ -9,6 +9,7 @@ There are several reasons why you might like jsonj
 - it is memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
 - it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes.
 - it uses the excellent jackson parser for parsing data structures.
+- In addition to the popular json format it also supports parsing and serializing to binary plist and YAML.
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
@@ -203,7 +204,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - You can serialize to and parse from binary plists. This was added to support some IOS specific usecases. You need to add the optional maven dependency on dd-plist for this to work.
 
 # Changelog
-- 2.5 Add support for parsing and serializing plists. Add custom [assertj](http://joel-costigliola.github.io/assertj/) assertions. 
+- 2.6 Add support for yaml using jackson's jackson-dataformat-yaml. YamlParser and YamlSerializer parse and serialize to and from JsonJ.
+- 2.5 Add support for parsing and serializing plists. Add custom [assertj](http://joel-costigliola.github.io/assertj/) assertions.
 - 2.4 asNumber method added
 - 2.3 Fix issue with emoji. These unicode characters were being dropped because they are outside the XML supported ranges of unicode characters. Now they are added in escaped form.
 - 2.2 Add immutableClone method to JsonElement that allows you to get an immutable json element.
