@@ -106,11 +106,12 @@ public class JsonSetTest {
 
     public void shouldUseIdStrategy() {
         JsonObject object1 = object(field("id",1), field("value", "foo"));
-        JsonObject object2 = object(field("id",1), field("value", "bar"));
+        JsonObject object2 = object(field("id",2), field("value", "bar"));
+        JsonObject object3 = object(field("id",1), field("value", "bar"));
         JsonSet set = set();
         set = set.applyIdStrategy("id");
-        set.add(object1, object2);
-        assertThat(set.size(), is(1));
+        set.add(object1, object2, object3);
+        assertThat(set.size(), is(2));
     }
 
     public void shouldRemoveDuplicatesAfterSettingStrategy() {
