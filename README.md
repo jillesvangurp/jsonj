@@ -15,7 +15,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 
 # JsonJ at Inbot
 
-I developed JsonJ while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json.
+I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. 
 
 # Get JsonJ from Maven Central
 
@@ -351,9 +351,13 @@ Anyone who plans to write a lot of business logic in Java that manipulates json 
 
 Version 2 is Java 8 specific and provides integration with the new Streams api.
 
+## Would JsonJ make sense in other languages?
+
+It depends. Given that support for json data structures is native in python, ruby, and javascript, you would expect you won't need it. Yet a lot of the more advanced stuff in jsonj would be kind of nice to have still. For example, `s=object['f']['o']['o']` in Ruby can fail if element 'f' does not exist where as `object.getString("f","o","o")` won't throw an exception in that case. Given that, why not have something like `s=object['f','o','o']` that fails in a similarly graceful way?
+
 ## I found a bug, what should I do
 
-File a bug on this github project, or just mail/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That’s what github is all about.
+File a bug on this github project, or just email/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That’s what github is all about.
 
 ## How to build JsonJ
 
