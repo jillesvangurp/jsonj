@@ -1,6 +1,6 @@
 # Introduction
 
-JsonJ is a library for working with json in Java without mappings or model classes. Instead JsonJ backs the very simple json types with the Collections framework that comes with Java. JsonJ makes this both easy and intuitive and generally takes the pain out of manipulating json structures in Java.  
+JsonJ is a library for working with json in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
 
 There are several reasons why you might like jsonj
 
@@ -18,7 +18,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.1</version>
+    <version>2.5</version>
 </dependency>
 ```
 
@@ -182,6 +182,10 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 Java 8 added lambda functions and the streaming API. While 1.x already works fine with this due to the fact that JsonJ fully supports the Collections framework. JsonJ 2.x adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
 
+## Unit testing using Assertj
+
+As of 2.5, I've started adding support for custom jsonj assertion classes to support unit testing using assertj. This is a work in progress and I will be adding functionality here as I need it. This simplifies unit testing code that handles or returns jsonj instances.
+
 ## JRuby integration
 
 If you use jruby, you can seemlessly integrate jsonj using [jsonj-integration](https://github.com/jillesvangurp/jsonj-integration). This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds `to_json` and `to_s` methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy.
@@ -197,7 +201,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 ## Odd features you probably don't care about
 
 - `JsonElement` implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
-- A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures.
+- A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures. You need to add the optional dependency on xom for this to work.
+- You can serialize to and parse from binary plists. This was added to support some IOS specific usecases. You need to add the optional maven dependency on dd-plist for this to work.
 
 # Changelog
 - 2.5 Add support for parsing and serializing plists. Add custom [assertj](http://joel-costigliola.github.io/assertj/) assertions. 
