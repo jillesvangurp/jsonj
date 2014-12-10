@@ -162,14 +162,25 @@ for(int i: array(1,2,3).ints()) {
   ..
 }
 ```
+Or you can use the new Java 8 streams:
 
-Of course all this convenience means that sometimes things don't work. All the exceptions in jsonj are unchecked.
+```java
+// do somthing for each entry in the dictionary
+object.forEach(k,v) -> {
+...
+}
+```
 
+```java
+// extract the name fields of objects inside an array and collect them in a JsonSet
+JsonSet names = array.streamObjects().map(o -> o.getString("name")).collect(JsonJCollectors.set());
+```
+
+Of course all this convenience means that sometimes things don't work. All the exceptions in jsonj are unchecked, so there is no need to litter your business logic with try .. catch.
 
 ```java
 array("foo").ints() // throws JsonTypeMismatchException
 array(1,2,3).asObject() // throws JsonTypeMismatchException
-
 ```
 
 ## Parsing and serialization
@@ -184,7 +195,7 @@ Java 8 added lambda functions and the streaming API. While 1.x already works fin
 
 ## Unit testing using Assertj
 
-As of 2.5, I've started adding support for custom jsonj assertion classes to support unit testing using assertj. This is a work in progress and I will be adding functionality here as I need it. This simplifies unit testing code that handles or returns jsonj instances.
+As of 2.5, I've started adding support for custom jsonj assertion classes to support unit testing using assertj. This is a work in progress and I will be adding functionality here as I need it. This simplifies unit testing code that handles or returns jsonj instances. Note, as of 2.5 a lot of the unit tests are still using hamcrest as I have not converted the tests yet. I welcome pull requests for this :-).
 
 ## JRuby integration
 
@@ -194,8 +205,8 @@ If you use jruby, you can seemlessly integrate jsonj using [jsonj-integration](h
 
 JsonJ implements several things that ensure it uses much less memory than might otherwise be the case:
 
-- it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8.
-- it uses UTF8 byte arrays for storing String primitives.
+- it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. Assuming you have millions of objects that use a handful of keys like 'id', 'name', etc., You only store those byte arrays once.
+- it uses UTF8 byte arrays for storing String primitives. This is more efficient than Java's own String class, which uses utf-16.
 - it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory.
 
 ## Odd features you probably don't care about
