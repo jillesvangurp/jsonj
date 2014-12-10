@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import com.github.jsonj.assertions.JsonJAssertions;
 import com.github.jsonj.tools.JsonBuilder;
 
 @Test
@@ -132,5 +133,9 @@ public class JsonSetTest {
         set.add(object2);
         assertThat(set.size(), is(1));
         assertThat(set.get(0).asObject().getString("value"), is("bar"));
+    }
+
+    public void shouldUseAssertJAssertion() {
+        JsonJAssertions.assertThat(set(1,2)).shouldContain(2,1).shouldNotContain(3);
     }
 }

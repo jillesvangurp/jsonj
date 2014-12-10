@@ -21,6 +21,7 @@
  */
 package com.github.jsonj;
 
+import static com.github.jsonj.assertions.JsonJAssertions.assertThat;
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
@@ -112,5 +113,9 @@ public class JsonPrimitiveTest {
 
     public void shouldConsiderNullEqualToNull() {
         assertThat(nullValue(), is(nullValue()));
+    }
+
+    public void shouldUseAssertJ() {
+        assertThat(primitive(1)).isEqualTo(1).isNotEqualTo(2);
     }
 }
