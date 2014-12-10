@@ -6,10 +6,10 @@ There are several reasons why you might like jsonj
 
 - it provides really convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
 - it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps a lot easier.
-- it is memory efficient: you can squeeze millions of json objects in a modest amout of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
+- it is memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
 - it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes.
-- it uses the excellent jackson parser for parsing data structures.
-- In addition to the popular json format it also supports parsing and serializing to binary plist and YAML.
+- it uses the excellent jackson parser for parsing data structures and you might already use jackson.
+- In addition to the popular json format it also supports parsing and serializing to binary plist and YAML. 
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
@@ -25,11 +25,11 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 
 Note. always check for the latest version. I do not always update the readme.
 
-For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the integration with the new Streams API in java 8.
+For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the integration with the new Streams API in java 8 as well as some other new language features that are used.
 
 # Features
 
-The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures, that has a low amount of verbosity compared to other frameworks.
+The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures that has a low amount of verbosity compared to other frameworks.
 
 The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
 
@@ -46,11 +46,9 @@ JsonJ provides a few easy to understand classes that extend Java’s Collections
 
 As the class signatures suggest, these classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement.
 
-The `JsonElement` interface specifies a lot of convenience methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc.
+The `JsonElement` interface specifies a lot of convenience methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc. For example `String s = e.asArray().last().asObject().getArray("key").get(3).asString()` actually digs out a string from a list inside an object that is the last element in another list without requiring type casts. The as- methods convert to common types or throw an unchecked exception if the conversion is impossible and there are also is- methods for checking the type conditionally. This gets rid of a lot of type checks, type casts, and other ugly code.
 
-Additionally a lot of methods are polymorphic and accept different types of objects (unlike the methods in the Collections framework). For example, the add method on JsonArray is polymorphic and automatically generates primitives if you add Strings, Booleans, or Numbers. The put on JsonObject behaves the same. The add method support varargs, so you can add multiple elements in one call.
-
-JsonElement specifies as- methods that convert to common types or throw an unchecked exception if the conversion is impossible and there are also is- methods for checking the type conditionally. This gets rid of a lot of type checks, type casts, and other ugly code.
+Additionally a lot of methods are polymorphic and accept different types of objects (unlike the methods in the Collections framework). For example, the `add` method on JsonArray is polymorphic and automatically generates primitives if you add Strings, Booleans, or Numbers. The `put` on JsonObject behaves the same. The `add` method support varargs, so you can add multiple elements in one call. 
 
 ## JsonBuilder
 
@@ -58,7 +56,7 @@ To facilitate creation of json objects, arrays, and primitives a builder class i
 
 ### Factory methods without builders
 
-If this is too verbose for you, JsonJ also supports a different style of doing the same using simple static factory methods:
+JsonBuilder started out as an ordinary builder and you can still use it as such. However, I find factory methods are a much cleaner way of constructing objects, arrays, and sets.
 
 ```java
 import static com.github.jsonj.tools.JsonBuilder.array;
@@ -83,9 +81,11 @@ JsonObject o=object(
 );
 ```
 
-This uses `Map.Entry` and the field factory method returns a `Entry<String,JsonElement>` instance that you can simply add to the `JsonObject`.
+The `object` methods supports a varargs element of the type `Map.Entry`, which is the type you normally get when iterating over a Map entryset. To support creating those, there is the `field` method, which returns a `Entry<String,JsonElement>` instance that you can simply `add` to the `JsonObject` as well. 
 
-Notice how you can mix integers, strings, objects in a typesafe way. They are all converted for you to JsonElement using the fromObject method in JsonBuilder.
+Notice how you can mix integers, strings, objects in a typesafe way. They are all converted for you to JsonElement using the fromObject method in JsonBuilder which converts objects in the most appropriate JsonJ equivalent. So Booleans, Integers, Doubles, Strings, etc. all become JsonPrimitives. Any JsonElement implementations are used as is and `Map` or `List` implementations get converted to JsonObject and JsonArray instances.
+
+Finally, the `array` method constructs a JsonArray using its varargs elements. Naturally it supports the same behavior of doing the right thing with any kind of object. You can even make it 
 
 ### Classic builder pattern
 
