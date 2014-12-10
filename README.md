@@ -203,11 +203,12 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - `JsonElement` implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures. You need to add the optional dependency on xom for this to work.
 - You can serialize to and parse from binary plists. This was added to support some IOS specific usecases. You need to add the optional maven dependency on dd-plist for this to work.
+- Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
 - 2.6 Add support for yaml using jackson's jackson-dataformat-yaml. YamlParser and YamlSerializer parse and serialize to and from JsonJ.
 - 2.5 Add support for parsing and serializing plists. Add custom [assertj](http://joel-costigliola.github.io/assertj/) assertions.
-- 2.4 asNumber method added
+- 2.4 asNumber method added to JsonElement
 - 2.3 Fix issue with emoji. These unicode characters were being dropped because they are outside the XML supported ranges of unicode characters. Now they are added in escaped form.
 - 2.2 Add immutableClone method to JsonElement that allows you to get an immutable json element.
 - 2.1 Improve memory footprint of JsonObject by refactoring the SimpleMap to use an int array to store EffecientString references instead of object references.
