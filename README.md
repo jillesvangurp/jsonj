@@ -89,11 +89,11 @@ The `object` methods supports a varargs element of the type `Map.Entry`, which i
 
 Notice how you can mix integers, strings, objects in a typesafe way. They are all converted for you to JsonElement using the fromObject method in JsonBuilder which converts objects in the most appropriate JsonJ equivalent. So Booleans, Integers, Doubles, Strings, etc. all become JsonPrimitives. Any JsonElement implementations are used as is and `Map` or `List` implementations get converted to JsonObject and JsonArray instances.
 
-Finally, the `array` method constructs a JsonArray using its varargs elements. Naturally it supports the same behavior of doing the right thing with any kind of object. You can even make it 
+Finally, the `array` method constructs a JsonArray using its varargs elements. Naturally it supports the same behavior of doing the right thing with any kind of object.
 
 ### Classic builder pattern
 
-This works by chaining method calls that all return a `JsonBuilder` and then using the `get()` method to get to the constructed object.
+If you prefer, you can also use the builder pattern to construct json objects. You create a builder using JsonBuilder.object() and then you can simply chain put method calls that all return a `JsonBuilder` and then using the `get()` method to get to the constructed object.
 
 ```java
 import static com.github.jsonj.tools.JsonBuilder.array;
@@ -125,7 +125,7 @@ The builder class also provides methods to facilitate converting from existing M
 
 ## Manipulating Json Programmatically
 
-The default add and put methods in List and Map are polymorph in JsonArray, JsonSet, and JsonObject. So, they understand how to do the right thing for different types.
+The default `add` and `put` methods in `List` and `Map` have been made polymorphic in `JsonArray`, `JsonSet`, and `JsonObject`. So, they understand how to do the right thing for different types.
 
 ```java
 JsonArray a = array();
@@ -144,7 +144,7 @@ o.add(field("field",42));
 
 ```
 
-You can easily create and manipulate nested objects or arrays with getOrCreateObject or getOrCreateArray. Both methods only work on objects and save you from having to recursively add objects and check for their existence while you do so.
+You can easily create and manipulate nested objects or arrays with `getOrCreateObject`, `getOrCreateArray`, and `getOrCreateSet`. These methods only work on objects and save you from having to recursively add objects and check for their existence while you do so. If a parent doesn't exist, it actually is created for you. 
 
 ```java
 JsonObject object = new JsonObject()
@@ -155,6 +155,7 @@ object.getOrCreateArray("b","a","r").add(1,2,3);
 // -> {"f":{"o":{"o":{"foo":"bar"}}},"b":{"a":{"r":[1,2,3]}}}
 ```
 
+## Iterating over stuff
 
 There are convenient methods to iterate over different types of elements in an array. This saves you from manual object casting/conversion.
 
@@ -195,7 +196,7 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 ## Java 8
 
-Java 8 added lambda functions and the streaming API. While 1.x already works fine with this due to the fact that JsonJ fully supports the Collections framework. JsonJ 2.x adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
+Java 8 added lambda functions, default methods on interfaces, and the streaming API. While 1.x already works fine with Java 8 due to the fact that JsonJ fully supports the Collections framework. JsonJ 2.x adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects instead of JsonElement instances. This saves you one asObject() call on each element. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
 
 ## Unit testing using Assertj
 
