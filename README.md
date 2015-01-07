@@ -354,7 +354,7 @@ Version 2 is Java 8 specific and provides integration with the new Streams api.
 
 ## Would JsonJ make sense in other languages?
 
-It depends. Given that support for json data structures is native in python, ruby, and javascript, you would expect you won't need it. Yet a lot of the more advanced stuff in jsonj would be kind of nice to have still. For example, `s=object['f']['o']['o']` in Ruby can fail if element 'f' does not exist where as `object.getString("f","o","o")` won't throw an exception in that case. Given that, why not have something like `s=object['f','o','o']` that fails in a similarly graceful way?
+It depends. Given that support for json data structures is native in python, ruby, and javascript, you would expect you won't need it. Yet a lot of the more advanced stuff in jsonj would be kind of nice to have still. For example, `s=object['f']['o']['o']` in Ruby can fail if element 'f' does not exist where as `object.getString("f","o","o")` won't throw an exception in that case. Given that, why not have something like `s=object['f','o','o']` that fails in a similarly graceful way? *Update* I've done some experiments in javascript related to this: [jsonjs](https://github.com/Inbot/jsonjs).
 
 ## I found a bug, what should I do
 
