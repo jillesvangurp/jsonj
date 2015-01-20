@@ -155,6 +155,27 @@ object.getOrCreateArray("b","a","r").add(1,2,3);
 // -> {"f":{"o":{"o":{"foo":"bar"}}},"b":{"a":{"r":[1,2,3]}}}
 ```
 
+## Getting values out of objects
+
+When getting values out of an object, you typically want to get the number, string, or boolean rather than a JsonElement. For this reason, JsonObject comes with several variations of the get method that allow you to avoid having to call the asString() method.
+
+```java
+// given {"foo":{"bar":"foobar"},"bar":42}
+o.get("foo") // returns a JsonObject
+o.get("foo","bar") // returns a JsonElement
+o.get("foo","bar").asString() // returns the String "foobar"
+o.getString("foo","bar") // returns the String "foobar"
+o.getString("idontexist") // returns null
+o.getString("bar") // returns the String "42", it converts the number to a string for you
+o.getString("foo") // throws TypeMismatchException because the returned value is not a JsonPrimitive
+o.getLong("bar") // returns the long 42
+o.getInt("bar") // returns the int 42
+o.getDouble("bar") // returns the int 42.0
+o.get("xyz", 0) // returns the long 0 (default value for the missing property)
+o.get("bar", 666) // returns the long 666
+o.get("hasProperty", false) // returns false because o does not have a boolean field hasProperty
+```
+
 ## Iterating over stuff
 
 There are convenient methods to iterate over different types of elements in an array. This saves you from manual object casting/conversion.
