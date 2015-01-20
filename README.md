@@ -171,15 +171,15 @@ o.get("foo","bar").asString() // returns the String "foobar"
 o.getString("foo","bar") // returns the String "foobar" without having to call asString()
 o.getString("idontexist") // returns null
 o.getString("bar") // returns the String "42", it converts the number to a string for you
-o.getString("foo") // throws TypeMismatchException because the returned value is not a JsonPrimitive
+o.getString("foo") // throws JsonTypeMismatchException because the returned value is not a JsonPrimitive
 o.getLong("bar") // returns the long 42
 o.getInt("bar") // returns the int 42
-o.getBoolean("bar") // throws TypeMismatchException because the returned value is not a boolean
+o.getBoolean("bar") // throws JsonTypeMismatchException because the returned value is not a boolean
 o.getDouble("bar") // returns the int 42.0
 
 // polymorphic get method with default value; does not support varargs.
-o.get("xyz", 0) // returns the long 0 (default value for the missing property)
-o.get("bar", 666) // returns the long 666
+o.get("xyz", 0) // returns the int 0 (default int value for the missing property)
+o.get("bar", 666l) // returns the long 42 because o has a field bar and a default value that is a long
 o.get("hasProperty", false) // returns false because o does not have a boolean field hasProperty
 ```
 
