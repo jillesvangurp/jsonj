@@ -25,6 +25,11 @@ import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonBuilder;
+import com.github.jsonj.tools.JsonParser;
+import com.github.jsonj.tools.JsonSerializer;
+import com.jillesvangurp.efficientstring.EfficientString;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -37,14 +42,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
-
 import org.apache.commons.lang.Validate;
-
-import com.github.jsonj.exceptions.JsonTypeMismatchException;
-import com.github.jsonj.tools.JsonBuilder;
-import com.github.jsonj.tools.JsonParser;
-import com.github.jsonj.tools.JsonSerializer;
-import com.jillesvangurp.efficientstring.EfficientString;
 
 /**
  * Representation of json objects. This class extends LinkedHashMap and may be used as such. In addition a lot of
@@ -951,7 +949,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         forEach((k,v) -> {f.accept(k, v.asString());});
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+    void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // when using object serialization, write the json bytes
         byte[] bytes = toString().getBytes(UTF8);
         out.writeInt(bytes.length);
@@ -959,7 +957,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     }
 
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+    void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         // when deserializing, parse the json string
         try {
             int length = in.readInt();
