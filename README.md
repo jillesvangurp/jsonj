@@ -7,15 +7,15 @@ There are several reasons why you might like jsonj
 - it provides really convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
 - it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps a lot easier.
 - it is memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
-- it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes.
+- it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes. However (as of 2.8), a JsonDataObject interface is provided that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin.
 - it uses the excellent jackson parser for parsing data structures and you might already use jackson.
-- In addition to the popular json format it also supports parsing and serializing to binary plist and YAML. 
+- In addition to the popular json format it also supports parsing and serializing to binary plist and YAML.
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
 # JsonJ at Inbot
 
-I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. 
+I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj.
 
 # Get JsonJ from Maven Central
 
@@ -23,7 +23,7 @@ I developed JsonJ on the side while I still was in Nokia as an ideal way to hand
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.6</version>
+    <version>2.8</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ As the class signatures suggest, these classes provide a type safe alternative t
 
 The `JsonElement` interface specifies a lot of convenience methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc. For example `String s = e.asArray().last().asObject().getArray("key").get(3).asString()` actually digs out a string from a list inside an object that is the last element in another list without requiring type casts. The as- methods convert to common types or throw an unchecked exception if the conversion is impossible and there are also is- methods for checking the type conditionally. This gets rid of a lot of type checks, type casts, and other ugly code.
 
-Additionally a lot of methods are polymorphic and accept different types of objects (unlike the methods in the Collections framework). For example, the `add` method on JsonArray is polymorphic and automatically generates primitives if you add Strings, Booleans, or Numbers. The `put` on JsonObject behaves the same. The `add` method support varargs, so you can add multiple elements in one call. 
+Additionally a lot of methods are polymorphic and accept different types of objects (unlike the methods in the Collections framework). For example, the `add` method on JsonArray is polymorphic and automatically generates primitives if you add Strings, Booleans, or Numbers. The `put` on JsonObject behaves the same. The `add` method support varargs, so you can add multiple elements in one call.
 
 ## JsonBuilder
 
@@ -85,7 +85,7 @@ JsonObject o=object(
 );
 ```
 
-The `object` methods supports a varargs element of the type `Map.Entry`, which is the type you normally get when iterating over a Map entryset. To support creating those, there is the `field` method, which returns a `Entry<String,JsonElement>` instance that you can simply `add` to the `JsonObject` as well. 
+The `object` methods supports a varargs element of the type `Map.Entry`, which is the type you normally get when iterating over a Map entryset. To support creating those, there is the `field` method, which returns a `Entry<String,JsonElement>` instance that you can simply `add` to the `JsonObject` as well.
 
 Notice how you can mix integers, strings, objects in a typesafe way. They are all converted for you to JsonElement using the fromObject method in JsonBuilder which converts objects in the most appropriate JsonJ equivalent. So Booleans, Integers, Doubles, Strings, etc. all become JsonPrimitives. Any JsonElement implementations are used as is and `Map` or `List` implementations get converted to JsonObject and JsonArray instances.
 
@@ -144,7 +144,7 @@ o.add(field("field",42));
 
 ```
 
-You can easily create and manipulate nested objects or arrays with `getOrCreateObject`, `getOrCreateArray`, and `getOrCreateSet`. These methods only work on objects and save you from having to recursively add objects and check for their existence while you do so. If a parent doesn't exist, it actually is created for you. 
+You can easily create and manipulate nested objects or arrays with `getOrCreateObject`, `getOrCreateArray`, and `getOrCreateSet`. These methods only work on objects and save you from having to recursively add objects and check for their existence while you do so. If a parent doesn't exist, it actually is created for you.
 
 ```java
 JsonObject object = new JsonObject()
@@ -250,6 +250,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
+- 2.8 Add JsonDataObject interface to support creating domain classes based on JsonObject.
+- 2.7 Update jackson dependency.
 - 2.6 Add support for yaml using jackson's jackson-dataformat-yaml. YamlParser and YamlSerializer parse and serialize to and from JsonJ.
 - 2.5 Add support for parsing and serializing plists. Add custom [assertj](http://joel-costigliola.github.io/assertj/) assertions.
 - 2.4 asNumber method added to JsonElement
