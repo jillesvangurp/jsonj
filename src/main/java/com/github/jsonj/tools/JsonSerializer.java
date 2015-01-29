@@ -42,26 +42,27 @@ import com.github.jsonj.JsonType;
  * Utility class to serialize Json.
  */
 public class JsonSerializer {
-    public static final Charset UTF8=Charset.forName("utf-8");
+    public static final Charset UTF8 = Charset.forName("utf-8");
     public static final String ESCAPED_CARRIAGE_RETURN = "\\r";
     public static final String ESCAPED_TAB = "\\t";
     public static final String ESCAPED_BACKSLASH = "\\\\";
     public static final String ESCAPED_NEWLINE = "\\n";
     public static final String ESCAPED_QUOTE = "\\\"";
-    public static final String OPEN_BRACKET="[";
-    public static final String CLOSE_BRACKET="]";
-    public static final String OPEN_BRACE="{";
-    public static final String CLOSE_BRACE="}";
-    public static final String COLON=":";
-    public static final String QUOTE="\"";
-    public static final String COMMA=",";
+    public static final String OPEN_BRACKET = "[";
+    public static final String CLOSE_BRACKET = "]";
+    public static final String OPEN_BRACE = "{";
+    public static final String CLOSE_BRACE = "}";
+    public static final String COLON = ":";
+    public static final String QUOTE = "\"";
+    public static final String COMMA = ",";
 
     private JsonSerializer() {
         // utility class, don't instantiate
     }
 
     /**
-     * @param json a {@link JsonElement}
+     * @param json
+     *            a {@link JsonElement}
      * @return string representation of the json
      */
     public static String serialize(final JsonElement json) {
@@ -69,8 +70,10 @@ public class JsonSerializer {
     }
 
     /**
-     * @param json a {@link JsonElement}
-     * @param out an {@link OutputStream}
+     * @param json
+     *            a {@link JsonElement}
+     * @param out
+     *            an {@link OutputStream}
      */
     public static void serialize(final JsonElement json, OutputStream out) {
         try {
@@ -89,15 +92,17 @@ public class JsonSerializer {
     }
 
     /**
-     * @param json a {@link JsonElement}
-     * @param pretty if true, a properly indented version of the json is returned
+     * @param json
+     *            a {@link JsonElement}
+     * @param pretty
+     *            if true, a properly indented version of the json is returned
      * @return string representation of the json
      */
     public static String serialize(final JsonElement json, final boolean pretty) {
         StringWriter sw = new StringWriter();
         if(pretty) {
             try {
-                serialize(sw,json,pretty);
+                serialize(sw, json, pretty);
             } catch (IOException e) {
                 throw new IllegalStateException("cannot serialize json to a string", e);
             } finally {
@@ -120,10 +125,15 @@ public class JsonSerializer {
 
     /**
      * Writes the object out as json.
-     * @param out output writer
-     * @param json a {@link JsonElement}
-     * @param pretty if true, a properly indented version of the json is written
-     * @throws IOException if there is a problem writing to the writer
+     * 
+     * @param out
+     *            output writer
+     * @param json
+     *            a {@link JsonElement}
+     * @param pretty
+     *            if true, a properly indented version of the json is written
+     * @throws IOException
+     *             if there is a problem writing to the writer
      */
     public static void serialize(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
         BufferedWriter bw = new BufferedWriter(out);
@@ -136,10 +146,15 @@ public class JsonSerializer {
 
     /**
      * Writes the object out as json.
-     * @param out output writer
-     * @param json a {@link JsonElement}
-     * @param pretty if true, a properly indented version of the json is written
-     * @throws IOException if there is a problem writing to the stream
+     * 
+     * @param out
+     *            output writer
+     * @param json
+     *            a {@link JsonElement}
+     * @param pretty
+     *            if true, a properly indented version of the json is written
+     * @throws IOException
+     *             if there is a problem writing to the stream
      */
     public static void serialize(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
         BufferedOutputStream bufferedOut = new BufferedOutputStream(out);
@@ -221,20 +236,20 @@ public class JsonSerializer {
      * The xml specification defines these character hex codes as allowed: #x9 | #xA | #xD | [#x20-#xD7FF] |
      * [#xE000-#xFFFD] | [#x10000-#x10FFFF] Characters outside this range will cause parsers to reject the xml as not
      * well formed. Probably should not allow these in Json either.
-     *
+     * 
      * @param c
-     *        a character
+     *            a character
      * @return true if character is allowed in an XML document
      */
     public static boolean isAllowedInXml(final int c) {
         boolean ok = false;
-        if (c >= 0x10000 && c <= 0x10FFFF) {
+        if(c >= 0x10000 && c <= 0x10FFFF) {
             ok = true;
-        } else if (c >= 0xE000 && c <= 0xFFFD) {
+        } else if(c >= 0xE000 && c <= 0xFFFD) {
             ok = true;
-        } else if (c >= 0x20 && c <= 0xD7FF) {
+        } else if(c >= 0x20 && c <= 0xD7FF) {
             ok = true;
-        } else if (c == 0x9 || c == 0xA || c == 0xD) {
+        } else if(c == 0x9 || c == 0xA || c == 0xD) {
             ok = true;
         }
         return ok;
@@ -242,11 +257,14 @@ public class JsonSerializer {
 
     /**
      * This method escapes strings so that parsers don't break when encountering certain characters. Note, this method
-     * is designed to be robust against corrupted input and will simply silently drop illegal characters rather than trying
-     * to escape them. E.g. escape control characters other than the common ones are simply dropped from the input. Unlike
-     * {@link StringEscapeUtils}, this method does not convert non ascii characters to their unicode escaped notation. Since
-     * {@link JsonSerializer} always uses UTF-8 this is not required.
-     * @param raw any string
+     * is designed to be robust against corrupted input and will simply silently drop illegal characters rather than
+     * trying
+     * to escape them. E.g. escape control characters other than the common ones are simply dropped from the input.
+     * Unlike {@link StringEscapeUtils}, this method does not convert non ascii characters to their unicode escaped
+     * notation. Since {@link JsonSerializer} always uses UTF-8 this is not required.
+     * 
+     * @param raw
+     *            any string
      * @return the json escaped string
      */
     public static String jsonEscape(String raw) {
@@ -315,44 +333,45 @@ public class JsonSerializer {
     }
 
     /**
-     * @param escaped a json string that may contain escaped characters
+     * @param escaped
+     *            a json string that may contain escaped characters
      * @return the unescaped String
      */
     public static String jsonUnescape(String escaped) {
-        StringBuilder buf=new StringBuilder(escaped.length());
+        StringBuilder buf = new StringBuilder(escaped.length());
         char[] chars = escaped.toCharArray();
         if(chars.length >= 2) {
-            int i=1;
-            while(i<chars.length) {
-                if(chars[i-1] == '\\') {
-                    if(chars[i]=='t') {
+            int i = 1;
+            while (i < chars.length) {
+                if(chars[i - 1] == '\\') {
+                    if(chars[i] == 't') {
                         buf.append('\t');
-                        i+=2;
-                    } else if(chars[i]=='n') {
+                        i += 2;
+                    } else if(chars[i] == 'n') {
                         buf.append('\n');
-                        i+=2;
-                    } else if(chars[i]=='r') {
+                        i += 2;
+                    } else if(chars[i] == 'r') {
                         buf.append('\r');
-                        i+=2;
+                        i += 2;
                     } else if(chars[i] == '"') {
                         buf.append('"');
-                        i+=2;
+                        i += 2;
                     } else if(chars[i] == '\\') {
                         buf.append('\\');
-                        i+=2;
+                        i += 2;
                     } else {
-                        buf.append(chars[i-1]);
+                        buf.append(chars[i - 1]);
                         buf.append(chars[i]);
-                        i+=2;
+                        i += 2;
                     }
                 } else {
-                    buf.append(chars[i-1]);
+                    buf.append(chars[i - 1]);
                     i++;
                 }
             }
-            if(i==chars.length) {
+            if(i == chars.length) {
                 // make sure to add the last character
-                buf.append(chars[i-1]);
+                buf.append(chars[i - 1]);
             }
             return buf.toString();
         } else {
@@ -363,7 +382,7 @@ public class JsonSerializer {
     private static void newline(final BufferedWriter bw, final int n, final boolean pretty) throws IOException {
         if(pretty) {
             bw.write('\n');
-            for(int i=0;i<n;i++) {
+            for(int i = 0; i < n; i++) {
                 bw.write('\t');
             }
         }

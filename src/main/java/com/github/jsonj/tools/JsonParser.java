@@ -38,7 +38,7 @@ import com.github.jsonj.exceptions.JsonParseException;
 /**
  * Parser based on json-simple. This class is thread safe so you can safely
  * inject your JsonParser object everywhere.
- *
+ * 
  * Experimental alternative for JsonParser based on jackson's Stream parser.
  */
 public class JsonParser {
@@ -72,7 +72,7 @@ public class JsonParser {
 
     public JsonElement parseResource(String resource) throws IOException {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
-        if(is==null) {
+        if(is == null) {
             is = new FileInputStream(resource);
         }
         return parse(is);
@@ -95,7 +95,7 @@ public class JsonParser {
         com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(r);
         try {
             return JacksonHandler.parseContent(parser);
-        } catch(com.fasterxml.jackson.core.JsonParseException e) {
+        } catch (com.fasterxml.jackson.core.JsonParseException e) {
             throw new JsonParseException(e);
         } finally {
             parser.close();
@@ -105,6 +105,7 @@ public class JsonParser {
     public JsonObject parseObject(String json) {
         return parse(json).asObject();
     }
+
     public JsonObject parseObject(InputStream is) throws IOException {
         return parse(is).asObject();
     }
@@ -116,6 +117,7 @@ public class JsonParser {
     public JsonArray parseArray(String json) {
         return parse(json).asArray();
     }
+
     public JsonArray parseArray(InputStream json) throws IOException {
         return parse(json).asArray();
     }

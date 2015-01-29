@@ -44,19 +44,17 @@ import com.github.jsonj.JsonPrimitive;
  * useful for example to apply xpath or xsl to a json document. The algorithm
  * for converting is very straight forward:
  * <ol>
- * <li>You have to pick a root element name because json doesn't name its
- * elements (except dictionary keys).</li>
- * <li>Dictionary keys become tags. If needed the names are prepended with an
- * underscore to produce valid xml tag names. E.g. {"1":"one"} becomes &lt;_1&gt;one&lt;/_1&gt;
- * <li>Arrays become ordered lists with an outer ol tag and li tags for each
- * element. Just like in HTML</li>
+ * <li>You have to pick a root element name because json doesn't name its elements (except dictionary keys).</li>
+ * <li>Dictionary keys become tags. If needed the names are prepended with an underscore to produce valid xml tag names.
+ * E.g. {"1":"one"} becomes &lt;_1&gt;one&lt;/_1&gt;
+ * <li>Arrays become ordered lists with an outer ol tag and li tags for each element. Just like in HTML</li>
  * <li>Primitives are rendered as TEXT. Where needed XML escaping is used.</li>
  * </ol>
- *
+ * 
  * This class uses an optional maven dependency xom. If you want to use the
  * functionality in this class, you will need to add this dependency to your own
  * project.
- *
+ * 
  */
 public class JsonXmlConverter {
 
@@ -102,21 +100,24 @@ public class JsonXmlConverter {
         e.appendChild(list);
     }
 
-
     /**
      * Convert any JsonElement into an w3c DOM tree with a default root tag of &lt;root&gt;.
-     * @param value a json element
+     * 
+     * @param value
+     *            a json element
      * @return a Document with a default root tag of &lt;root&gt;
      */
     public static org.w3c.dom.Document getW3cDocument(JsonElement value) {
-        return getW3cDocument(value,"root");
+        return getW3cDocument(value, "root");
     }
-
 
     /**
      * Convert any JsonElement into an w3c DOM tree.
-     * @param value a json element
-     * @param rootName the root name of the xml
+     * 
+     * @param value
+     *            a json element
+     * @param rootName
+     *            the root name of the xml
      * @return a Document
      */
     public static org.w3c.dom.Document getW3cDocument(JsonElement value, String rootName) {

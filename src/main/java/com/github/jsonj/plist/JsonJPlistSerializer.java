@@ -67,17 +67,17 @@ public class JsonJPlistSerializer {
     public static NSObject toNsObject(JsonPrimitive p) {
         NSObject o;
         if(p.isBoolean()) {
-            o=new NSNumber(p.asBoolean());
+            o = new NSNumber(p.asBoolean());
         } else if(p.isNumber()) {
             if(p.asString().contains(".")) {
-                o=new NSNumber(p.asDouble());
+                o = new NSNumber(p.asDouble());
             } else {
-                o=new NSNumber(p.asLong());
+                o = new NSNumber(p.asLong());
             }
         } else if(p.isString()) {
-            o=new NSString(p.asString());
+            o = new NSString(p.asString());
         } else {
-            o=null;
+            o = null;
         }
         return o;
     }
