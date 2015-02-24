@@ -21,13 +21,12 @@
  */
 package com.github.jsonj;
 
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.Writer;
-
-import com.github.jsonj.exceptions.JsonTypeMismatchException;
 
 /**
  * Super type of all Json elements (object, list, and primitive).
@@ -149,4 +148,6 @@ public interface JsonElement extends Cloneable, Serializable {
     default Number asNumber() {
         throw new JsonTypeMismatchException("not a primitive");
     }
+
+    boolean isMutable();
 }

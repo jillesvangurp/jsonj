@@ -716,6 +716,9 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return object;
     }
 
+    public boolean isMutable() {
+        return intMap.isMutable();
+    }
 
     @Override
     public boolean isEmpty() {

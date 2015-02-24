@@ -24,28 +24,51 @@ import java.util.Map.Entry;
 public interface JsonDataObject extends Serializable {
     JsonObject getJsonObject();
 
+    default boolean isMutable() {
+        return getJsonObject().isMutable();
+    }
+
+    default void verifyMutable() {
+        if(!isMutable()) {
+            throw new IllegalStateException("object is immutable");
+        }
+    }
     default String prettyPrint() {
         return JsonSerializer.serialize(getJsonObject(), true);
     }
 
     default JsonElement put(String key, Object value) {
+        verifyMutable();
         return getJsonObject().put(key, primitive(value));
     }
 
     default JsonElement put(String key, JsonElement value) {
+        verifyMutable();
         return getJsonObject().put(key, value);
     }
 
     default JsonElement put(String key, JsonBuilder value) {
+        verifyMutable();
         return getJsonObject().put(key, value);
     }
 
     default void putAll(Map<? extends String, ? extends JsonElement> m) {
+        verifyMutable();
         getJsonObject().putAll(m);
     }
 
     default void add(@SuppressWarnings("unchecked") Entry<String, JsonElement>... es) {
+        verifyMutable();
         getJsonObject().add(es);
+    }
+
+    default JsonElement remove(String key) {
+        verifyMutable();
+        return getJsonObject().remove(key);
+    }
+
+    default boolean containsKey(String key) {
+        return getJsonObject().containsKey(key);
     }
 
     default Entry<String, JsonElement> get(int index) {

@@ -24,6 +24,9 @@ package com.github.jsonj;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonBuilder;
+import com.github.jsonj.tools.JsonSerializer;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -35,12 +38,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-
 import org.apache.commons.lang.StringUtils;
-
-import com.github.jsonj.exceptions.JsonTypeMismatchException;
-import com.github.jsonj.tools.JsonBuilder;
-import com.github.jsonj.tools.JsonSerializer;
 
 /**
  * Representation of json arrays.
@@ -362,6 +360,10 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         }
         array.immutable=true;
         return array;
+    }
+
+    public boolean isMutable() {
+        return !immutable;
     }
 
     public boolean isNotEmpty() {

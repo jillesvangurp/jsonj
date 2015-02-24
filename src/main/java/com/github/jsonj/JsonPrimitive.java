@@ -21,16 +21,14 @@
  */
 package com.github.jsonj;
 
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonSerializer;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-
 import org.apache.commons.lang.StringUtils;
-
-import com.github.jsonj.exceptions.JsonTypeMismatchException;
-import com.github.jsonj.tools.JsonSerializer;
 
 /**
  * Representation of json primitives.
@@ -142,6 +140,7 @@ public class JsonPrimitive implements JsonElement, Serializable {
         }
     }
 
+    @Override
     public Number asNumber() {
         if(type == JsonType.number) {
             return ((Number)value).doubleValue();
@@ -332,6 +331,11 @@ public class JsonPrimitive implements JsonElement, Serializable {
     public JsonElement immutableClone() {
         return this;
     }
+
+    @Override
+    public boolean isMutable() {
+        return false;
+    };
 
     @Override
     public boolean isEmpty() {

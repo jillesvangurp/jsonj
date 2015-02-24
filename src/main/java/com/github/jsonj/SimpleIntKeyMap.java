@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
-
 import org.apache.commons.lang.Validate;
 
 /**
@@ -29,6 +28,10 @@ public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
     public void makeImmutable() {
         immutable=true;
+    }
+
+    public boolean isMutable() {
+        return !immutable;
     }
 
     @Override

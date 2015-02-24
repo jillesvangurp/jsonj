@@ -11,6 +11,8 @@ public class JsonDataObjectTest {
 
     public void shouldHaveDomainObjects() {
         class MyPoint implements JsonDataObject {
+            private static final long serialVersionUID = 1857812728597159873L;
+
             private final JsonObject wrapped;
             public MyPoint(double x, double y) {
                 wrapped=object(field("x",x),field("y",y));
@@ -19,6 +21,11 @@ public class JsonDataObjectTest {
             @Override
             public JsonObject getJsonObject() {
                 return wrapped;
+            }
+
+            @Override
+            public boolean isMutable() {
+                return true;
             }
 
             public double x() {
