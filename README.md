@@ -23,7 +23,7 @@ I developed JsonJ on the side while I still was in Nokia as an ideal way to hand
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.8</version>
+    <version>2.10</version>
 </dependency>
 ```
 
@@ -250,6 +250,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
+- 2.10 Allow use of JsonDataObject in all the obvious places to easily add them to sets, objects, and arrays.
+- 2.9 Add isMutable() method to JsonDataObject and JsonElement interfaces. Support remove() and containsKey() on JsonDataObject.
 - 2.8 Add JsonDataObject interface to support creating domain classes based on JsonObject.
 - 2.7 Update jackson dependency.
 - 2.6 Add support for yaml using jackson's jackson-dataformat-yaml. YamlParser and YamlSerializer parse and serialize to and from JsonJ.
