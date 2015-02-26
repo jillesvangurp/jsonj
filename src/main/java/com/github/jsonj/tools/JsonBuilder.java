@@ -21,15 +21,15 @@
  */
 package com.github.jsonj.tools;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonDataObject;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
 import com.github.jsonj.JsonSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Builder class for json objects. If you plan to work a lot with jsonj, you will
@@ -338,6 +338,12 @@ public class JsonBuilder {
         return jjArray;
     }
 
+    public static JsonArray array(final JsonDataObject... elements) {
+        JsonArray jjArray = new JsonArray();
+        jjArray.add(elements);
+        return jjArray;
+    }
+
     /**
      * @return an empty JsonSet
      */
@@ -466,6 +472,11 @@ public class JsonBuilder {
         return jjArray;
     }
 
+    public static JsonSet set(final JsonDataObject... elements) {
+        JsonSet jjArray = new JsonSet();
+        jjArray.add(elements);
+        return jjArray;
+    }
 
     /**
      * @param value a boolean
@@ -517,6 +528,8 @@ public class JsonBuilder {
             return new JsonObject((Map)o);
         } else if(o instanceof List) {
             return new JsonArray((List)o);
+        } else if(o instanceof JsonDataObject) {
+            return ((JsonDataObject) o).getJsonObject();
         }
         return primitive(o);
     }

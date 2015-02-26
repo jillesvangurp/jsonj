@@ -207,6 +207,10 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return put(key, primitive(value));
     }
 
+    public JsonElement put(String key, JsonDataObject object) {
+        return put(key, object.getJsonObject());
+    }
+
     @Override
     public JsonElement put(String key, JsonElement value) {
         Validate.notNull(key);
@@ -716,6 +720,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return object;
     }
 
+    @Override
     public boolean isMutable() {
         return intMap.isMutable();
     }

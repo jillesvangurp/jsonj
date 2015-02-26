@@ -132,6 +132,12 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         }
     }
 
+    public void add(JsonDataObject...elements) {
+        for (JsonDataObject element : elements) {
+            add(element.getJsonObject());
+        }
+    }
+
     @Override
     public boolean add(JsonElement e) {
         if(immutable) {
@@ -362,6 +368,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return array;
     }
 
+    @Override
     public boolean isMutable() {
         return !immutable;
     }
