@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jillesvangurp/jsonj.svg)](https://travis-ci.org/jillesvangurp/jsonj)
+
 # Introduction
 
 JsonJ is a library for working with json in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
