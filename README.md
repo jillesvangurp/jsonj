@@ -19,6 +19,8 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 
 I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj.
 
+Since we also do Javascript, we wanted to get some of the same convenience provided in jsonj there as well; so we created [jsonjs](https://github.com/Inbot/jsonjs). Jsonjs is a thin wrapper around javascript objects that provides a similar API to the JsonObject class in jsonj.
+
 # Get JsonJ from Maven Central
 
 ```
