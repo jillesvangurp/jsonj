@@ -2,7 +2,7 @@
 
 # Introduction
 
-JsonJ is a library for working with json in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
+JsonJ is a library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
 
 There are several reasons why you might like jsonj
 
