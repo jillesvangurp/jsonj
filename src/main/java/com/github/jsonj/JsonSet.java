@@ -26,13 +26,11 @@ import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 
+import com.github.jsonj.tools.JsonBuilder;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.apache.commons.lang.Validate;
-
-import com.github.jsonj.tools.JsonBuilder;
 
 /**
  * Representation of json arrays that behaves like a set.
@@ -180,12 +178,15 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
 
     /**
      * May be used to change the contains behavior of the set. If set it will use the provided strategy to compare
-     * elements in the set instead of JsonElement.equals()
+     * elements in the set instead of JsonElement.equals().
+     *
+     * Important: this creates a new set in order to remove duplicates.
      *
      * @param strategy
      *            an implementation of IdStrategy
      * @return a new set with the elements of the old set, minus the duplicates.
      */
+    @Deprecated // use withIdStrategy
     public JsonSet applyIdStrategy(IdStrategy strategy) {
         JsonSet newSet = new JsonSet();
         newSet.strategy = strategy;
@@ -200,22 +201,46 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
      * extact the field with the given name and use that for determining object equality instead of using
      * JsonElement.equals().
      *
+     * Important: this creates a new set in order to remove duplicates.
+     *
      * @param field
      *            name of the field
      * @return a new set with the elements of the old set, minus the duplicates.
      */
+    @Deprecated // use withIdStrategy
     public JsonSet applyIdStrategy(final String field) {
-        return applyIdStrategy(new IdStrategy() {
+        return applyIdStrategy(new FieldIdStrategy(field));
+    }
 
-            @Override
-            public boolean equals(JsonElement t1, JsonElement t2) {
-                JsonElement e1 = t1.asObject().get(field);
-                JsonElement e2 = t2.asObject().get(field);
-                Validate.notNull(e1);
-                Validate.notNull(e2);
-                return e1.equals(e2);
+    /**
+     * Changes the strategy on the current set.
+     * @param strategy id strategy
+     * @return the current set.
+     */
+    public JsonSet withIdStrategy(IdStrategy strategy) {
+        this.strategy = strategy;
+        if(size()>0) {
+            JsonSet seen=new JsonSet().withIdStrategy(strategy);
+            Iterator<JsonElement> iterator = this.iterator();
+            while (iterator.hasNext()) {
+                JsonElement e = iterator.next();
+                if(seen.contains(e)) {
+                    iterator.remove();
+                } else {
+                    seen.add(e);
+                }
             }
-        });
+        }
+        return this;
+    }
+
+    /**
+     * Changes the strategy on the current set.
+     * @param field id field
+     * @return the current set.
+     */
+    public JsonSet withIdStrategy(String field) {
+        return withIdStrategy(new FieldIdStrategy(field));
     }
 
     @Override
@@ -232,6 +257,23 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
                 }
             }
             return false;
+        }
+    }
+
+    private static final class FieldIdStrategy implements IdStrategy {
+        private final String field;
+
+        private FieldIdStrategy(String field) {
+            this.field = field;
+        }
+
+        @Override
+        public boolean equals(JsonElement t1, JsonElement t2) {
+            JsonElement e1 = t1.asObject().get(field);
+            JsonElement e2 = t2.asObject().get(field);
+            Validate.notNull(e1);
+            Validate.notNull(e2);
+            return e1.equals(e2);
         }
     }
 

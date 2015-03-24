@@ -6,18 +6,17 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static com.github.jsonj.tools.JsonBuilder.set;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertTrue;
 
+import com.github.jsonj.assertions.JsonJAssertions;
+import com.github.jsonj.tools.JsonBuilder;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-
 import org.testng.annotations.Test;
-
-import com.github.jsonj.assertions.JsonJAssertions;
-import com.github.jsonj.tools.JsonBuilder;
 
 @Test
 public class JsonSetTest {
@@ -110,7 +109,7 @@ public class JsonSetTest {
         JsonObject object2 = object(field("id",2), field("value", "bar"));
         JsonObject object3 = object(field("id",1), field("value", "bar"));
         JsonSet set = set();
-        set = set.applyIdStrategy("id");
+        set = set.withIdStrategy("id");
         set.add(object1, object2, object3);
         assertThat(set.size(), is(2));
     }
@@ -120,7 +119,7 @@ public class JsonSetTest {
         JsonObject object2 = object(field("id",1), field("value", "bar"));
         JsonSet set = set();
         set.add(object1, object2);
-        set = set.applyIdStrategy("id");
+        set = set.withIdStrategy("id");
         assertThat(set.size(), is(1));
     }
 
@@ -128,7 +127,7 @@ public class JsonSetTest {
         JsonObject object1 = object(field("id",1), field("value", "foo"));
         JsonObject object2 = object(field("id",1), field("value", "bar"));
         JsonSet set = set();
-        set = set.applyIdStrategy("id");
+        set = set.withIdStrategy("id");
         set.add(object1);
         set.add(object2);
         assertThat(set.size(), is(1));
@@ -137,5 +136,12 @@ public class JsonSetTest {
 
     public void shouldUseAssertJAssertion() {
         JsonJAssertions.assertThat(set(1,2)).shouldContain(2,1).shouldNotContain(3);
+    }
+
+    public void shouldRemoveStringValue() {
+        JsonSet set = set("foo","bar");
+        set.remove("foo");
+        assertThat(set.contains("foo")).isFalse();
+        assertThat(set.toString().contains("foo")).isFalse();
     }
 }
