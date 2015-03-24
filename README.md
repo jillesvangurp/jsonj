@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.10</version>
+    <version>2.11</version>
 </dependency>
 ```
 
@@ -254,6 +254,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
+- 2.11 Have more sensible way to set the id strategy on json sets that does not create a new set and modifies the current one instead. This bit me several times and once too many.
 - 2.10 Allow use of JsonDataObject in all the obvious places to easily add them to sets, objects, and arrays.
 - 2.9 Add isMutable() method to JsonDataObject and JsonElement interfaces. Support remove() and containsKey() on JsonDataObject.
 - 2.8 Add JsonDataObject interface to support creating domain classes based on JsonObject.
