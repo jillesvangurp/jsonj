@@ -207,7 +207,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return put(key, primitive(value));
     }
 
-    public JsonElement put(String key, JsonDataObject object) {
+    public <T extends JsonDataObject> JsonElement put(String key, T object) {
         return put(key, object.getJsonObject());
     }
 

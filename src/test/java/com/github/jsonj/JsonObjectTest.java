@@ -32,6 +32,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertTrue;
 
+import com.github.jsonj.exceptions.JsonTypeMismatchException;
+import com.github.jsonj.tools.JsonBuilder;
+import com.jillesvangurp.efficientstring.EfficientString;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,16 +43,11 @@ import java.io.ObjectOutputStream;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.github.jsonj.exceptions.JsonTypeMismatchException;
-import com.github.jsonj.tools.JsonBuilder;
-import com.jillesvangurp.efficientstring.EfficientString;
 
 @Test
 public class JsonObjectTest {
@@ -310,5 +308,19 @@ public class JsonObjectTest {
         JsonObject clone = object.immutableClone();
         assertThat(clone).isEqualTo(object);
         clone.getObject("f").put("2",2);
+    }
+
+    public void shouldPutJsonDataObject() {
+        JsonDataObject jdo = new JsonDataObject() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public JsonObject getJsonObject() {
+                return object(field("foo","bar"));
+            }
+        };
+        JsonObject o = object(field("x",42));
+        o.put("jdo", jdo);
+        assertThat(o.getString("jdo","foo")).isEqualTo("bar");
     }
 }
