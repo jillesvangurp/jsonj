@@ -256,6 +256,14 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
                     }
                 }
             }
+            if(o instanceof JsonDataObject) {
+                JsonElement element = ((JsonDataObject) o).getJsonObject();
+                for (JsonElement e : this) {
+                    if (strategy.equals(e, element)) {
+                        return true;
+                    }
+                }
+            }
             return false;
         }
     }

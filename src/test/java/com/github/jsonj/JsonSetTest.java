@@ -144,4 +144,11 @@ public class JsonSetTest {
         assertThat(set.contains("foo")).isFalse();
         assertThat(set.toString().contains("foo")).isFalse();
     }
+
+    public void setWithIdStrategyShouldContain() {
+        JsonSet set = set();
+        set.withIdStrategy("id");
+        set.add(object(field("id","1"),field("name","foo")));
+        assertThat(set.contains(object(field("id","1"),field("name","bar")))).isTrue();
+    }
 }
