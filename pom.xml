@@ -25,7 +25,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.12</version>
+    <version>2.13-SNAPSHOT</version>
 
     <name>JsonJ</name>
     <description>A framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.</description>
