@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.12</version>
+    <version>2.13</version>
 </dependency>
 ```
 
@@ -254,6 +254,10 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
+- 2.13
+  - Add mapPrimitiveFieldsRecursively function to JsonObject so you can easily do some search and replace on json objects; even if they contain lists of objects
+  - fix the old JsonObject.map() to actually work in a sensible way.
+  - add forEachPrimitiveRecursive for each to JsonObject
 - 2.12 Improve JsonDataObject handling on object put and set contains
 - 2.11 Have more sensible way to set the id strategy on json sets that does not create a new set and modifies the current one instead. This bit me several times and once too many.
 - 2.10 Allow use of JsonDataObject in all the obvious places to easily add them to sets, objects, and arrays.
