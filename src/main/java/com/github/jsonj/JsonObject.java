@@ -967,10 +967,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                 mapPrimitiveFieldsRecursively(v.asArray(), f);
                 return v;
             } else {
-                JsonElement result = f.apply(k, v);
-
-                System.err.println(result);
-                return result;
+                return f.apply(k, v);
             }
         });
     }

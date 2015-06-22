@@ -351,7 +351,6 @@ public class JsonObjectTest {
         object.mapPrimitiveFieldsRecursively((k,v) -> {
             return primitive(v.asInt()+1);
         });
-        System.out.println(object.prettyPrint());
         object.forEachPrimitiveRecursive((k,v) -> {
             assertThat(v.asInt()).isEqualTo(43);
         });
