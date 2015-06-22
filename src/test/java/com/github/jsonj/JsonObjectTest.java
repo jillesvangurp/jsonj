@@ -43,6 +43,7 @@ import java.io.ObjectOutputStream;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
@@ -323,4 +324,18 @@ public class JsonObjectTest {
         o.put("jdo", jdo);
         assertThat(o.getString("jdo","foo")).isEqualTo("bar");
     }
-}
+
+    public void shouldRecurseOverAllNestedMapElements() {
+        JsonObject object = object(
+                field("foo", "bar"),
+                field("foo2", "bar"),
+                field("l1", array(object(field("f",1)))),
+                field("o2", object(field("f2",42)))
+        );
+        AtomicInteger counter = new AtomicInteger();
+        object.forEachPrimitiveRecursive((k,v) -> {
+            counter.incrementAndGet();
+        });
+        assertThat(counter.get()).isEqualTo(4);
+    }
+ }

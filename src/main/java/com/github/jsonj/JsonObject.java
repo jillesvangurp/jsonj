@@ -957,6 +957,31 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         forEach((k,v) -> {f.accept(k, v.asString());});
     }
 
+    public void forEachPrimitiveRecursive(BiConsumer<String, JsonPrimitive> f) {
+        forEach((k,v) -> {
+            if(v.isObject()) {
+                v.asObject().forEachPrimitiveRecursive(f);
+            } else if(v.isArray()) {
+                forEachPrimitiveRecursive(v.asArray(), f);
+            } else {
+                f.accept(k, v.asPrimitive());
+            }
+        });
+    }
+
+    private void forEachPrimitiveRecursive(JsonArray arr, BiConsumer<String, JsonPrimitive> f) {
+        for(JsonElement e: arr) {
+            if(e.isObject()) {
+                e.asObject().forEachPrimitiveRecursive(f);
+            } else if(e.isArray()) {
+                forEachPrimitiveRecursive(e.asArray(), f);
+            } else {
+                // ignore
+            }
+        }
+    }
+
+
     void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // when using object serialization, write the json bytes
         byte[] bytes = toString().getBytes(UTF8);
