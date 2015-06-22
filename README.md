@@ -2,7 +2,7 @@
 
 # Introduction
 
-JsonJ is a library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
+JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
 
 There are several reasons why you might like jsonj
 
@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.13</version>
+    <version>2.14</version>
 </dependency>
 ```
 
@@ -254,7 +254,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
-- 2.13
+- 2.14
   - Add mapPrimitiveFieldsRecursively function to JsonObject so you can easily do some search and replace on json objects; even if they contain lists of objects
   - fix the old JsonObject.map() to actually work in a sensible way.
   - add forEachPrimitiveRecursive for each to JsonObject
