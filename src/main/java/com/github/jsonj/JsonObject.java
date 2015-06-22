@@ -41,7 +41,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.stream.Stream;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -949,12 +948,43 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return intMap.values();
     }
 
-    public Stream<JsonElement> map(BiFunction<String, JsonElement, JsonElement> f) {
-        return entrySet().stream().map(e -> f.apply(e.getKey(), e.getValue()));
+    public void map(BiFunction<String, JsonElement, JsonElement> f) {
+        entrySet().stream().forEach(e -> {
+            put(e.getKey(), f.apply(e.getKey(), e.getValue()));
+        });
     }
 
     public void forEachString(BiConsumer<String, String> f) {
         forEach((k,v) -> {f.accept(k, v.asString());});
+    }
+
+    public void mapPrimitiveFieldsRecursively(BiFunction<String, JsonElement, JsonElement> f) {
+        map((k,v) -> {
+            if(v.isObject()) {
+                v.asObject().mapPrimitiveFieldsRecursively(f);
+                return v;
+            } else if(v.isArray()) {
+                mapPrimitiveFieldsRecursively(v.asArray(), f);
+                return v;
+            } else {
+                JsonElement result = f.apply(k, v);
+
+                System.err.println(result);
+                return result;
+            }
+        });
+    }
+
+    private void mapPrimitiveFieldsRecursively(JsonArray arr, BiFunction<String, JsonElement, JsonElement> f) {
+        for(JsonElement e: arr) {
+            if(e.isObject()) {
+                e.asObject().mapPrimitiveFieldsRecursively(f);
+            } else if(e.isArray()) {
+                mapPrimitiveFieldsRecursively(e.asArray(), f);
+            } else {
+                // ignore
+            }
+        }
     }
 
     public void forEachPrimitiveRecursive(BiConsumer<String, JsonPrimitive> f) {

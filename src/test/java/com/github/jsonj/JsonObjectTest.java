@@ -330,12 +330,40 @@ public class JsonObjectTest {
                 field("foo", "bar"),
                 field("foo2", "bar"),
                 field("l1", array(object(field("f",1)))),
+                field("l2", array(object(field("f",1)))),
                 field("o2", object(field("f2",42)))
         );
         AtomicInteger counter = new AtomicInteger();
         object.forEachPrimitiveRecursive((k,v) -> {
             counter.incrementAndGet();
         });
-        assertThat(counter.get()).isEqualTo(4);
+        assertThat(counter.get()).isEqualTo(5);
+    }
+
+    public void shouldRecursivelyMapValues() {
+        JsonObject object = object(
+                field("foo", 42),
+                field("foo2", 42),
+                field("l1", array(object(field("f",42)))),
+                field("l2", array(object(field("f",42)))),
+                field("o2", object(field("f2",42)))
+        );
+        object.mapPrimitiveFieldsRecursively((k,v) -> {
+            return primitive(v.asInt()+1);
+        });
+        System.out.println(object.prettyPrint());
+        object.forEachPrimitiveRecursive((k,v) -> {
+            assertThat(v.asInt()).isEqualTo(43);
+        });
+    }
+
+    public void shouldMapEachElementToSameObject() {
+        JsonObject object = object(
+                field("foo", 42),
+                field("foo2", 42));
+        object.map((k,v)-> primitive(v.asInt()+1));
+        object.forEachPrimitiveRecursive((k,v) -> {
+            assertThat(v.asInt()).isEqualTo(43);
+        });
     }
  }
