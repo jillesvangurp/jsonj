@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.github.jsonj.tools.JsonBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,12 +39,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.github.jsonj.tools.JsonBuilder;
 
 @Test
 public class JsonArrayTest {
@@ -320,4 +318,20 @@ public class JsonArrayTest {
         l2.add(2);
     }
 
+    public void shouldFindObjectInArray() {
+        JsonArray arr = array(
+                null,
+                primitive(42),
+                object(field("id","1"), field("name", "1")),
+                object(field("id","1"), field("name", "2")),
+                object(field("id","2"), field("name", "3")),
+                object(field("id","2"), field("name", "4")),
+                object(field("id","3"), field("name", "5")),
+                object(field("id","3"), field("name", "6"))
+        );
+        assertThat(arr.findFirstWithFieldValue("id", "1").getString("name")).isEqualTo("1");
+        assertThat(arr.findFirstWithFieldValue("id", "2").getString("name")).isEqualTo("3");
+        assertThat(arr.findFirstWithFieldValue("id", "3").getString("name")).isEqualTo("5");
+        assertThat(arr.findFirstWithFieldValue("id", "4")).isNull();
+    }
 }

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -72,6 +73,52 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return this.add(fromObject(o));
     }
 
+    /**
+     * @param p a predicate
+     * @return array of elements matching p
+     */
+    public JsonArray filter(Predicate<JsonElement> p) {
+        return stream().filter(p).collect(JsonjCollectors.array());
+    }
+
+    /**
+     * @param p a predicate
+     * @return an optional of the first element matching p or Optional.empty() if nothing matches
+     */
+    public Optional<JsonElement> findFirstMatching(Predicate<JsonElement> p) {
+        JsonArray arr = filter(p);
+        if(arr.size()>0) {
+            return Optional.of(arr.first());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Allows you to lookup objects from an array by e.g. their id.
+     * @param fieldName field to match on
+     * @param value value of the field
+     * @return the first object where field == value, or null
+     */
+    public JsonObject findFirstWithFieldValue(String fieldName, String value) {
+        JsonElement result = findFirstMatching(e -> {
+            if(!e.isObject()) {
+                return false;
+            }
+            JsonObject object = e.asObject();
+            String fieldValue = object.getString(fieldName);
+            if(fieldValue !=null) {
+                return fieldValue.equals(value);
+            } else {
+                return false;
+            }
+        }).orElse(null);
+        if(result != null) {
+            return result.asObject();
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Variant of add that takes a string instead of a JsonElement. The inherited add only supports JsonElement.
