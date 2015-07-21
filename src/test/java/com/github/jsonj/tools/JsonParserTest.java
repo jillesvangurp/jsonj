@@ -28,6 +28,10 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.exceptions.JsonParseException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -40,15 +44,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
-import com.github.jsonj.exceptions.JsonParseException;
 
 @Test
 public class JsonParserTest {
