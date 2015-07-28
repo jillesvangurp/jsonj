@@ -21,6 +21,12 @@
  */
 package com.github.jsonj.tools;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser.Feature;
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
+import com.github.jsonj.exceptions.JsonParseException;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,23 +35,28 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
-import com.github.jsonj.exceptions.JsonParseException;
-
 /**
  * Parser based on json-simple. This class is thread safe so you can safely
  * inject your JsonParser object everywhere.
- * 
+ *
  * Experimental alternative for JsonParser based on jackson's Stream parser.
  */
 public class JsonParser {
 
-    JsonFactory jsonFactory = new JsonFactory();
+    private final JsonFactory jsonFactory;
 
     public JsonParser() {
+        jsonFactory = new JsonFactory();
+    }
+
+    /**
+     * @param features varargs of jackson features to enable, e.g. com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS
+     */
+    public JsonParser(Feature...features) {
+        jsonFactory = new JsonFactory();
+        for(Feature f: features) {
+            jsonFactory.enable(f);
+        }
     }
 
     /**
