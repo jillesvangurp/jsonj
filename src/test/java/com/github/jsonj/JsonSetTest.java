@@ -1,5 +1,6 @@
 package com.github.jsonj;
 
+import static com.github.jsonj.assertions.JsonJAssertions.assertThat;
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
@@ -150,5 +151,15 @@ public class JsonSetTest {
         set.withIdStrategy("id");
         set.add(object(field("id","1"),field("name","foo")));
         assertThat(set.contains(object(field("id","1"),field("name","bar")))).isTrue();
+    }
+
+    public void shouldSupportRetain() {
+        JsonSet set1 = set(1,2,3,4);
+        JsonSet set2= set(1,2);
+        set1.retainAll(set2);
+        assertThat(set1).shouldContain(primitive(1));
+        assertThat(set1).shouldContain(primitive(2));
+        assertThat(set1).shouldNotContain(primitive(3));
+        assertThat(set1).shouldNotContain(primitive(4));
     }
 }
