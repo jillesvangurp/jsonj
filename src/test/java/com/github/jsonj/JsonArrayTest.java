@@ -329,9 +329,9 @@ public class JsonArrayTest {
                 object(field("id","3"), field("name", "5")),
                 object(field("id","3"), field("name", "6"))
         );
-        assertThat(arr.findFirstWithFieldValue("id", "1").getString("name")).isEqualTo("1");
-        assertThat(arr.findFirstWithFieldValue("id", "2").getString("name")).isEqualTo("3");
-        assertThat(arr.findFirstWithFieldValue("id", "3").getString("name")).isEqualTo("5");
-        assertThat(arr.findFirstWithFieldValue("id", "4")).isNull();
+        assertThat(arr.findFirstWithFieldValue("id", "1").get().getString("name")).isEqualTo("1");
+        assertThat(arr.findFirstWithFieldValue("id", "2").get().getString("name")).isEqualTo("3");
+        assertThat(arr.findFirstWithFieldValue("id", "3").get().getString("name")).isEqualTo("5");
+        assertThat(arr.findFirstWithFieldValue("id", "4").isPresent()).isEqualTo(false);
     }
 }

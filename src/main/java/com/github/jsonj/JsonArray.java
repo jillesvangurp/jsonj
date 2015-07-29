@@ -86,12 +86,12 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @return an optional of the first element matching p or Optional.empty() if nothing matches
      */
     public Optional<JsonElement> findFirstMatching(Predicate<JsonElement> p) {
-        JsonArray arr = filter(p);
-        if(arr.size()>0) {
-            return Optional.of(arr.first());
-        } else {
-            return Optional.empty();
+        for(JsonElement e: this) {
+            if(p.test(e)) {
+                return Optional.of(e);
+            }
         }
+        return Optional.empty();
     }
 
     /**
@@ -100,7 +100,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @param value value of the field
      * @return the first object where field == value, or null
      */
-    public JsonObject findFirstWithFieldValue(String fieldName, String value) {
+    public Optional<JsonObject> findFirstWithFieldValue(String fieldName, String value) {
         JsonElement result = findFirstMatching(e -> {
             if(!e.isObject()) {
                 return false;
@@ -114,9 +114,9 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
             }
         }).orElse(null);
         if(result != null) {
-            return result.asObject();
+            return Optional.of(result.asObject());
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 
