@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.15</version>
+    <version>2.16</version>
 </dependency>
 ```
 
@@ -254,7 +254,10 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
-- 2.15 add some syntactic sugar for finding objects inside arrays and sets using findFirstWithFieldValue, findFirstMatching, or filter 
+- 2.16
+  - Support jackson parser features in JsonParser
+  - Fix API for findFirstWithFieldValue to return an Optional and return the element instead of a copy of the element.
+- 2.15 add some syntactic sugar for finding objects inside arrays and sets using findFirstWithFieldValue, findFirstMatching, or filter
 - 2.14
   - Add mapPrimitiveFieldsRecursively function to JsonObject so you can easily do some search and replace on json objects; even if they contain lists of objects
   - fix the old JsonObject.map() to actually work in a sensible way.
