@@ -123,7 +123,7 @@ public class JsonSerializer {
 
     /**
      * Writes the object out as json.
-     *
+     * 
      * @param out
      *            output writer
      * @param json
@@ -144,7 +144,7 @@ public class JsonSerializer {
 
     /**
      * Writes the object out as json.
-     *
+     * 
      * @param out
      *            output writer
      * @param json
@@ -234,7 +234,7 @@ public class JsonSerializer {
      * The xml specification defines these character hex codes as allowed: #x9 | #xA | #xD | [#x20-#xD7FF] |
      * [#xE000-#xFFFD] | [#x10000-#x10FFFF] Characters outside this range will cause parsers to reject the xml as not
      * well formed. Probably should not allow these in Json either.
-     *
+     * 
      * @param c
      *            a character
      * @return true if character is allowed in an XML document
@@ -260,7 +260,7 @@ public class JsonSerializer {
      * to escape them. E.g. escape control characters other than the common ones are simply dropped from the input.
      * Unlike {@link StringEscapeUtils}, this method does not convert non ascii characters to their unicode escaped
      * notation. Since {@link JsonSerializer} always uses UTF-8 this is not required.
-     *
+     * 
      * @param raw
      *            any string
      * @return the json escaped string
