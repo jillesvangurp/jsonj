@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Representation of json objects. This class extends LinkedHashMap and may be used as such. In addition a lot of

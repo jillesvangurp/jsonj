@@ -30,7 +30,7 @@ import com.github.jsonj.tools.JsonBuilder;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Representation of json arrays that behaves like a set.

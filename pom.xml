@@ -229,7 +229,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.8.8</version>
+            <version>6.9.6</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -251,9 +251,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
         </dependency>
         <dependency>
         	<groupId>com.jillesvangurp</groupId>
