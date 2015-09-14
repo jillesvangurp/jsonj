@@ -25,17 +25,20 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static com.github.jsonj.tools.JsonBuilder.set;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
+import com.github.jsonj.JsonSet;
 import com.github.jsonj.exceptions.JsonParseException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Queue;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
@@ -155,5 +158,22 @@ public class JsonParserTest {
         JsonElement parsed = jsonParser.parse(stringWithEmoji);
         System.out.println(parsed);
         assertThat(parsed.toString().toLowerCase(), is(stringWithEmoji));
+    }
+
+    public void shouldParseHugeObjects() {
+        // test for an obscure pretty printing bug that was caused by using the raw outputstream instead of the buffered writer for newlines
+        // only triggered once you go beyond the buffer size for the buffered writer; the newline appears in the wrong place then
+        // keep this test around to ensure we don't regress on this
+        JsonObject o=new JsonObject();
+        // generate a sufficiently large json object
+        for(int i=0; i<10; i++) {
+            JsonSet s=set();
+            for(int j=0; j<100; j++) {
+                s.add(UUID.randomUUID().toString());
+            }
+            o.put(UUID.randomUUID().toString(), s);
+        }
+        // this should not throw an exception
+        jsonParser.parseObject(o.prettyPrint());
     }
 }

@@ -137,7 +137,7 @@ public class JsonSerializer {
         BufferedWriter bw = new BufferedWriter(out);
         serialize(bw, json, pretty, 0);
         if(pretty) {
-            out.write('\n');
+            bw.write('\n');
         }
         bw.flush();
     }
