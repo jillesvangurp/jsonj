@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.17</version>
+    <version>2.18</version>
 </dependency>
 ```
 
@@ -254,6 +254,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
 
 # Changelog
+- 2.18
+  - Fix serialization issue with very large json objects when pretty printing is turned on
 - 2.17
   - update dependencies and move to commons-lang3
 - 2.16
