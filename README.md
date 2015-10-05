@@ -11,7 +11,7 @@ There are several reasons why you might like jsonj
 - it is memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
 - it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes. However (as of 2.8), a JsonDataObject interface is provided that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin.
 - it uses the excellent jackson parser for parsing data structures and you might already use jackson.
-- In addition to the popular json format it also supports parsing and serializing to binary plist and YAML.
+- In addition to the popular json format it also supports parsing and serializing to *BSON, plist and YAML*. So you can deal with tree like data structures and pretend they are all the same.
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.18</version>
+    <version>2.19</version>
 </dependency>
 ```
 
@@ -248,12 +248,16 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 ## Odd features you probably don't care about
 
-- `JsonElement` implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t).
+- `JsonElement` implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t) in a cross JVM way since it simply serializes to json.
 - A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures. You need to add the optional dependency on xom for this to work.
-- You can serialize to and parse from binary plists. This was added to support some IOS specific usecases. You need to add the optional maven dependency on dd-plist for this to work.
-- Yaml is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
+- PLIST - You can serialize to and parse from binary plists. This was added to support some IOS specific usecases. You need to add the optional maven dependency on dd-plist for this to work.
+- YAML is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
+- BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.19
+  - Add BSON support through the optional dependency bson4jackson (note: experimental; report bugs if you find any).
+  - Add some asserts to JsonObjectAssert
 - 2.18
   - Fix serialization issue with very large json objects when pretty printing is turned on
 - 2.17
