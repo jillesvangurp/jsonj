@@ -1,17 +1,16 @@
 package com.github.jsonj.yaml;
 
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.exceptions.JsonParseException;
+import com.github.jsonj.tools.JacksonHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
-
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.exceptions.JsonParseException;
-import com.github.jsonj.tools.JacksonHandler;
 
 public class YamlParser {
     private final YAMLFactory factory = new YAMLFactory();
@@ -44,5 +43,4 @@ public class YamlParser {
             throw new JsonParseException(e);
         }
     }
-
 }

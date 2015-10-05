@@ -3,16 +3,14 @@ package com.github.jsonj.yaml;
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import org.testng.annotations.Test;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import org.testng.annotations.Test;
 
 @Test
 public class YamlParsingAndSerializingTest {
@@ -32,7 +30,6 @@ public class YamlParsingAndSerializingTest {
         bos.flush();
         byte[] bytes = bos.toByteArray();
         YamlParser yamlParser = new YamlParser();
-        System.out.println(new String(bytes));
         ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 
         JsonElement e = yamlParser.parse(is);
