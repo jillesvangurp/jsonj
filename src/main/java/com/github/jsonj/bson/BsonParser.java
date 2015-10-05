@@ -10,7 +10,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Parse mongodb style bson.Note, bson is typically slightly bigger than normal json but parser performance tends to be better.
+ * Parse mongodb style bson.Note, bson is typically slightly bigger than normal json but parser performance tends to be
+ * better.
  * So make sure you use it for the right reasons.
  */
 public class BsonParser {
@@ -18,6 +19,7 @@ public class BsonParser {
 
     public BsonParser() {
     }
+
     public JsonElement parse(InputStream is) {
         try {
             de.undercouch.bson4jackson.BsonParser parser = factory.createParser(is);

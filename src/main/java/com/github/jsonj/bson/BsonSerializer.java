@@ -12,7 +12,8 @@ import java.io.OutputStream;
 import java.util.Map.Entry;
 
 /**
- * Serialize JsonElements to mongodb style bson. Note, bson is typically slightly bigger than normal json but parser performance tends to be better.
+ * Serialize JsonElements to mongodb style bson. Note, bson is typically slightly bigger than normal json but parser
+ * performance tends to be better.
  * So make sure you use it for the right reasons.
  */
 public class BsonSerializer {
