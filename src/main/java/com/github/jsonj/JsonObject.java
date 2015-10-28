@@ -726,16 +726,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @Override
     public boolean isEmpty() {
-        boolean empty = true;
-        if (keySet().size() != 0) {
-            for (java.util.Map.Entry<String, JsonElement> entry : entrySet()) {
-                empty = empty && entry.getValue().isEmpty();
-                if (!empty) {
-                    return false;
-                }
-            }
-        }
-        return empty;
+        return keySet().size() == 0;
     }
 
     @Override
