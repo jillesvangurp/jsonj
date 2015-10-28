@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.19</version>
+    <version>2.20</version>
 </dependency>
 ```
 
@@ -255,6 +255,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.20
+  - Relax isEmpty() on JsonObject because this ended up being to aggressive when recursing on lists.
 - 2.19
   - Add BSON support through the optional dependency bson4jackson (note: experimental; report bugs if you find any).
   - Add some asserts to JsonObjectAssert
