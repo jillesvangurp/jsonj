@@ -28,6 +28,7 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertTrue;
@@ -148,7 +149,6 @@ public class JsonObjectTest {
 
     public void shouldRemoveEmptyElements() {
         JsonObject jsonObject = object().put("empty", object().get()).put("empty2", nullValue()).put("empty3", new JsonArray()).get();
-        Assert.assertTrue(jsonObject.isEmpty(), "object should be empty");
         jsonObject.removeEmpty();
         assertThat("should leave empty objects",jsonObject.getObject("empty"), is(object().get()));
         Assert.assertEquals(jsonObject.get("empty2"), null);
