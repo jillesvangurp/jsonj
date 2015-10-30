@@ -190,6 +190,19 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return false;
     }
 
+    public <T extends JsonDataObject> JsonElement put(String key, T object) {
+        return put(key, object.getJsonObject());
+    }
+
+    @Override
+    public JsonElement put(String key, JsonElement value) {
+        Validate.notNull(key);
+        if (value == null) {
+            value = nullValue();
+        }
+        return intMap.put(EfficientString.fromString(key).index(), value);
+    }
+
     /**
      * Variant of put that can take a Object instead of a primitive. The normal put inherited from LinkedHashMap only
      * takes JsonElement instances.
@@ -203,20 +216,11 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *             if the value cannot be turned into a primitive.
      */
     public JsonElement put(String key, Object value) {
-        return put(key, primitive(value));
-    }
-
-    public <T extends JsonDataObject> JsonElement put(String key, T object) {
-        return put(key, object.getJsonObject());
-    }
-
-    @Override
-    public JsonElement put(String key, JsonElement value) {
-        Validate.notNull(key);
-        if (value == null) {
-            value = nullValue();
+        if(value instanceof JsonDataObject) {
+            return put(key,((JsonDataObject) value).getJsonObject());
+        } else {
+            return put(key, primitive(value));
         }
-        return intMap.put(EfficientString.fromString(key).index(), value);
     }
 
     public JsonElement put(String key, JsonBuilder value) {
