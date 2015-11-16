@@ -28,12 +28,15 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Formattable;
+import java.util.Formatter;
+import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Representation of json primitives.
  */
-public class JsonPrimitive implements JsonElement, Serializable {
+public class JsonPrimitive implements JsonElement, Serializable, Formattable {
     private static final long serialVersionUID = 111536854493507209L;
     private static final Charset UTF8 = Charset.forName("utf-8");
 
@@ -348,5 +351,12 @@ public class JsonPrimitive implements JsonElement, Serializable {
 
     @Override
     public void removeEmpty() {
+    }
+
+    @Override
+    public void formatTo(Formatter formatter, int flags, int width, int precision) {
+        // TODO actually support more stuff here for int/double formatting
+        // this is useful already since you can shove the value into a formatted string
+        formatter.format(Locale.ENGLISH, "%s", asString());
     }
 }
