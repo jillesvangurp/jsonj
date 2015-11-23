@@ -41,6 +41,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -364,5 +366,15 @@ public class JsonObjectTest {
         object.forEachPrimitiveRecursive((k,v) -> {
             assertThat(v.asInt()).isEqualTo(43);
         });
+    }
+
+    public void shouldConvertSimpleHashMapToJsonObject() {
+        Map<String,String> simpleMap=new HashMap<>();
+        simpleMap.put("one", "xxxxx");
+        simpleMap.put("two", "xxxxx");
+        simpleMap.put("three", "xxxxx");
+
+        JsonObject object = new JsonObject(simpleMap);
+        assertThat(object.getString("one")).isEqualTo("xxxxx");
     }
  }
