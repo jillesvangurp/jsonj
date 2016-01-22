@@ -236,33 +236,12 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         return this;
     }
 
-    public JsonSet withMultiFieldStrategy(IdStrategy strategy) {
-        this.strategy = strategy;
-        if(size() > 0) {
-            JsonSet seen = new JsonSet().withMultiFieldStrategy(strategy);
-            Iterator<JsonElement> iterator = this.iterator();
-            while (iterator.hasNext()) {
-                JsonElement e = iterator.next();
-                if(seen.contains(e)) {
-                    iterator.remove();
-                } else {
-                    seen.add(e);
-                }
-            }
-        }
-        return this;
-    }
-
-    public JsonSet withMultiFieldStrategy(String... field) {
-        return withMultiFieldStrategy(new MultiFieldStrategy(field));
-    }
-
     /**
      * Changes the strategy on the current set.
      * @param field id field
      * @return the current set.
      */
-    public JsonSet withIdStrategy(String field) {
+    public JsonSet withIdStrategy(String... field) {
         return withIdStrategy(new FieldIdStrategy(field));
     }
 
@@ -291,10 +270,10 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         }
     }
 
-    private static final class MultiFieldStrategy implements IdStrategy {
+    private static final class FieldIdStrategy implements IdStrategy {
         private final String[] field;
 
-        private MultiFieldStrategy(String... field) {
+        private FieldIdStrategy(String... field) {
             this.field = field;
         }
 
@@ -310,23 +289,6 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
                 Validate.notNull(t2.asObject().get(f));
                 e2.put(f, t2.asObject().get(f));
             }
-            return e1.equals(e2);
-        }
-    }
-
-    private static final class FieldIdStrategy implements IdStrategy {
-        private final String field;
-
-        private FieldIdStrategy(String field) {
-            this.field = field;
-        }
-
-        @Override
-        public boolean equals(JsonElement t1, JsonElement t2) {
-            JsonElement e1 = t1.asObject().get(field);
-            JsonElement e2 = t2.asObject().get(field);
-            Validate.notNull(e1);
-            Validate.notNull(e2);
             return e1.equals(e2);
         }
     }

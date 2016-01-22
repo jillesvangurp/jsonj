@@ -115,12 +115,12 @@ public class JsonSetTest {
         assertThat(set.size(), is(2));
     }
 
-    public void shouldUseMultiFieldStrategy() {
+    public void shouldUseIdStrategyWithVarArgs() {
         JsonObject object1 = object(field("id",1), field("type", "a"), field("value", "foo"));
         JsonObject object2 = object(field("id",1), field("type", "a"), field("value", "bar"));
         JsonObject object3 = object(field("id",1), field("type", "b"), field("value", "bar"));
         JsonSet set = set();
-        set = set.withMultiFieldStrategy("id", "type");
+        set = set.withIdStrategy("id", "type");
         set.add(object1, object2, object3);
         assertThat(set.size(), is(2));
     }
