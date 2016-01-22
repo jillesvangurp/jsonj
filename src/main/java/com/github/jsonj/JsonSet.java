@@ -28,7 +28,9 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import com.github.jsonj.tools.JsonBuilder;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.Validate;
 
@@ -234,6 +236,27 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
         return this;
     }
 
+    public JsonSet withMultiFieldStrategy(IdStrategy strategy) {
+        this.strategy = strategy;
+        if(size() > 0) {
+            JsonSet seen = new JsonSet().withMultiFieldStrategy(strategy);
+            Iterator<JsonElement> iterator = this.iterator();
+            while (iterator.hasNext()) {
+                JsonElement e = iterator.next();
+                if(seen.contains(e)) {
+                    iterator.remove();
+                } else {
+                    seen.add(e);
+                }
+            }
+        }
+        return this;
+    }
+
+    public JsonSet withMultiFieldStrategy(String... field) {
+        return withMultiFieldStrategy(new MultiFieldStrategy(field));
+    }
+
     /**
      * Changes the strategy on the current set.
      * @param field id field
@@ -265,6 +288,29 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
                 }
             }
             return false;
+        }
+    }
+
+    private static final class MultiFieldStrategy implements IdStrategy {
+        private final String[] field;
+
+        private MultiFieldStrategy(String... field) {
+            this.field = field;
+        }
+
+        @Override
+        public boolean equals(JsonElement t1, JsonElement t2) {
+            Map<String, JsonElement> e1 = new HashMap<>();
+            for (String f: field) {
+                Validate.notNull(t1.asObject().get(f));
+                e1.put(f, t1.asObject().get(f));
+            }
+            Map<String, JsonElement> e2 = new HashMap<>();
+            for (String f: field) {
+                Validate.notNull(t2.asObject().get(f));
+                e2.put(f, t2.asObject().get(f));
+            }
+            return e1.equals(e2);
         }
     }
 
