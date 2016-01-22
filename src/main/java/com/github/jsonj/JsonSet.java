@@ -28,7 +28,9 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import com.github.jsonj.tools.JsonBuilder;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.Validate;
 
@@ -239,7 +241,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
      * @param field id field
      * @return the current set.
      */
-    public JsonSet withIdStrategy(String field) {
+    public JsonSet withIdStrategy(String... field) {
         return withIdStrategy(new FieldIdStrategy(field));
     }
 
@@ -269,18 +271,24 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     }
 
     private static final class FieldIdStrategy implements IdStrategy {
-        private final String field;
+        private final String[] field;
 
-        private FieldIdStrategy(String field) {
+        private FieldIdStrategy(String... field) {
             this.field = field;
         }
 
         @Override
         public boolean equals(JsonElement t1, JsonElement t2) {
-            JsonElement e1 = t1.asObject().get(field);
-            JsonElement e2 = t2.asObject().get(field);
-            Validate.notNull(e1);
-            Validate.notNull(e2);
+            Map<String, JsonElement> e1 = new HashMap<>();
+            for (String f: field) {
+                Validate.notNull(t1.asObject().get(f));
+                e1.put(f, t1.asObject().get(f));
+            }
+            Map<String, JsonElement> e2 = new HashMap<>();
+            for (String f: field) {
+                Validate.notNull(t2.asObject().get(f));
+                e2.put(f, t2.asObject().get(f));
+            }
             return e1.equals(e2);
         }
     }
