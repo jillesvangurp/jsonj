@@ -27,7 +27,7 @@ import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
 import com.github.jsonj.JsonSet;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -526,8 +526,8 @@ public class JsonBuilder {
             return ((JsonBuilder) o).get();
         } else if(o instanceof Map) {
             return new JsonObject((Map)o);
-        } else if(o instanceof List) {
-            return new JsonArray((List)o);
+        } else if(o instanceof Collection) {
+            return new JsonArray((Collection)o);
         } else if(o instanceof JsonDataObject) {
             return ((JsonDataObject) o).getJsonObject();
         }
