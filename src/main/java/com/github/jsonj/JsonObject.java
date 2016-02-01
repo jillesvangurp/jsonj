@@ -33,7 +33,7 @@ import com.jillesvangurp.efficientstring.EfficientString;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,9 +49,6 @@ import org.apache.commons.lang3.Validate;
  * programmatically.
  */
 public class JsonObject implements Map<String, JsonElement>, JsonElement {
-
-    private static final Charset UTF8 = Charset.forName("UTF-8");
-
     private static final long serialVersionUID = 497820087656073803L;
 
     // use during serialization
@@ -62,6 +59,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 //    private final Map<EfficientString, JsonElement> map = new SimpleMap<>();
     private final SimpleIntKeyMap<JsonElement> intMap = new SimpleIntKeyMap<>();
 
+
     private String idField = null;
 
     public JsonObject() {
@@ -69,7 +67,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     @SuppressWarnings("rawtypes")
     public JsonObject(Map existing) {
-        super();
         Iterator iterator = existing.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry entry = (Entry) iterator.next();
@@ -284,6 +281,10 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         } else {
             throw new IllegalArgumentException();
         }
+    }
+
+    public MapBasedJsonObject toMapBasedJsonObject() {
+        return new MapBasedJsonObject(this);
     }
 
     /**
@@ -1006,7 +1007,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
 
     void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // when using object serialization, write the json bytes
-        byte[] bytes = toString().getBytes(UTF8);
+        byte[] bytes = toString().getBytes(StandardCharsets.UTF_8);
         out.writeInt(bytes.length);
         out.write(bytes);
 
@@ -1022,7 +1023,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
                 // create it lazily, static so won't increase object size
                 parser = new JsonParser();
             }
-            JsonElement o = parser.parse(new String(buf, UTF8));
+            JsonElement o = parser.parse(new String(buf, StandardCharsets.UTF_8));
             Field f = getClass().getDeclaredField("intMap");
             f.setAccessible(true);
             f.set(this, new SimpleIntKeyMap<>());

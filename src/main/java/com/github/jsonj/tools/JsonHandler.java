@@ -1,12 +1,12 @@
 package com.github.jsonj.tools;
 
-import java.util.LinkedList;
-
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
+import com.github.jsonj.MapBasedJsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
+import java.util.LinkedList;
 
 final class JsonHandler {
     // use a simple stack mechanism to reconstruct the tree
@@ -70,10 +70,17 @@ final class JsonHandler {
             if (last.isObject()) {
                 JsonObject container = last.asObject();
                 String key = e.asPrimitive().asString();
+                // automatically switch to linked hashmap based implementations if more than 100 keys
+                // at this point inserts will just keep on getting more expensive than it is worth
+                if(container instanceof JsonObject && container.size()>100) {
+                    // replace with more efficient implementation
+                    stack.poll();
+                    container = new MapBasedJsonObject(container);
+                    stack.add(container);
+                }
                 container.put(key, value);
             } else if (last.isArray()) {
                 throw new IllegalStateException("shouldn't happen");
-
             }
         }
         return true;
