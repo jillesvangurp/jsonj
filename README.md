@@ -27,7 +27,7 @@ Since we also do Javascript, we wanted to get some of the same convenience provi
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.25</version>
+    <version>2.26</version>
 </dependency>
 ```
 
@@ -244,7 +244,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 
 - it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. Assuming you have millions of objects that use a handful of keys like 'id', 'name', etc., You only store those byte arrays once.
 - it uses UTF8 byte arrays for storing String primitives. This is more efficient than Java's own String class, which uses utf-16.
-- it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory. **For larger numbers of keys**, you can use `MapBasedJsonObject`. The parser automatically uses that for larger objects with > 100 keys. Both implementations have the same API otherwise and there is no difference in using them. LinkedHashMap does of course use a lot more memory but it stays usable well into the millions of keys. 
+- it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory. **For larger numbers of keys**, you can use `MapBasedJsonObject`. The parser automatically uses that for larger objects with > 100 keys. Both implementations have the same API otherwise and there is no difference in using them. LinkedHashMap does of course use a lot more memory but it stays usable well into the millions of keys.
 
 ## Odd features you probably don't care about
 
@@ -255,8 +255,10 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.26
+  - Fix broken MapBasedJsonObject parser support in 2.25 to actually work as intended; simplify the handler code to have less unnecessary conditional logic
 - 2.25
-  - Add support for parsing large json objects with many keys by falling back to a new `MapBasedJsonObject` that can be configured to use any kind of `Map`. By default this uses a `LinkedHashMap` which comfortably handles millions of keys (at the expense of using more memory). The parser handler now automatically converts objects over 100 keys to this and there is a new `toMapBasedJsonObject()` method that can convert existing JsonObjects (by cloning them).
+  - Add support for parsing large json objects with many keys by falling back to a new `MapBasedJsonObject` that can be configured to use any kind of `Map`. By default this uses a `LinkedHashMap` which comfortably handles millions of keys (at the expense of using more memory). The parser handler now automatically converts objects over 100 keys to this and there is a new `toMapBasedJsonObject()` method that can convert existing JsonObjects (by cloning them). WARNING: this release should be considered broken. Use 2.26.
 - 2.24
   - Generalize fromObject to handle any Collection as a JsonArray instead of just List
 - 2.23
