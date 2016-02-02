@@ -64,23 +64,15 @@ final class JsonHandler {
     public boolean endObjectEntry() {
         JsonElement value = stack.pollLast();
         JsonElement e = stack.peekLast();
-        if (e.isPrimitive()) {
+        if (e.isPrimitive()) { // field name
             e = stack.pollLast();
-            JsonElement last = stack.peekLast();
-            if (last.isObject()) {
-                JsonObject container = last.asObject();
-                String key = e.asPrimitive().asString();
-                // automatically switch to linked hashmap based implementations if more than 100 keys
-                // at this point inserts will just keep on getting more expensive than it is worth
-                if(container instanceof JsonObject && container.size()>100) {
-                    // replace with more efficient implementation
-                    stack.poll();
-                    container = new MapBasedJsonObject(container);
-                    stack.add(container);
-                }
-                container.put(key, value);
-            } else if (last.isArray()) {
-                throw new IllegalStateException("shouldn't happen");
+            JsonObject container = stack.peekLast().asObject();
+            String key = e.asPrimitive().asString();
+            container.put(key, value);
+            if(container.size()>100 && !MapBasedJsonObject.class.equals(container.getClass())) {
+                JsonElement removed = stack.pollLast();
+                MapBasedJsonObject newContainer = new MapBasedJsonObject(removed.asObject());
+                stack.add(newContainer);
             }
         }
         return true;
