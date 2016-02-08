@@ -192,3 +192,7 @@ Acknowledgements
 2.  I spend quite a bit of time figuring out a way of parsing Json that didn’t involve me generating a lot of source code with javacc, antlr or similar tools. Then I stumpled onto json-simple and wrote the parser for JsonJ in under two hours using a custom json-simple content handler. It seems to work and json-simple is pretty fast as well.
 3.  This code is very loosely based on work I did at work with several colleagues. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jillesvangurp/jsonj/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
