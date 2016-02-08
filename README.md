@@ -443,3 +443,5 @@ The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.
 
 1.  I’ve been greatly influenced by the classes representing the json primitives in the GSon framework. If only they implemented Map and List and weren’t final. But lovely framework and would use it again.
 2.  This code is very loosely based on work I did at work with several colleagues some years ago. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jillesvangurp/jsonj/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
