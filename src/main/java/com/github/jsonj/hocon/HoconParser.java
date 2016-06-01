@@ -2,6 +2,7 @@ package com.github.jsonj.hocon;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
 import com.github.jsonj.tools.JacksonHandler;
 import com.jasonclawson.jackson.dataformat.hocon.HoconFactory;
@@ -37,8 +38,15 @@ public class HoconParser {
         }
     }
 
+    public JsonObject parseObject(Reader r) {
+        return parse(r).asObject();
+    }
+
     public JsonElement parse(String s) {
         return parse(new StringReader(s));
+    }
+    public JsonObject parseObject(String s) {
+        return parse(s).asObject();
     }
 
 }
