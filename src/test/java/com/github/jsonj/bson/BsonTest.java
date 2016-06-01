@@ -1,6 +1,5 @@
 package com.github.jsonj.bson;
 
-import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.tools.JsonParser;
 import java.io.ByteArrayInputStream;
@@ -126,6 +125,6 @@ public class BsonTest {
 
         BsonParser parser = new BsonParser();
         ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-        JsonElement parsed = parser.parse(is);
+        parser.parse(is);
     }
 }
