@@ -1,8 +1,7 @@
 package com.github.jsonj;
 
-import org.testng.annotations.Test;
-
 import com.github.jsonj.tools.JsonParser;
+import org.testng.annotations.Test;
 
 @Test
 public class BuilderCodeGenerationTest {

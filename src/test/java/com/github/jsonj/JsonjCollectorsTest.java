@@ -10,7 +10,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
-
 import org.testng.annotations.Test;
 
 @Test

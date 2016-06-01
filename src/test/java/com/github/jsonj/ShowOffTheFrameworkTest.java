@@ -28,11 +28,9 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static com.github.jsonj.tools.JsonSerializer.serialize;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
-
-import org.testng.annotations.Test;
-
 import com.github.jsonj.tools.JsonParser;
+import java.io.IOException;
+import org.testng.annotations.Test;
 
 /**
  * Not really a test but a nice place to show off how to use the framework.

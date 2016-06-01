@@ -2,7 +2,7 @@ package com.github.jsonj;
 
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.jsonj.tools.JsonParser;
 import org.testng.annotations.Test;

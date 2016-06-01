@@ -1,10 +1,9 @@
 package com.github.jsonj.tools;
 
-import java.io.IOException;
-import java.util.LinkedList;
-
 import com.fasterxml.jackson.core.JsonToken;
 import com.github.jsonj.JsonElement;
+import java.io.IOException;
+import java.util.LinkedList;
 
 /**
  * Internal handler class used for the JsonParser and YamlParser
@@ -39,11 +38,11 @@ public class JacksonHandler {
                 stack.push(true);
                 break;
             case VALUE_NUMBER_INT:
-                handler.primitive(parser.getLongValue());
+                handler.primitive(parser.getNumberValue().longValue());
                 endObjEntryIfNeeded(handler, stack);
                 break;
             case VALUE_NUMBER_FLOAT:
-                handler.primitive(parser.getDoubleValue());
+                handler.primitive(parser.getNumberValue().doubleValue());
                 endObjEntryIfNeeded(handler, stack);
                 break;
             case VALUE_STRING:
