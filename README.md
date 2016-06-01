@@ -225,7 +225,27 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 - A thread safe `JsonParser` class is provided that uses jackson's streaming parser.
 - You can serialize using `toString()` or `prettyPrint()` or `serialize()` on any JsonElement, or you can use the `JsonSerializer` class directly.
-- There's a YamlParser, YamlSerializer, JsonjPlistParser, and JsonjPlistSerializer as well.
+- There's a HoconParser, YamlParser, YamlSerializer, JsonjPlistParser, and JsonjPlistSerializer as well.
+
+If there's jackson dataformat support for it you can easily create more parsers. This doesn't make sense for all of them but for some like hocon or yaml it does.
+
+This is all the hocon specific code jsonj has:
+
+```
+public class HoconParser implements JsonFactoryBasedParser {
+    private final HoconFactory factory = new HoconFactory();
+
+    public HoconParser() {
+    }
+
+    @Override
+    public JsonFactory factory() {
+        return factory;
+    }
+}
+```
+
+The default methods in `JsonFactoryBasedParser` provide parse methods that you can use to parse streams, readers, or strings. Writing serializers is a bit more work but not that complicated typically. Pull requests are welcome of course.
 
 ## Java 8
 
@@ -258,7 +278,7 @@ JsonJ implements several things that ensure it uses much less memory than might 
 # Changelog
 - 2.27
   - [Hocon support](https://github.com/jclawson/jackson-dataformat-hocon) added.
-  - update all outdated dependencies (jackson and a few others).    
+  - update all outdated dependencies (jackson and a few others).
 - 2.26
   - Fix broken MapBasedJsonObject parser support in 2.25 to actually work as intended; simplify the handler code to have less unnecessary conditional logic
 - 2.25
