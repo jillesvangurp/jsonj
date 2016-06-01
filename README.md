@@ -15,25 +15,26 @@ There are several reasons why you might like jsonj
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
-# JsonJ at Inbot
-
-I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. We typically have millions of json objects cached in memory.
-
-Since we also do Javascript, we wanted to get some of the same convenience provided in jsonj there as well; so we created [jsonjs](https://github.com/Inbot/jsonjs). Jsonjs is a thin wrapper around javascript objects that provides a similar API to the JsonObject class in jsonj.
-
 # Get JsonJ from Maven Central
 
 ```
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.26</version>
+    <version>2.27</version>
 </dependency>
 ```
 
 Note. always check for the latest version. I do not always update the readme.
 
 For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the integration with the new Streams API in java 8 as well as some other new language features that are used.
+
+# JsonJ at Inbot
+
+I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. We typically have millions of json objects cached in memory.
+
+Since we also do Javascript, we wanted to get some of the same convenience provided in jsonj there as well; so we created [jsonjs](https://github.com/Inbot/jsonjs). Jsonjs is a thin wrapper around javascript objects that provides a similar API to the JsonObject class in jsonj.
+
 
 # Features
 
@@ -255,6 +256,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.27
+  - [Hocon support](https://github.com/jclawson/jackson-dataformat-hocon) added.
+  - update all outdated dependencies (jackson and a few others).    
 - 2.26
   - Fix broken MapBasedJsonObject parser support in 2.25 to actually work as intended; simplify the handler code to have less unnecessary conditional logic
 - 2.25
