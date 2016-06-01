@@ -10,8 +10,8 @@ There are several reasons why you might like jsonj
 - it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps a lot easier.
 - it is memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
 - it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes. However (as of 2.8), a JsonDataObject interface is provided that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin.
-- it uses the excellent jackson parser for parsing data structures and you might already use jackson.
-- In addition to the popular json format it also supports parsing and serializing to *BSON, plist and YAML*. So you can deal with tree like data structures and pretend they are all the same.
+- it uses the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
+- In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them.
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
