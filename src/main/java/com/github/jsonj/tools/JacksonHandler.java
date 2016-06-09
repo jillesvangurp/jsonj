@@ -38,11 +38,19 @@ public class JacksonHandler {
                 stack.push(true);
                 break;
             case VALUE_NUMBER_INT:
-                handler.primitive(parser.getNumberValue().longValue());
+                if(parser.getTextLength() < 19) { // Long.MAX_VALUE == 20 characters long, so should be fine up until there
+                    handler.primitive(parser.getNumberValue());
+                } else {
+                    handler.primitive(parser.getBigIntegerValue());
+                }
                 endObjEntryIfNeeded(handler, stack);
                 break;
             case VALUE_NUMBER_FLOAT:
-                handler.primitive(parser.getNumberValue().doubleValue());
+                if(parser.getTextLength() < 8) { // beyond this size you may trigger E notation pretty easily e.g. 12345678 becomes 1.2345678E7.
+                    handler.primitive(parser.getNumberValue());
+                } else {
+                    handler.primitive(parser.getDecimalValue());
+                }
                 endObjEntryIfNeeded(handler, stack);
                 break;
             case VALUE_STRING:

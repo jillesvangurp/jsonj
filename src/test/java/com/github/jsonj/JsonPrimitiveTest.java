@@ -26,15 +26,21 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.github.jsonj.tools.JsonParser;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @Test
 public class JsonPrimitiveTest {
+   JsonParser parser = new JsonParser();
+
 
     @DataProvider
     public JsonPrimitive[][] primitives() {
@@ -46,6 +52,31 @@ public class JsonPrimitiveTest {
                 {primitive("abc")},
                 {primitive((Object)null)}
         };
+    }
+
+    @DataProvider
+    public Object[][] numbers() {
+        return new Object[][]{
+            {"123456", Long.class},
+            {"666.66", Double.class},
+            {"66.666", Double.class},
+            {"99999.9", Double.class},
+            {"9.99999", Double.class},
+            {"99.9999", Double.class},
+            {"999.999", Double.class},
+            {"9999.99", Double.class},
+            {"99999.9", Double.class},
+            {"1111111111111111111111111111111111111111111111111111",BigInteger.class},
+            {"1111111111111111111111111111111111111111111111111111.000000000000000000000000000000000000000000000000000",BigDecimal.class}
+        };
+    }
+
+
+    @Test(dataProvider="numbers")
+    public void shouldHandleVeryLargeNumbers(String input, Class<?> expectedType) {
+        JsonPrimitive primitive = parser.parse(input).asPrimitive();
+        assertThat(primitive.asString()).isEqualTo(input);
+        assertThat(primitive.value().getClass()).isEqualTo(expectedType);
     }
 
     @Test(dataProvider="primitives")
