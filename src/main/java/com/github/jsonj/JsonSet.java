@@ -28,11 +28,8 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 import com.github.jsonj.tools.JsonBuilder;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Representation of json arrays that behaves like a set.
@@ -271,25 +268,38 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     }
 
     private static final class FieldIdStrategy implements IdStrategy {
-        private final String[] field;
+        private final String[] fields;
 
-        private FieldIdStrategy(String... field) {
-            this.field = field;
+        private FieldIdStrategy(String... fields) {
+            this.fields = fields;
         }
 
         @Override
         public boolean equals(JsonElement t1, JsonElement t2) {
-            Map<String, JsonElement> e1 = new HashMap<>();
-            for (String f: field) {
-                Validate.notNull(t1.asObject().get(f));
-                e1.put(f, t1.asObject().get(f));
+            JsonObject left = t1.asObject();
+            JsonObject right = t2.asObject();
+
+            for(String field: fields) {
+                JsonElement lv = left.get(field);
+                JsonElement rv = right.get(field);
+                if(lv != null && !lv.equals(rv)) {
+                    return false;
+                } else if(rv!=null && !rv.equals(lv)) {
+                    return false;
+                }
             }
-            Map<String, JsonElement> e2 = new HashMap<>();
-            for (String f: field) {
-                Validate.notNull(t2.asObject().get(f));
-                e2.put(f, t2.asObject().get(f));
-            }
-            return e1.equals(e2);
+            return true;
+//            Map<String, JsonElement> e1 = new HashMap<>();
+//            for (String f: fields) {
+//                Validate.notNull(t1.asObject().get(f));
+//                e1.put(f, t1.asObject().get(f));
+//            }
+//            Map<String, JsonElement> e2 = new HashMap<>();
+//            for (String f: fields) {
+//                Validate.notNull(t2.asObject().get(f));
+//                e2.put(f, t2.asObject().get(f));
+//            }
+//            return e1.equals(e2);
         }
     }
 

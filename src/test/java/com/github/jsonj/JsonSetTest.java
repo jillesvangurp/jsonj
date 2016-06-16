@@ -116,13 +116,16 @@ public class JsonSetTest {
     }
 
     public void shouldUseIdStrategyWithVarArgs() {
-        JsonObject object1 = object(field("id",1), field("type", "a"), field("value", "foo"));
-        JsonObject object2 = object(field("id",1), field("type", "a"), field("value", "bar"));
-        JsonObject object3 = object(field("id",1), field("type", "b"), field("value", "bar"));
         JsonSet set = set();
         set = set.withIdStrategy("id", "type");
-        set.add(object1, object2, object3);
+        set.add(
+            object(field("id",1), field("type", "a"), field("value", "foo")),
+            object(field("id",1), field("type", "a"), field("value", "bar")),
+            object(field("id",1), field("type", "b"), field("value", "oldbarbar")),
+            object(field("id",1), field("value", "bars"), field("type", "b"))
+        );
         assertThat(set.size(), is(2));
+        assertThat(set.toString()).contains("bars").doesNotContain("oldbarbar"); // should replace
     }
 
     public void shouldRemoveDuplicatesAfterSettingStrategy() {
