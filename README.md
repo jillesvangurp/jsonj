@@ -2,16 +2,16 @@
 
 # Introduction
 
-JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API that extends the relevant Java Collections APIs where possible (Map, List, Set).
+JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API. The core idea behind JsonJ is to provide sensible implementations of the handful of native types in json. These implementations leverage things like generics, Java 8 streams, varargs, the Collections framework and other things that are characteristic of modern Java. 
 
 There are several reasons why you might like jsonj
 
-- it provides really convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
-- it provides powerful extensions to the Collections API that, for example, makes extracting things from lists and maps a lot easier.
-- it is memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
-- it's simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes. However (as of 2.8), a JsonDataObject interface is provided that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin.
-- it uses the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
-- In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them.
+_ The provided JsonObject, JsonArray, JsonSet, and JsonPrimitive classes are all you need for type safe and null safe manipulation of complex json structures.
+- It includes convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
+- It is memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects. If you've ever had to worry about fitting gigantic amounts of structured data in memory, you might appreciate some of these optimizations.
+- It is simple to use and lacks the complexity of other solutions. There are no annotations. There is no need for model classes. Instead a JsonDataObject interface is provided (that includes default methods) that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin.
+- It relies on the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
+- In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them. Also adding support for more jackson plugins is easy.
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
@@ -31,20 +31,18 @@ For Java 7 and earlier, use the 1.x releases. 2.x is Java 8 only because of the 
 
 # JsonJ at Inbot
 
-I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by Linko, now [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. We typically have millions of json objects cached in memory.
+I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. We typically have millions of json objects cached in memory.
 
 Since we also do Javascript, we wanted to get some of the same convenience provided in jsonj there as well; so we created [jsonjs](https://github.com/Inbot/jsonjs). Jsonjs is a thin wrapper around javascript objects that provides a similar API to the JsonObject class in jsonj.
 
 
-# Features
+## Design overview and API
 
 The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures that has a low amount of verbosity compared to other frameworks.
 
 The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
 
 I regard this as the key selling point of the library. When manipulating and creating json structures programmatically, it is important that you don't have to jump through hoops to extract elements, iterate over things, etc. To facilitate this, the framework provides a large amount of convenient methods that help *prevent verbosity* in the form of unnecessary class casts, null checks, type conversions, generic types, etc. No other Json framework for Java comes close to the level of usability of this framework when it comes to this. Most leave you to either develop your own classes or with the bare bones API of the Java collections framework.
-
-## Design overview and API
 
 JsonJ provides a few easy to understand classes that extend Java’s Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
 
