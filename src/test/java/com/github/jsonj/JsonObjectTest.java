@@ -376,4 +376,12 @@ public class JsonObjectTest {
         JsonObject object = new JsonObject(simpleMap);
         assertThat(object.getString("one")).isEqualTo("xxxxx");
     }
+
+    public void shouldFlatten() {
+        JsonObject obj = object(field("x", object(field("y", array(primitive(1),primitive(2),object(field("foo","bar")))))));
+        JsonObject flattened = obj.flatten(":");
+        assertThat(flattened.getInt("x:y:0")).isEqualTo(1);
+        assertThat(flattened.getInt("x:y:1")).isEqualTo(2);
+        assertThat(flattened.getString("x:y:2:foo")).isEqualTo("bar");
+    }
  }

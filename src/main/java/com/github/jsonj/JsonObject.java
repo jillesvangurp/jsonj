@@ -992,6 +992,40 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         });
     }
 
+    public JsonObject flatten(String sep) {
+        JsonObject o = new JsonObject();
+        flatten(o,"",sep,this);
+        return o;
+    }
+
+    private static void flatten(JsonObject root, String path, String sep, JsonElement element) {
+        JsonType type = element.type();
+        switch (type) {
+        case array:
+            JsonArray arr = element.asArray();
+            for(int i=0; i<arr.size();i++) {
+                if(path.length()>0) {
+                    flatten(root,path+sep+i,sep,arr.get(i));
+                } else {
+                    flatten(root,""+i,sep,arr.get(i));
+                }
+            }
+            break;
+        case object:
+            if(path.length()>0) {
+                element.asObject().forEach((key, value) -> flatten(root,path+sep+key,sep,value));
+            } else {
+                element.asObject().forEach((key, value) -> flatten(root,key,sep,value));
+            }
+
+            break;
+
+        default:
+            root.put(path, element);
+            break;
+        }
+    }
+
     private void forEachPrimitiveRecursive(JsonArray arr, BiConsumer<String, JsonPrimitive> f) {
         for(JsonElement e: arr) {
             if(e.isObject()) {
