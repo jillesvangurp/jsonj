@@ -184,4 +184,26 @@ public class JsonSetTest {
         set.remove(obj.clone());
         assertThat(set).hasSize(0);
     }
+
+    public void shouldModifyNotReplaceExistingArrayWithIdStrategy() {
+        JsonObject o = object(field("arr", array(
+            object(field("id","1"),field("name","foo")),
+            object(field("id","2"),field("name","bar"))
+        )));
+        JsonSet set = o.getOrCreateSet("arr").withIdStrategy("id");
+        set.add(object(field("id","3"),field("name","foobar")));
+        assertThat(o.getOrCreateArray("arr").size()).isEqualTo(3);
+    }
+
+    public void shouldRemoveByIdWhenUsingIdStrategy() {
+        JsonSet set = set(
+            object(field("id","1"),field("name","foo")),
+            object(field("id","2"),field("name","bar"))
+        ).withIdStrategy("id");
+        assertThat(set.size()).isEqualTo(2);
+        set.remove(object(field("id","2")));
+        assertThat(set.size()).isEqualTo(1);
+
+    }
+
 }
