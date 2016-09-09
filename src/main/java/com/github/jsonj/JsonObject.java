@@ -1039,7 +1039,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
     }
 
-
     void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // when using object serialization, write the json bytes
         byte[] bytes = toString().getBytes(StandardCharsets.UTF_8);
