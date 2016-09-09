@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.github.jsonj.JsonElement;
 import java.io.IOException;
 import java.util.LinkedList;
+import javax.annotation.Nonnull;
 
 /**
  * Internal handler class used for the JsonParser and YamlParser
  */
 public class JacksonHandler {
-    public static JsonElement parseContent(com.fasterxml.jackson.core.JsonParser parser) throws IOException, com.fasterxml.jackson.core.JsonParseException {
+    @SuppressWarnings("null")
+    public static @Nonnull JsonElement parseContent(com.fasterxml.jackson.core.JsonParser parser) throws IOException, com.fasterxml.jackson.core.JsonParseException {
         JsonHandler handler = new JsonHandler();
 
         LinkedList<Boolean> stack = new LinkedList<>();

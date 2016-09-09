@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import javax.annotation.Nonnull;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -66,7 +67,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     @SuppressWarnings("rawtypes")
-    public JsonObject(Map existing) {
+    public JsonObject(@Nonnull Map existing) {
         Iterator iterator = existing.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry entry = (Entry) iterator.next();
@@ -87,7 +88,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @param fieldName
      *            name of the field value that should be used for calculating the hash code
      */
-    public void useIdHashCodeStrategy(String fieldName) {
+    public void useIdHashCodeStrategy(@Nonnull String fieldName) {
         idField = fieldName.intern();
     }
 
@@ -168,7 +169,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     @Override
-    public String prettyPrint() {
+    public @Nonnull String prettyPrint() {
         return JsonSerializer.serialize(this, true);
     }
 
@@ -187,7 +188,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return false;
     }
 
-    public <T extends JsonDataObject> JsonElement put(String key, T object) {
+    public <T extends JsonDataObject> JsonElement put(@Nonnull String key, @Nonnull T object) {
         return put(key, object.getJsonObject());
     }
 
@@ -212,7 +213,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @throws JsonTypeMismatchException
      *             if the value cannot be turned into a primitive.
      */
-    public JsonElement put(String key, Object value) {
+    public JsonElement put(@Nonnull String key, Object value) {
         if(value instanceof JsonDataObject) {
             return put(key,((JsonDataObject) value).getJsonObject());
         } else {
@@ -220,7 +221,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
     }
 
-    public JsonElement put(String key, JsonBuilder value) {
+    public JsonElement put(@Nonnull String key, JsonBuilder value) {
         return put(key, value.get());
     }
 
@@ -237,7 +238,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @param es
      *            field entries
      */
-    public void add(@SuppressWarnings("unchecked") Entry<String, JsonElement>... es) {
+    public void add(@SuppressWarnings("unchecked") @Nonnull Entry<String, JsonElement>... es) {
         for (Map.Entry<String, JsonElement> e : es) {
             put(e.getKey(), e.getValue());
         }
@@ -360,7 +361,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            default value that is returned if the field has no value
      * @return value of the field as a boolean
      */
-    public boolean get(final String field, boolean defaultValue) {
+    public boolean get(@Nonnull String field, boolean defaultValue) {
         JsonElement e = get(field);
         if (e == null) {
             return defaultValue;
@@ -384,7 +385,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
-    public Integer getInt(final String... labels) {
+    public Integer getInt(String... labels) {
         JsonElement jsonElement = get(labels);
         if (jsonElement == null || jsonElement.isNull()) {
             return null;
@@ -400,7 +401,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            default value that is returned if the field has no value
      * @return value of the field as an int
      */
-    public int get(final String field, int defaultValue) {
+    public int get(@Nonnull String field, int defaultValue) {
         JsonElement e = get(field);
         if (e == null) {
             return defaultValue;
@@ -416,7 +417,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
-    public Long getLong(final String... labels) {
+    public Long getLong(String... labels) {
         JsonElement jsonElement = get(labels);
         if (jsonElement == null || jsonElement.isNull()) {
             return null;
@@ -432,7 +433,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            default value that is returned if the field has no value
      * @return value of the field as a long
      */
-    public long get(final String field, long defaultValue) {
+    public long get(@Nonnull  String field, long defaultValue) {
         JsonElement e = get(field);
         if (e == null) {
             return defaultValue;
@@ -448,7 +449,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
-    public Float getFloat(final String... labels) {
+    public Float getFloat(String... labels) {
         JsonElement jsonElement = get(labels);
         if (jsonElement == null || jsonElement.isNull()) {
             return null;
@@ -464,7 +465,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            default value that is returned if the field has no value
      * @return value of the field as a float
      */
-    public float get(final String field, float defaultValue) {
+    public float get(@Nonnull  String field, float defaultValue) {
         JsonElement e = get(field);
         if (e == null) {
             return defaultValue;
@@ -480,7 +481,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
-    public Double getDouble(final String... labels) {
+    public Double getDouble(String... labels) {
         JsonElement jsonElement = get(labels);
         if (jsonElement == null || jsonElement.isNull()) {
             return null;
@@ -496,7 +497,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            default value that is returned if the field has no value
      * @return value of the field as a double
      */
-    public double get(final String field, double defaultValue) {
+    public double get(@Nonnull String field, double defaultValue) {
         JsonElement e = get(field);
         if (e == null) {
             return defaultValue;
@@ -512,7 +513,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
-    public JsonObject getObject(final String... labels) {
+    public JsonObject getObject(String... labels) {
         JsonElement jsonElement = get(labels);
         if (jsonElement == null || jsonElement.isNull()) {
             return null;
@@ -528,7 +529,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      *            one or more text labels
      * @return value or null if it doesn't exist at the specified path
      */
-    public JsonArray getArray(final String... labels) {
+    public JsonArray getArray(String... labels) {
         JsonElement jsonElement = get(labels);
         if (jsonElement == null || jsonElement.isNull()) {
             return null;
@@ -547,7 +548,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @throws JsonTypeMismatchException
      *             if an element is present at the path that is not a JsonArray
      */
-    public JsonArray getOrCreateArray(final String... labels) {
+    public @Nonnull JsonArray getOrCreateArray(@Nonnull String... labels) {
         JsonObject parent = this;
         JsonElement decendent = null;
         int index = 0;
@@ -571,7 +572,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             parent = decendent.asObject();
             index++;
         }
-        return null;
+        throw new IllegalStateException("element not found or created");
     }
 
     /**
@@ -584,7 +585,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @throws JsonTypeMismatchException
      *             if an element is present at the path that is not a JsonArray or JsonSet
      */
-    public JsonSet getOrCreateSet(final String... labels) {
+    public JsonSet getOrCreateSet(String... labels) {
         JsonObject parent = this;
         JsonElement decendent;
         int index = 0;
@@ -626,7 +627,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
      * @throws JsonTypeMismatchException
      *             if an element is present at the path that is not a JsonObject
      */
-    public JsonObject getOrCreateObject(final String... labels) {
+    public JsonObject getOrCreateObject(String... labels) {
         JsonObject parent = this;
         JsonElement decendent;
         int index = 0;
@@ -654,7 +655,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (o == null) {
             return false;
         }
@@ -944,17 +945,17 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return intMap.values();
     }
 
-    public void map(BiFunction<String, JsonElement, JsonElement> f) {
+    public void map(@Nonnull BiFunction<String, JsonElement, JsonElement> f) {
         entrySet().stream().forEach(e -> {
             put(e.getKey(), f.apply(e.getKey(), e.getValue()));
         });
     }
 
-    public void forEachString(BiConsumer<String, String> f) {
+    public void forEachString(@Nonnull BiConsumer<String, String> f) {
         forEach((k,v) -> {f.accept(k, v.asString());});
     }
 
-    public void mapPrimitiveFieldsRecursively(BiFunction<String, JsonElement, JsonElement> f) {
+    public void mapPrimitiveFieldsRecursively(@Nonnull BiFunction<String, JsonElement, JsonElement> f) {
         map((k,v) -> {
             if(v.isObject()) {
                 v.asObject().mapPrimitiveFieldsRecursively(f);
@@ -968,7 +969,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         });
     }
 
-    private void mapPrimitiveFieldsRecursively(JsonArray arr, BiFunction<String, JsonElement, JsonElement> f) {
+    private void mapPrimitiveFieldsRecursively(@Nonnull JsonArray arr, @Nonnull BiFunction<String, JsonElement, JsonElement> f) {
         for(JsonElement e: arr) {
             if(e.isObject()) {
                 e.asObject().mapPrimitiveFieldsRecursively(f);
@@ -980,7 +981,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
     }
 
-    public void forEachPrimitiveRecursive(BiConsumer<String, JsonPrimitive> f) {
+    public void forEachPrimitiveRecursive(@Nonnull BiConsumer<String, JsonPrimitive> f) {
         forEach((k,v) -> {
             if(v.isObject()) {
                 v.asObject().forEachPrimitiveRecursive(f);
@@ -992,30 +993,30 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         });
     }
 
-    public JsonObject flatten(String sep) {
+    public JsonObject flatten(String separator) {
         JsonObject o = new JsonObject();
-        flatten(o,"",sep,this);
+        flatten(o,"",separator,this);
         return o;
     }
 
-    private static void flatten(JsonObject root, String path, String sep, JsonElement element) {
+    private static void flatten(JsonObject root, String path, String separator, JsonElement element) {
         JsonType type = element.type();
         switch (type) {
         case array:
             JsonArray arr = element.asArray();
             for(int i=0; i<arr.size();i++) {
                 if(path.length()>0) {
-                    flatten(root,path+sep+i,sep,arr.get(i));
+                    flatten(root,path+separator+i,separator,arr.get(i));
                 } else {
-                    flatten(root,""+i,sep,arr.get(i));
+                    flatten(root,""+i,separator,arr.get(i));
                 }
             }
             break;
         case object:
             if(path.length()>0) {
-                element.asObject().forEach((key, value) -> flatten(root,path+sep+key,sep,value));
+                element.asObject().forEach((key, value) -> flatten(root,path+separator+key,separator,value));
             } else {
-                element.asObject().forEach((key, value) -> flatten(root,key,sep,value));
+                element.asObject().forEach((key, value) -> flatten(root,key,separator,value));
             }
 
             break;
@@ -1026,7 +1027,7 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         }
     }
 
-    private void forEachPrimitiveRecursive(JsonArray arr, BiConsumer<String, JsonPrimitive> f) {
+    private void forEachPrimitiveRecursive(@Nonnull JsonArray arr, @Nonnull BiConsumer<String, JsonPrimitive> f) {
         for(JsonElement e: arr) {
             if(e.isObject()) {
                 e.asObject().forEachPrimitiveRecursive(f);

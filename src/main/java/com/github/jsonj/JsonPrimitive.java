@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Formattable;
 import java.util.Formatter;
 import java.util.Locale;
+import javax.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -41,12 +42,12 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
     private static final Charset UTF8 = Charset.forName("utf-8");
 
     private final Object value;
-    private final JsonType type;
+    private final @Nonnull JsonType type;
 
     /** Null object in json, no point creating this over and over again */
-    public static final JsonPrimitive JSON_NULL = new JsonPrimitive((String)null);
+    public static final @Nonnull JsonPrimitive JSON_NULL = new JsonPrimitive((String)null);
 
-    private JsonPrimitive(Object value, JsonType type) {
+    private JsonPrimitive(Object value, @Nonnull JsonType type) {
         this.value = value;
         this.type = type;
     }
@@ -161,12 +162,12 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
         }
     }
 
+    @SuppressWarnings("null")
     @Override
     public String asString() {
         if( null == value ) {
-            return null;
-        }
-        if(type==JsonType.string) {
+            return "";
+        } else if(type==JsonType.string) {
             return new String((byte[]) value, UTF8);
         } else {
             return value.toString();
@@ -174,7 +175,7 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
     }
 
     @Override
-    public JsonType type() {
+    public @Nonnull JsonType type() {
         return type;
     }
     @Override

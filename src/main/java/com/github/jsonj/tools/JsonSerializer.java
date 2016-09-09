@@ -34,7 +34,9 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
+import javax.annotation.Nonnull;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Utility class to serialize Json.
@@ -63,7 +65,7 @@ public class JsonSerializer {
      *            a {@link JsonElement}
      * @return string representation of the json
      */
-    public static String serialize(final JsonElement json) {
+    public static String serialize(@Nonnull JsonElement json) {
         return serialize(json, false);
     }
 
@@ -73,7 +75,7 @@ public class JsonSerializer {
      * @param out
      *            an {@link OutputStream}
      */
-    public static void serialize(final JsonElement json, OutputStream out) {
+    public static void serialize(@Nonnull  JsonElement json, @Nonnull OutputStream out) {
         try {
             json.serialize(out);
         } catch (IOException e) {
@@ -81,7 +83,7 @@ public class JsonSerializer {
         }
     }
 
-    public static void serialize(final JsonElement json, Writer out) {
+    public static void serialize(@Nonnull  JsonElement json, @Nonnull Writer out) {
         try {
             json.serialize(out);
         } catch (IOException e) {
@@ -96,7 +98,8 @@ public class JsonSerializer {
      *            if true, a properly indented version of the json is returned
      * @return string representation of the json
      */
-    public static String serialize(final JsonElement json, final boolean pretty) {
+    @SuppressWarnings("null")
+    public static @Nonnull String serialize(@Nonnull JsonElement json, boolean pretty) {
         StringWriter sw = new StringWriter();
         if(pretty) {
             try {
@@ -123,7 +126,7 @@ public class JsonSerializer {
 
     /**
      * Writes the object out as json.
-     * 
+     *
      * @param out
      *            output writer
      * @param json
@@ -133,7 +136,7 @@ public class JsonSerializer {
      * @throws IOException
      *             if there is a problem writing to the writer
      */
-    public static void serialize(final Writer out, final JsonElement json, final boolean pretty) throws IOException {
+    public static void serialize(@Nonnull  Writer out, @Nonnull  JsonElement json, boolean pretty) throws IOException {
         BufferedWriter bw = new BufferedWriter(out);
         serialize(bw, json, pretty, 0);
         if(pretty) {
@@ -144,7 +147,7 @@ public class JsonSerializer {
 
     /**
      * Writes the object out as json.
-     * 
+     *
      * @param out
      *            output writer
      * @param json
@@ -154,7 +157,8 @@ public class JsonSerializer {
      * @throws IOException
      *             if there is a problem writing to the stream
      */
-    public static void serialize(final OutputStream out, final JsonElement json, final boolean pretty) throws IOException {
+    public static void serialize(OutputStream out, @Nonnull  JsonElement json, boolean pretty) throws IOException {
+        Validate.notNull(out);
         BufferedOutputStream bufferedOut = new BufferedOutputStream(out);
         OutputStreamWriter w = new OutputStreamWriter(bufferedOut, UTF8);
         if(pretty) {
@@ -165,7 +169,7 @@ public class JsonSerializer {
         }
     }
 
-    private static void serialize(final BufferedWriter bw, final JsonElement json, final boolean pretty, final int indent) throws IOException {
+    private static void serialize(@Nonnull  BufferedWriter bw,  JsonElement json, boolean pretty, int indent) throws IOException {
         if(json==null) {
             return;
         }
@@ -234,7 +238,7 @@ public class JsonSerializer {
      * The xml specification defines these character hex codes as allowed: #x9 | #xA | #xD | [#x20-#xD7FF] |
      * [#xE000-#xFFFD] | [#x10000-#x10FFFF] Characters outside this range will cause parsers to reject the xml as not
      * well formed. Probably should not allow these in Json either.
-     * 
+     *
      * @param c
      *            a character
      * @return true if character is allowed in an XML document
@@ -260,7 +264,7 @@ public class JsonSerializer {
      * to escape them. E.g. escape control characters other than the common ones are simply dropped from the input.
      * Unlike {@link StringEscapeUtils}, this method does not convert non ascii characters to their unicode escaped
      * notation. Since {@link JsonSerializer} always uses UTF-8 this is not required.
-     * 
+     *
      * @param raw
      *            any string
      * @return the json escaped string

@@ -30,6 +30,7 @@ import com.github.jsonj.tools.JsonBuilder;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import javax.annotation.Nonnull;
 
 /**
  * Representation of json arrays that behaves like a set.
@@ -61,7 +62,7 @@ public class JsonSet extends JsonArray implements Set<JsonElement> {
     }
 
     @SuppressWarnings("rawtypes")
-    public JsonSet(Set existing) {
+    public JsonSet(@Nonnull Set existing) {
         super(existing);
     }
 

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.annotation.Nonnull;
 
 /**
  * Mixin style java interface with a lot of default methods that you can use to easily wrap JsonObject objects with
@@ -22,7 +23,7 @@ import java.util.Map.Entry;
  * If you need immutable domain objects, simply use JsonObject.immutableClone.
  */
 public interface JsonDataObject extends Serializable {
-    JsonObject getJsonObject();
+    @Nonnull JsonObject getJsonObject();
 
     default boolean isMutable() {
         return getJsonObject().isMutable();
@@ -33,21 +34,21 @@ public interface JsonDataObject extends Serializable {
             throw new IllegalStateException("object is immutable");
         }
     }
-    default String prettyPrint() {
+    default @Nonnull String prettyPrint() {
         return JsonSerializer.serialize(getJsonObject(), true);
     }
 
-    default JsonElement put(String key, Object value) {
+    default JsonElement put(@Nonnull String key, Object value) {
         verifyMutable();
         return getJsonObject().put(key, primitive(value));
     }
 
-    default JsonElement put(String key, JsonElement value) {
+    default JsonElement put(@Nonnull String key, JsonElement value) {
         verifyMutable();
         return getJsonObject().put(key, value);
     }
 
-    default JsonElement put(String key, JsonBuilder value) {
+    default JsonElement put(@Nonnull String key, JsonBuilder value) {
         verifyMutable();
         return getJsonObject().put(key, value);
     }
@@ -57,7 +58,7 @@ public interface JsonDataObject extends Serializable {
         getJsonObject().putAll(m);
     }
 
-    default void add(@SuppressWarnings("unchecked") Entry<String, JsonElement>... es) {
+    default void add(@SuppressWarnings("unchecked") @Nonnull  Entry<String, JsonElement>... es) {
         verifyMutable();
         getJsonObject().add(es);
     }
@@ -95,7 +96,7 @@ public interface JsonDataObject extends Serializable {
         return getJsonObject().getBoolean(labels);
     }
 
-    default boolean get(final String field, boolean defaultValue) {
+    default boolean get(@Nonnull  String field, boolean defaultValue) {
         return getJsonObject().get(field, defaultValue);
     }
 
@@ -103,43 +104,43 @@ public interface JsonDataObject extends Serializable {
         return getJsonObject().getInt(labels);
     }
 
-    default int get(final String field, int defaultValue) {
+    default int get(@Nonnull  String field, int defaultValue) {
         return getJsonObject().get(field, defaultValue);
     }
 
-    default Long getLong(final String... labels) {
+    default Long getLong(@Nonnull  String... labels) {
         return getJsonObject().getLong(labels);
     }
 
-    default long get(final String field, long defaultValue) {
+    default long get(@Nonnull  String field, long defaultValue) {
         return getJsonObject().get(field, defaultValue);
     }
 
-    default Float getFloat(final String... labels) {
+    default Float getFloat(@Nonnull  String... labels) {
         return getJsonObject().getFloat(labels);
     }
 
-    default float get(final String field, float defaultValue) {
+    default float get(@Nonnull  String field, float defaultValue) {
         return getJsonObject().get(field, defaultValue);
     }
 
-    default Double getDouble(final String... labels) {
+    default Double getDouble(@Nonnull  String... labels) {
         return getJsonObject().getDouble(labels);
     }
 
-    default double get(final String field, double defaultValue) {
+    default double get(@Nonnull  String field, double defaultValue) {
         return getJsonObject().get(field, defaultValue);
     }
 
-    default JsonObject getObject(final String... labels) {
+    default JsonObject getObject(@Nonnull  String... labels) {
         return getJsonObject().getObject(labels);
     }
 
-    default JsonArray getArray(final String... labels) {
+    default JsonArray getArray(@Nonnull  String... labels) {
         return getJsonObject().getArray(labels);
     }
 
-    default JsonArray getOrCreateArray(final String... labels) {
+    default @Nonnull JsonArray getOrCreateArray(@Nonnull  String... labels) {
         return getJsonObject().getOrCreateArray(labels);
     }
 

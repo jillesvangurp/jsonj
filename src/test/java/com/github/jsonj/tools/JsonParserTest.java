@@ -47,6 +47,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import javax.annotation.Nonnull;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -56,7 +57,7 @@ public class JsonParserTest {
     private final JsonParser jsonParser = new JsonParser();
 
     @DataProvider
-    public Object[][] goodJson() {
+    public @Nonnull Object[][] goodJson() {
         return new Object[][] {
                 {object().put("a", 1).get()},
                 {object().put("a", true).get()},
@@ -90,7 +91,7 @@ public class JsonParserTest {
     }
 
     @Test(dataProvider="goodJson")
-    public void shouldParse(final JsonElement element) {
+    public void shouldParse(@Nonnull  JsonElement element) {
         String input = JsonSerializer.serialize(element, false);
         JsonElement parsed = jsonParser.parse(input);
         Assert.assertEquals(JsonSerializer.serialize(parsed, false), input);

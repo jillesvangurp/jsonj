@@ -7,6 +7,8 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
+import javax.annotation.Nonnull;
+import org.apache.commons.lang3.Validate;
 
 /**
  * GeoJson uses multi dimensional arrays to support points, lines, polygons, multi polygons, etc. This class offers some
@@ -22,15 +24,15 @@ public class GeoJsonSupport {
      * @param longitude longitude
      * @return [longitude,latitude] as a JsonArray
      */
-    public static JsonArray point(double latitude, double longitude) {
+    public static @Nonnull JsonArray point(double latitude, double longitude) {
         return array(longitude,latitude);
     }
 
-    public static JsonArray toJsonJPoint(double[] coordinates) {
+    public static @Nonnull JsonArray toJsonJPoint(@Nonnull double[] coordinates) {
         return array(coordinates[0],coordinates[1]);
     }
 
-    public static double[] fromJsonJPoint(JsonArray coordinates) {
+    public static @Nonnull double[] fromJsonJPoint(@Nonnull JsonArray coordinates) {
         return new double[] {coordinates.get(0).asDouble(), coordinates.get(1).asDouble()};
     }
 
@@ -40,7 +42,7 @@ public class GeoJsonSupport {
      * @param lineString 2d array of doubles
      * @return a JsonArray array
      */
-    public static JsonArray toJsonJLineString(double[][] lineString) {
+    public static @Nonnull JsonArray toJsonJLineString(@Nonnull double[][] lineString) {
         JsonArray points = array();
         for (double[] values : lineString) {
             JsonArray subArray = array();
@@ -58,7 +60,7 @@ public class GeoJsonSupport {
      * @param lineString 2d JsonArray of doubles
      * @return a double[][] 2d array of doubles
      */
-    public static double[][] fromJsonJLineString(JsonArray lineString) {
+    public static @Nonnull double[][] fromJsonJLineString(@Nonnull JsonArray lineString) {
         double[][] result = new double[lineString.size()][lineString.get(0).asArray().size()];
         for(int i =0; i<lineString.size();i++) {
             JsonArray subArray = lineString.get(i).asArray();
@@ -69,20 +71,21 @@ public class GeoJsonSupport {
         return result;
     }
 
-    public static JsonArray toJsonJPolygon(double[][] polygon) {
+    public static@Nonnull  JsonArray toJsonJPolygon(@Nonnull double[][] polygon) {
         return toJsonJPolygon(new double [][][] {polygon});
     }
 
 
-    public static JsonArray toJsonJPolygon(double[][][] polygon) {
+    public static @Nonnull JsonArray toJsonJPolygon(@Nonnull double[][][] polygon) {
         JsonArray result = array();
         for (double[][] element : polygon) {
+            Validate.notNull(element);
             result.add(toJsonJLineString(element));
         }
         return result;
     }
 
-    public static double[][][] fromJsonJPolygon(JsonArray polygon) {
+    public static @Nonnull double[][][] fromJsonJPolygon(@Nonnull JsonArray polygon) {
         double[][][] result = new double[polygon.size()][0][0];
         int i=0;
         for(JsonElement e: polygon) {
@@ -92,15 +95,16 @@ public class GeoJsonSupport {
         return result;
     }
 
-    public static JsonArray toJsonJMultiPolygon(double[][][][] multiPolygon) {
+    public static @Nonnull JsonArray toJsonJMultiPolygon(@Nonnull double[][][][] multiPolygon) {
         JsonArray result = array();
         for (double[][][] element : multiPolygon) {
+            Validate.notNull(element);
             result.add(toJsonJPolygon(element));
         }
         return result;
     }
 
-    public static double[][][][] fromJsonJMultiPolygon(JsonArray multiPolygon) {
+    public static @Nonnull double[][][][] fromJsonJMultiPolygon(@Nonnull JsonArray multiPolygon) {
         double[][][][] result = new double[multiPolygon.size()][0][0][0];
         int i=0;
         for(JsonElement e: multiPolygon) {
@@ -116,7 +120,7 @@ public class GeoJsonSupport {
      * @param lineString 2d array of doubles
      * @return JsonArray with the 3d polygon
      */
-    public static JsonArray lineStringToPolygon(double[][] lineString) {
+    public static @Nonnull JsonArray lineStringToPolygon(@Nonnull double[][] lineString) {
         JsonArray jsonJLineString = toJsonJLineString(lineString);
         if (lineString[0][0] != lineString[lineString.length - 1][0] || lineString[0][1] != lineString[lineString.length - 1][1]) {
             // add last coordinate to close the polygon
@@ -132,7 +136,7 @@ public class GeoJsonSupport {
      * @param lineString 2d JsonArray
      * @return 3d double array with the polygon
      */
-    public static JsonArray lineStringToPolygon(JsonArray lineString) {
+    public static @Nonnull JsonArray lineStringToPolygon(@Nonnull JsonArray lineString) {
         if(!lineString.first().equals(lineString.last())) {
             JsonElement e = lineString.first().deepClone();
             lineString.add(e);
@@ -148,7 +152,7 @@ public class GeoJsonSupport {
      * @param array 2d array with latitude, longitude pairs
      * @return swapped array 2d array with longitude, latitude pairs
      */
-    public static JsonArray swapLatLon(JsonArray array) {
+    public static @Nonnull JsonArray swapLatLon(@Nonnull JsonArray array) {
         if(array.isNotEmpty() && array.first().isArray()) {
             for(JsonElement e: array) {
                 swapLatLon(e.asArray());
@@ -166,31 +170,31 @@ public class GeoJsonSupport {
         return array;
     }
 
-    public static JsonObject shape(String type, JsonArray coordinates) {
+    public static @Nonnull JsonObject shape(@Nonnull String type, @Nonnull JsonArray coordinates) {
         return object().put("type", type).put("coordinates", coordinates).get();
     }
 
-    public static JsonObject pointShape(double latitude, double longitude) {
+    public static @Nonnull JsonObject pointShape(double latitude, double longitude) {
         return shape("Point", toJsonJPoint(new double[] {longitude, longitude}));
     }
 
-    public static JsonObject pointShape(double[] coordinates) {
+    public static @Nonnull JsonObject pointShape(@Nonnull double[] coordinates) {
         return shape("Point", toJsonJPoint(coordinates));
     }
 
-    public static JsonObject lineStringShape(double[][] coordinates) {
+    public static @Nonnull JsonObject lineStringShape(@Nonnull double[][] coordinates) {
         return shape("LineString", toJsonJLineString(coordinates));
     }
 
-    public static JsonObject polygonShape(double[][] coordinates) {
+    public static @Nonnull JsonObject polygonShape(@Nonnull double[][] coordinates) {
         return shape("Polygon", toJsonJPolygon(coordinates));
     }
 
-    public static JsonObject polygonShape(double[][][] coordinates) {
+    public static @Nonnull JsonObject polygonShape(@Nonnull double[][][] coordinates) {
         return shape("Polygon", toJsonJPolygon(coordinates));
     }
 
-    public static JsonObject multiPolygonShape(double[][][][] coordinates) {
+    public static @Nonnull JsonObject multiPolygonShape(@Nonnull double[][][][] coordinates) {
         return shape("MultiPolygon", toJsonJMultiPolygon(coordinates));
     }
 

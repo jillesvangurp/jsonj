@@ -9,9 +9,10 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import javax.annotation.Nonnull;
 
 public class JsonjCollectors {
-    public static Collector<Object, JsonSet, JsonSet> set() {
+    public static @Nonnull Collector<Object, JsonSet, JsonSet> set() {
         return new Collector<Object, JsonSet, JsonSet>() {
             @Override
             public Supplier<JsonSet> supplier() {
@@ -39,7 +40,7 @@ public class JsonjCollectors {
             }};
     }
 
-    public static Collector<Object, JsonArray, JsonArray> array() {
+    public static @Nonnull Collector<Object, JsonArray, JsonArray> array() {
         return new Collector<Object, JsonArray, JsonArray>() {
             @Override
             public Supplier<JsonArray> supplier() {

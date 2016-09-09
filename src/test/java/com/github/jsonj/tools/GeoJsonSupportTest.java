@@ -7,17 +7,17 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import org.testng.annotations.Test;
-
 import com.github.jsonj.JsonArray;
+import javax.annotation.Nonnull;
+import org.testng.annotations.Test;
 
 @Test
 public class GeoJsonSupportTest {
-    double[] point1=new double[] {1.0,2.0};
-    double[] point2=new double[] {2.0,2.0};
-    double[] point3=new double[] {2.0,1.0};
-    double[][] lineString1=new double[][] {point1,point2,point3};
-    double[][] lineString2=new double[][] {point3,point2,point1};
+    @Nonnull double[] point1=new double[] {1.0,2.0};
+    @Nonnull double[] point2=new double[] {2.0,2.0};
+    @Nonnull double[] point3=new double[] {2.0,1.0};
+    @Nonnull double[][] lineString1=new double[][] {point1,point2,point3};
+    @Nonnull double[][] lineString2=new double[][] {point3,point2,point1};
 
     public void shouldSwapPoint() {
         assertThat(swapLatLon(toJsonJPoint(point1)), is(array(2.0,1.0)));

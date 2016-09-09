@@ -39,6 +39,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -52,14 +53,14 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         super();
     }
 
-    public JsonArray(Collection<?> existing) {
+    public JsonArray(@Nonnull Collection<?> existing) {
         super();
         for(Object o: existing) {
             add(fromObject(o));
         }
     }
 
-    public JsonArray(Stream<Object> s) {
+    public JsonArray(@Nonnull Stream<Object> s) {
         super();
         s.forEach(o -> this.addObject(o));
     }
@@ -77,7 +78,8 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @param p a predicate
      * @return array of elements matching p
      */
-    public JsonArray filter(Predicate<JsonElement> p) {
+    @SuppressWarnings("null")
+    public @Nonnull JsonArray filter(@Nonnull Predicate<JsonElement> p) {
         return stream().filter(p).collect(JsonjCollectors.array());
     }
 
@@ -85,7 +87,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @param p a predicate
      * @return an optional of the first element matching p or Optional.empty() if nothing matches
      */
-    public Optional<JsonElement> findFirstMatching(Predicate<JsonElement> p) {
+    public Optional<JsonElement> findFirstMatching(@Nonnull Predicate<JsonElement> p) {
         for(JsonElement e: this) {
             if(p.test(e)) {
                 return Optional.of(e);
@@ -100,7 +102,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @param value value of the field
      * @return the first object where field == value, or null
      */
-    public Optional<JsonObject> findFirstWithFieldValue(String fieldName, String value) {
+    public Optional<JsonObject> findFirstWithFieldValue(@Nonnull String fieldName, String value) {
         JsonElement result = findFirstMatching(e -> {
             if(!e.isObject()) {
                 return false;
@@ -125,7 +127,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @param s string
      * @return true if element was added successfully
      */
-    public boolean add(final String s) {
+    public boolean add(String s) {
         return add(primitive(s));
     }
 
@@ -133,7 +135,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * Variant of add that adds one or more strings.
      * @param strings values
      */
-    public void add(final String...strings) {
+    public void add(String...strings) {
         for (String s : strings) {
             add(primitive(s));
         }
@@ -143,7 +145,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * Variant of add that adds one or more numbers (float/int).
      * @param numbers values
      */
-    public void add(final Number...numbers) {
+    public void add(Number...numbers) {
         for (Number n : numbers) {
             add(primitive(n));
         }
@@ -153,7 +155,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * Variant of add that adds one or more booleans.
      * @param booleans values
      */
-    public void add(final Boolean...booleans) {
+    public void add(@Nonnull  Boolean...booleans) {
         for (Boolean b : booleans) {
             add(primitive(b));
         }
@@ -163,7 +165,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * Variant of add that adds one or more JsonElements.
      * @param elements elements
      */
-    public void add(final JsonElement...elements) {
+    public void add(@Nonnull  JsonElement...elements) {
         for (JsonElement element : elements) {
             add(element);
         }
@@ -173,13 +175,13 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * Variant of add that adds one or more JsonBuilders. This means you don't have to call get() on the builder when adding object builders.
      * @param elements builders
      */
-    public void add(JsonBuilder...elements) {
+    public void add(@Nonnull JsonBuilder...elements) {
         for (JsonBuilder element : elements) {
             add(element.get());
         }
     }
 
-    public void add(JsonDataObject...elements) {
+    public void add(@Nonnull JsonDataObject...elements) {
         for (JsonDataObject element : elements) {
             add(element.getJsonObject());
         }
@@ -222,7 +224,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *         element if the label is an integer and the element an object or
      *         an array.
      */
-    public JsonElement get(final String label) {
+    public JsonElement get(String label) {
         int i = 0;
         try{
             for (JsonElement e : this) {

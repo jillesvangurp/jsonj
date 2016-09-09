@@ -4,6 +4,7 @@ import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import javax.annotation.Nonnull;
 import org.testng.annotations.Test;
 
 @Test
@@ -13,7 +14,7 @@ public class JsonDataObjectTest {
         class MyPoint implements JsonDataObject {
             private static final long serialVersionUID = 1857812728597159873L;
 
-            private final JsonObject wrapped;
+            private final @Nonnull JsonObject wrapped;
             public MyPoint(double x, double y) {
                 wrapped=object(field("x",x),field("y",y));
             }

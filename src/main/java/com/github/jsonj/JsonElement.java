@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.Writer;
+import javax.annotation.Nonnull;
 
 /**
  * Super type of all Json elements (object, list, and primitive).
@@ -35,27 +36,27 @@ public interface JsonElement extends Cloneable, Serializable {
     /**
      * @return the type of this json element
      */
-    JsonType type();
+    @Nonnull JsonType type();
 
     /**
      * @return a JsonObject
      * @throws JsonTypeMismatchException if the element is not an object
      */
-    JsonObject asObject();
+    @Nonnull JsonObject asObject();
 
     /**
      * @return a JsonArray
      * @throws JsonTypeMismatchException if the element is not an array
      */
-    JsonArray asArray();
+    @Nonnull JsonArray asArray();
 
     /**
      * @return a JsonPrimitive
      * @throws JsonTypeMismatchException if the element is not a primitive type
      */
-    JsonPrimitive asPrimitive();
+    @Nonnull JsonPrimitive asPrimitive();
 
-    String asString();
+    @Nonnull String asString();
 
     double asDouble();
     float asFloat();
@@ -84,7 +85,7 @@ public interface JsonElement extends Cloneable, Serializable {
      * @param <T> an implementation of {@link JsonElement}
      * @return a deep clone of the JsonElement.
      */
-    <T extends JsonElement> T deepClone();
+    @Nonnull <T extends JsonElement> T deepClone();
 
     /**
      * @return true if the JsonElement is effectively empty.
@@ -103,7 +104,7 @@ public interface JsonElement extends Cloneable, Serializable {
     /**
      * @return pretty printed serialized version of this element. Use toString to get the non pretty printed version.
      */
-    String prettyPrint();
+    @Nonnull String prettyPrint();
 
     /**
      * @return true if the element is a json number (double or long)
@@ -125,7 +126,7 @@ public interface JsonElement extends Cloneable, Serializable {
      */
     boolean isString();
 
-    default void serialize(OutputStream out) throws IOException {
+    default void serialize(@Nonnull OutputStream out) throws IOException {
         try(OutputStreamWriter w = new OutputStreamWriter(out, "UTF-8")) {
             serialize(w);
         }
@@ -136,16 +137,16 @@ public interface JsonElement extends Cloneable, Serializable {
      * @param w writer
      * @throws IOException when there is a problem with the writer
      */
-    void serialize(Writer w) throws IOException;
+    void serialize(@Nonnull Writer w) throws IOException;
 
-    JsonSet asSet();
+    @Nonnull JsonSet asSet();
 
     /**
      * @return a clone of the JsonElement that is immutable. Note, JsonPrimitive instances are already immutable so they return themselves.
      */
-    JsonElement immutableClone();
+    @Nonnull JsonElement immutableClone();
 
-    default Number asNumber() {
+    default @Nonnull Number asNumber() {
         throw new JsonTypeMismatchException("not a primitive");
     }
 

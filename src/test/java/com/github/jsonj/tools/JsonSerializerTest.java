@@ -29,17 +29,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-
+import javax.annotation.Nonnull;
 import org.hamcrest.Matchers;
 import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
 
 @Test
 public class JsonSerializerTest {
@@ -86,7 +85,7 @@ public class JsonSerializerTest {
     }
 
     @Test(dataProvider="strings")
-    public void shouldParseSerializedAndHandleEscapingBothWays(String text) {
+    public void shouldParseSerializedAndHandleEscapingBothWays(@Nonnull String text) {
         JsonElement e = object().put(text, "value").put("stringval", text).put("array", array(text,text)).get();
 
         String json = JsonSerializer.serialize(e);
@@ -95,7 +94,7 @@ public class JsonSerializerTest {
     }
 
     @Test(dataProvider = "strings")
-    public void shouldParseSerializedAndHandleEscapingBothWaysWithOutputStream(String text) throws IOException {
+    public void shouldParseSerializedAndHandleEscapingBothWaysWithOutputStream(@Nonnull String text) throws IOException {
         JsonElement e = object().put(text, "value").put("stringval", text).put("array", array(text, text)).get();
         StringWriter sw = new StringWriter();
 

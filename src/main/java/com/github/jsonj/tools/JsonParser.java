@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import javax.annotation.Nonnull;
 
 /**
  * Parser based on json-simple. This class is thread safe so you can safely
@@ -66,7 +67,7 @@ public class JsonParser {
      * @throws JsonParseException
      *             if the json cannot be parsed
      */
-    public JsonElement parse(final String s) {
+    public @Nonnull JsonElement parse(final String s) {
         try {
             com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(s);
             try {
