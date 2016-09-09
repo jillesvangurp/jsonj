@@ -25,7 +25,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.30-SNAPSHOT</version>
+    <version>2.30</version>
 
     <name>JsonJ</name>
     <description>A framework for working with json in Java the "proper" way. No mappings or model classes, it's all just lovely json, but in Java.</description>
@@ -35,7 +35,7 @@
         <url>git://git@github.com:jillesvangurp/jsonj.git</url>
         <connection>scm:git:git@github.com:jillesvangurp/jsonj.git</connection>
         <developerConnection>scm:git:git@github.com:jillesvangurp/jsonj.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>jsonj-2.30</tag>
   </scm>
 
     <licenses>
