@@ -61,7 +61,7 @@ public class JsonBuilder {
      * @param e value
      * @return the builder
      */
-    public @Nonnull JsonBuilder put(@Nonnull  String key, JsonElement e) {
+    public @Nonnull JsonBuilder put(String key, JsonElement e) {
         object.put(key, e);
         return this;
     }
@@ -71,7 +71,7 @@ public class JsonBuilder {
      * @param e value
      * @return the builder
      */
-    public @Nonnull JsonBuilder put(@Nonnull  String key, JsonBuilder e) {
+    public @Nonnull JsonBuilder put(String key, JsonBuilder e) {
         object.put(key, e);
         return this;
     }
@@ -83,7 +83,7 @@ public class JsonBuilder {
      * @param s value
      * @return the builder
      */
-    public @Nonnull JsonBuilder put(@Nonnull  String key, String s) {
+    public @Nonnull JsonBuilder put(String key, String s) {
         object.put(key, primitive(s));
         return this;
     }
@@ -95,7 +95,7 @@ public class JsonBuilder {
      * @param b value
      * @return the builder
      */
-    public @Nonnull JsonBuilder put(@Nonnull  String key, boolean b) {
+    public @Nonnull JsonBuilder put(String key, boolean b) {
         object.put(key, primitive(b));
         return this;
     }
@@ -120,7 +120,7 @@ public class JsonBuilder {
      *            values that go in the array
      * @return the builder
      */
-    public @Nonnull JsonBuilder putArray(@Nonnull  String key, String... values) {
+    public @Nonnull JsonBuilder putArray(String key, String... values) {
         JsonArray jjArray = new JsonArray();
         for (String string : values) {
             jjArray.add(primitive(string));
@@ -137,7 +137,7 @@ public class JsonBuilder {
      *            values that go in the array
      * @return the builder
      */
-    public @Nonnull JsonBuilder putArray(@Nonnull  String key, @Nonnull Number... values) {
+    public @Nonnull JsonBuilder putArray(String key, @Nonnull Number... values) {
         JsonArray jjArray = new JsonArray();
         for (Number number : values) {
             jjArray.add(primitive(number));
@@ -159,7 +159,7 @@ public class JsonBuilder {
      * @param object a json object
      * @return the builder
      */
-    public static @Nonnull JsonBuilder object(@Nonnull  JsonObject object) {
+    public static @Nonnull JsonBuilder object(JsonObject object) {
         return new JsonBuilder(object);
     }
 
@@ -169,7 +169,7 @@ public class JsonBuilder {
      * @return the JsonObject with the entries added.
      */
     @SafeVarargs
-    public static @Nonnull JsonObject object(@Nonnull Entry<String,JsonElement>...fields) {
+    public static @Nonnull JsonObject object(Entry<String,JsonElement>...fields) {
         JsonObject object = new JsonObject();
         object.add(fields);
         return object;
@@ -181,7 +181,7 @@ public class JsonBuilder {
      * @param value value
      * @return field entry implementation that can be added to a JsonObject
      */
-    public static @Nonnull Entry<String,JsonElement> field(@Nonnull  String key, @Nonnull  JsonElement value) {
+    public static @Nonnull Entry<String,JsonElement> field(String key, JsonElement value) {
         Entry<String, JsonElement> entry = new Entry<String,JsonElement>() {
 
             @Override
@@ -207,7 +207,7 @@ public class JsonBuilder {
      * @param value value
      * @return field entry implementation that can be added to a JsonObject
      */
-    public static @Nonnull Entry<String,JsonElement> field(@Nonnull  String key, Object value) {
+    public static @Nonnull Entry<String,JsonElement> field(String key, Object value) {
         return field(key, fromObject(value));
     }
 
@@ -261,7 +261,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull <T> JsonArray array(@Nonnull T[] array) {
+    public static @Nonnull <T> JsonArray array(@SuppressWarnings("unchecked") @Nonnull T... array) {
         JsonArray jjArray = new JsonArray();
         for(T e: array) {
             jjArray.add(fromObject(e));
@@ -269,7 +269,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull JsonArray array(@Nonnull int[] array) {
+    public static @Nonnull JsonArray array(int[] array) {
         JsonArray jjArray = new JsonArray();
         for(int e: array) {
             jjArray.add(e);
@@ -277,7 +277,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull JsonArray array(@Nonnull long[] array) {
+    public static @Nonnull JsonArray array(long[] array) {
         JsonArray jjArray = new JsonArray();
         for(long e: array) {
             jjArray.add(e);
@@ -285,7 +285,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull JsonArray array(@Nonnull float[] array) {
+    public static @Nonnull JsonArray array(float[] array) {
         JsonArray jjArray = new JsonArray();
         for(float e: array) {
             jjArray.add(e);
@@ -293,7 +293,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull JsonArray array(@Nonnull double[] array) {
+    public static @Nonnull JsonArray array(double[] array) {
         JsonArray jjArray = new JsonArray();
         for(double e: array) {
             jjArray.add(e);
@@ -305,7 +305,7 @@ public class JsonBuilder {
      * @param elements strings
      * @return json array with all the elements added as JsonPrimitive
      */
-    public static @Nonnull JsonArray array(@Nonnull String... elements) {
+    public static @Nonnull JsonArray array(String... elements) {
         JsonArray jjArray = new JsonArray();
         for (String s : elements) {
             jjArray.add(primitive(s));
@@ -318,7 +318,7 @@ public class JsonBuilder {
      * @param elements json builders
      * @return json array with the builder objects
      */
-    public static @Nonnull JsonArray array(@Nonnull  JsonBuilder... elements) {
+    public static @Nonnull JsonArray array(JsonBuilder... elements) {
         JsonArray jjArray = new JsonArray();
         for (JsonBuilder b : elements) {
             jjArray.add(b);
@@ -331,7 +331,7 @@ public class JsonBuilder {
      * @param elements numbers
      * @return an array
      */
-    public static @Nonnull JsonArray array(@Nonnull  Number... elements) {
+    public static @Nonnull JsonArray array(Number... elements) {
         JsonArray jjArray = new JsonArray();
         for (Number n : elements) {
             jjArray.add(primitive(n));
@@ -339,7 +339,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull JsonArray array(@Nonnull  JsonDataObject... elements) {
+    public static @Nonnull JsonArray array(JsonDataObject... elements) {
         JsonArray jjArray = new JsonArray();
         jjArray.add(elements);
         return jjArray;
@@ -356,7 +356,7 @@ public class JsonBuilder {
      * @param elements elements
      * @return json set with all the elements added
      */
-    public static @Nonnull JsonSet set(@Nonnull  JsonElement... elements) {
+    public static @Nonnull JsonSet set(JsonElement... elements) {
         JsonSet jjArray = new JsonSet();
         for (JsonElement jjElement : elements) {
             if(jjElement==null) {
@@ -399,7 +399,7 @@ public class JsonBuilder {
      * @param elements strings
      * @return json array with all the elements added as JsonPrimitive
      */
-    public static @Nonnull JsonSet set(@Nonnull  String... elements) {
+    public static @Nonnull JsonSet set(String... elements) {
         JsonSet jjSet = new JsonSet();
         for (String s : elements) {
             jjSet.add(primitive(s));
@@ -407,7 +407,7 @@ public class JsonBuilder {
         return jjSet;
     }
 
-    public static @Nonnull <T> JsonSet set(@Nonnull T[] array) {
+    public static @Nonnull <T> JsonSet set(@SuppressWarnings("unchecked") T... array) {
         JsonSet set = new JsonSet();
         for(T e: array) {
             set.add(fromObject(e));
@@ -415,7 +415,7 @@ public class JsonBuilder {
         return set;
     }
 
-    public static @Nonnull JsonSet set(@Nonnull int[] array) {
+    public static @Nonnull JsonSet set(int[] array) {
         JsonSet set = new JsonSet();
         for(int e: array) {
             set.add(e);
@@ -423,7 +423,7 @@ public class JsonBuilder {
         return set;
     }
 
-    public static @Nonnull JsonSet set(@Nonnull long[] array) {
+    public static @Nonnull JsonSet set(long[] array) {
         JsonSet set = new JsonSet();
         for(long e: array) {
             set.add(e);
@@ -431,7 +431,7 @@ public class JsonBuilder {
         return set;
     }
 
-    public static @Nonnull JsonSet set(@Nonnull float[] array) {
+    public static @Nonnull JsonSet set(float[] array) {
         JsonSet set = new JsonSet();
         for(float e: array) {
             set.add(e);
@@ -439,7 +439,7 @@ public class JsonBuilder {
         return set;
     }
 
-    public static @Nonnull JsonSet set(@Nonnull double[] array) {
+    public static @Nonnull JsonSet set(double[] array) {
         JsonSet set = new JsonSet();
         for(double e: array) {
             set.add(e);
@@ -452,7 +452,7 @@ public class JsonBuilder {
      * @param elements json builders
      * @return json array with the builder objects
      */
-    public static @Nonnull JsonSet set(@Nonnull  JsonBuilder... elements) {
+    public static @Nonnull JsonSet set(JsonBuilder... elements) {
         JsonSet jjArray = new JsonSet();
         for (JsonBuilder b : elements) {
             jjArray.add(b);
@@ -465,7 +465,7 @@ public class JsonBuilder {
      * @param elements {@link Number} instances
      * @return json array
      */
-    public static @Nonnull JsonSet set(@Nonnull  Number... elements) {
+    public static @Nonnull JsonSet set(Number... elements) {
         JsonSet jjArray = new JsonSet();
         for (Number n : elements) {
             jjArray.add(primitive(n));
@@ -473,7 +473,7 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull JsonSet set(@Nonnull JsonDataObject... elements) {
+    public static @Nonnull JsonSet set(JsonDataObject... elements) {
         JsonSet jjArray = new JsonSet();
         jjArray.add(elements);
         return jjArray;
