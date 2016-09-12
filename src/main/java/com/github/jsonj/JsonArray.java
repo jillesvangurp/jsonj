@@ -40,7 +40,6 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -225,7 +224,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *         element if the label is an integer and the element an object or
      *         an array.
      */
-    public @Nullable JsonElement get(String label) {
+    public JsonElement get(String label) {
         int i = 0;
         try{
             for (JsonElement e : this) {
@@ -244,11 +243,11 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return null;
     }
 
-    public @Nullable JsonElement first() {
+    public JsonElement first() {
         return get(0);
     }
 
-    public @Nullable JsonElement last() {
+    public JsonElement last() {
         return get(size()-1);
     }
 
