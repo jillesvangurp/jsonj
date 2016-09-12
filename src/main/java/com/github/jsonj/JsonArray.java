@@ -40,6 +40,7 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -224,7 +225,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *         element if the label is an integer and the element an object or
      *         an array.
      */
-    public JsonElement get(String label) {
+    public @Nullable JsonElement get(String label) {
         int i = 0;
         try{
             for (JsonElement e : this) {
@@ -243,11 +244,11 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         return null;
     }
 
-    public JsonElement first() {
+    public @Nullable JsonElement first() {
         return get(0);
     }
 
-    public JsonElement last() {
+    public @Nullable JsonElement last() {
         return get(size()-1);
     }
 
@@ -266,17 +267,17 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     }
 
     @Override
-    public JsonObject asObject() {
+    public @Nonnull JsonObject asObject() {
         throw new JsonTypeMismatchException("not an object");
     }
 
     @Override
-    public JsonArray asArray() {
+    public @Nonnull JsonArray asArray() {
         return this;
     }
 
     @Override
-    public JsonSet asSet() {
+    public @Nonnull JsonSet asSet() {
         JsonSet set = JsonBuilder.set();
         set.addAll(this);
         return set;
@@ -391,13 +392,13 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     }
 
     @Override
-    public Object clone() {
+    public @Nonnull Object clone() {
         return deepClone();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public JsonArray deepClone() {
+    public @Nonnull JsonArray deepClone() {
         JsonArray array = new JsonArray();
         for (JsonElement jsonElement : this) {
             JsonElement e = jsonElement.deepClone();
@@ -407,7 +408,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
     }
 
     @Override
-    public JsonArray immutableClone() {
+    public @Nonnull JsonArray immutableClone() {
         JsonArray array = new JsonArray();
         for (JsonElement jsonElement : this) {
             JsonElement e = jsonElement.immutableClone();
@@ -594,8 +595,9 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         super.ensureCapacity(minCapacity);
     }
 
+    @SuppressWarnings("null")
     @Override
-    public Iterator<JsonElement> iterator() {
+    public @Nonnull Iterator<JsonElement> iterator() {
         if(immutable) {
             Iterator<JsonElement> it = super.iterator();
             return new Iterator<JsonElement>() {
@@ -682,7 +684,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *
      * @return iterable that iterates over JsonObjects instead of JsonElements.
      */
-    public Iterable<JsonObject> objects() {
+    public @Nonnull Iterable<JsonObject> objects() {
         final JsonArray parent=this;
         return new Iterable<JsonObject>() {
 
@@ -710,27 +712,32 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         };
     }
 
-    public Stream<JsonObject> streamObjects() {
+    @SuppressWarnings("null")
+    public @Nonnull Stream<JsonObject> streamObjects() {
         return stream().map(e -> e.asObject());
     }
 
-    public Stream<JsonArray> streamArrays() {
+    @SuppressWarnings("null")
+    public @Nonnull Stream<JsonArray> streamArrays() {
         return stream().map(e -> e.asArray());
     }
 
-    public Stream<String> streamStrings() {
+    @SuppressWarnings("null")
+    public @Nonnull Stream<String> streamStrings() {
         return stream().map(e -> e.asString());
     }
 
-    public Stream<JsonElement> map(Function<JsonElement,JsonElement> f) {
+    @SuppressWarnings("null")
+    public @Nonnull Stream<JsonElement> map(Function<JsonElement,JsonElement> f) {
         return stream().map(f);
     }
 
-    public Stream<JsonObject> mapObjects(Function<JsonObject, JsonObject> f) {
+    @SuppressWarnings("null")
+    public @Nonnull Stream<JsonObject> mapObjects(Function<JsonObject, JsonObject> f) {
         return streamObjects().map(f);
     }
 
-    public void forEachObject(Consumer<? super JsonObject> action) {
+    public void forEachObject(@Nonnull Consumer<? super JsonObject> action) {
         for (JsonElement e : this) {
             action.accept(e.asObject());
         }
@@ -742,7 +749,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *
      * @return iterable that iterates over JsonArrays instead of JsonElements.
      */
-    public Iterable<JsonArray> arrays() {
+    public @Nonnull Iterable<JsonArray> arrays() {
         final JsonArray parent=this;
         return new Iterable<JsonArray>() {
 
@@ -776,7 +783,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *
      * @return iterable that iterates over Strings instead of JsonElements.
      */
-    public Iterable<String> strings() {
+    public @Nonnull Iterable<String> strings() {
         final JsonArray parent=this;
         return new Iterable<String>() {
 
@@ -810,7 +817,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *
      * @return iterable that iterates over Doubles instead of JsonElements.
      */
-    public Iterable<Double> doubles() {
+    public @Nonnull Iterable<Double> doubles() {
         final JsonArray parent=this;
         return new Iterable<Double>() {
 
@@ -844,7 +851,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *
      * @return iterable that iterates over Longs instead of JsonElements.
      */
-    public Iterable<Long> longs() {
+    public @Nonnull Iterable<Long> longs() {
         final JsonArray parent=this;
         return new Iterable<Long>() {
 
@@ -878,7 +885,7 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      *
      * @return iterable that iterates over Longs instead of JsonElements.
      */
-    public Iterable<Integer> ints() {
+    public @Nonnull Iterable<Integer> ints() {
         final JsonArray parent=this;
         return new Iterable<Integer>() {
 

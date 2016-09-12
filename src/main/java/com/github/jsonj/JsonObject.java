@@ -940,8 +940,9 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return intMap.size();
     }
 
+    @SuppressWarnings("null")
     @Override
-    public Collection<JsonElement> values() {
+    public @Nonnull Collection<JsonElement> values() {
         return intMap.values();
     }
 
@@ -993,13 +994,14 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         });
     }
 
-    public JsonObject flatten(String separator) {
+    public JsonObject flatten(@Nonnull String separator) {
         JsonObject o = new JsonObject();
         flatten(o,"",separator,this);
         return o;
     }
 
-    private static void flatten(JsonObject root, String path, String separator, JsonElement element) {
+    @SuppressWarnings("null")
+    private static void flatten(@Nonnull JsonObject root, @Nonnull String path, @Nonnull String separator, JsonElement element) {
         JsonType type = element.type();
         switch (type) {
         case array:
