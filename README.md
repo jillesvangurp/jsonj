@@ -2,7 +2,7 @@
 
 # Introduction
 
-JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API. The core idea behind JsonJ is to provide sensible implementations of the handful of native types in json. These implementations leverage things like generics, Java 8 streams, varargs, the Collections framework and other things that are characteristic of modern Java. 
+JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API. The core idea behind JsonJ is to provide sensible implementations of the handful of native types in json. These implementations leverage things like generics, Java 8 streams, varargs, the Collections framework and other things that are characteristic of modern Java.
 
 There are several reasons why you might like jsonj
 
@@ -23,7 +23,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.29</version>
+    <version>2.32</version>
 </dependency>
 ```
 
@@ -276,6 +276,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.30 - 2.32
+  - Add @Nonnull annotations in a few places
+  - flatten method in jsonobject
 - 2.29
   - Small performance enhancement to json set with id strategy
 -
