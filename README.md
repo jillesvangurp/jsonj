@@ -14,6 +14,7 @@ There are several reasons why you might like jsonj
 - A JsonDataObject interface is provided (that includes default methods) that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin. This gives you the best of both worlds and it is easy to reuse functionality between different domain classes.
 - It relies on the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
 - In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them. Also adding support for more jackson plugins is easy.
+- [JsonLines](http://jsonlines.org/) support via `Stream<JsonObject> JsonParser.parseJsonLines(Reader r)`
 
 There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
@@ -23,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.32</version>
+    <version>2.33</version>
 </dependency>
 ```
 
@@ -276,6 +277,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.33
+  - Add parseJsonLines() to JsonParser to allow easy processing of jsonlines.org style input. Returns a `Stream<JsonObject>` that you can process without having to buffer everything in memory.
 - 2.30 - 2.32
   - Add @Nonnull annotations in a few places
   - flatten method in jsonobject
