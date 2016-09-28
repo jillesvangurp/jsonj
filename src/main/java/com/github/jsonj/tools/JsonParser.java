@@ -34,6 +34,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
 
 /**
@@ -51,11 +57,13 @@ public class JsonParser {
     }
 
     /**
-     * @param features varargs of jackson features to enable, e.g. com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS
+     * @param features
+     *            varargs of jackson features to enable, e.g.
+     *            com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS
      */
-    public JsonParser(Feature...features) {
+    public JsonParser(Feature... features) {
         jsonFactory = new JsonFactory();
-        for(Feature f: features) {
+        for(Feature f : features) {
             jsonFactory.enable(f);
         }
     }
@@ -136,5 +144,51 @@ public class JsonParser {
 
     public JsonArray parseArray(Reader r) throws IOException {
         return parse(r).asArray();
+    }
+
+    private Iterator<JsonObject> jsonLinesIterator(Reader r) {
+        BufferedReader br = new BufferedReader(r);
+        return new Iterator<JsonObject>() {
+            JsonObject next = null;
+
+            @Override
+            public boolean hasNext() {
+                if(next != null) {
+                    return true;
+                } else {
+                    try {
+                        String line = br.readLine();
+                        if(line == null) {
+                            return false;
+                        } else {
+                            next = parseObject(line);
+                        }
+                    } catch (IOException e) {
+                        throw new IllegalStateException("error reading", e);
+                    }
+                    return next != null;
+                }
+            }
+
+            @Override
+            public JsonObject next() {
+                if(hasNext()) {
+                    JsonObject current = next;
+                    next = null;
+                    return current;
+                } else {
+                    throw new NoSuchElementException();
+                }
+            }
+        };
+    }
+
+    /**
+     * Use this to parse jsonlines.org style input. IMPORTANT, you have to close the reader yourself with a try ... finally.
+     * @param r a reader
+     * @return a Stream of the parsed jsonObjects.
+     */
+    public Stream<JsonObject> parseJsonLines(Reader r) {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(jsonLinesIterator(r), Spliterator.ORDERED), false);
     }
 }

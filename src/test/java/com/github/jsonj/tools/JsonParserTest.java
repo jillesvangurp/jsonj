@@ -22,10 +22,12 @@
 package com.github.jsonj.tools;
 
 import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static com.github.jsonj.tools.JsonBuilder.set;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -33,9 +35,11 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonSet;
+import com.github.jsonj.JsonjCollectors;
 import com.github.jsonj.exceptions.JsonParseException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
@@ -47,6 +51,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -176,5 +181,15 @@ public class JsonParserTest {
         }
         // this should not throw an exception
         jsonParser.parseObject(o.prettyPrint());
+    }
+
+    public void shouldStreamJson() {
+        String input="";
+        for(int i=0;i<10;i++) {
+            input+=object(field("id",i)) + "\n";
+        }
+        Stream<JsonObject> stream = jsonParser.parseJsonLines(new StringReader(input));
+        JsonArray all = stream.collect(JsonjCollectors.array());
+        assertThat(all.size()).isEqualTo(10);
     }
 }
