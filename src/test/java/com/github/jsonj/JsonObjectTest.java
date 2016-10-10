@@ -96,6 +96,8 @@ public class JsonObjectTest {
         JsonObject o = object().put("a",
                 object().put("b", object().put("c", "d").get()).get()).get();
         Assert.assertEquals("d", o.get("a", "b", "c").asPrimitive().asString());
+        assertThat(o.maybeGet("a", "b", "c").isPresent()).isTrue();
+        assertThat(o.maybeGetString("a", "b", "c").get()).isEqualTo("d");
     }
 
     public void shouldCreateArray() {
@@ -243,15 +245,11 @@ public class JsonObjectTest {
         int total = 100000;
         for(int i=0;i<total;i++) {
             // make sure we are actually creating new Strings with no overlap with the other tests
-            final String str="shouldSupportConcurrentlyCreatingNewKeys-"+ (i/factor);
-            executorService.execute(new Runnable() {
-
-                @Override
-                public void run() {
-                    o.put(str, str); // this should never fail with null key because of the (hopefully) now fixed EfficientString
-                    EfficientString e = EfficientString.fromString(str);
-                    assertThat(EfficientString.fromString(str), is(e));
-                }
+            final String str="shouldSupportConcurrentlyCreatingNewKeys-"+ i/factor;
+            executorService.execute(() -> {
+                o.put(str, str); // this should never fail with null key because of the (hopefully) now fixed EfficientString
+                EfficientString e = EfficientString.fromString(str);
+                assertThat(EfficientString.fromString(str), is(e));
             });
         }
 
