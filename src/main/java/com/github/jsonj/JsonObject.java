@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -312,6 +313,42 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
             n++;
         }
         return null;
+    }
+
+    public Optional<JsonElement> maybeGet(String...labels) {
+        return Optional.ofNullable(get(labels));
+    }
+
+    public Optional<String> maybeGetString(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asString());
+    }
+
+    public Optional<Integer> maybeGetInt(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asInt());
+    }
+
+    public Optional<Long> maybeGetLong(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asLong());
+    }
+
+    public Optional<Number> maybeGetNumber(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asNumber());
+    }
+
+    public Optional<Boolean> maybeGetBoolean(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asBoolean());
+    }
+
+    public Optional<JsonArray> maybeGetArray(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asArray());
+    }
+
+    public Optional<JsonSet> maybeGetSet(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asSet());
+    }
+
+    public Optional<JsonObject> maybeGetObject(String...labels) {
+        return Optional.ofNullable(get(labels)).map(e -> e.asObject());
     }
 
     /**
