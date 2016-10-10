@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.33</version>
+    <version>2.34</version>
 </dependency>
 ```
 
@@ -163,7 +163,7 @@ object.getOrCreateArray("b","a","r").add(1,2,3);
 
 ## Getting values out of objects
 
-When getting values out of an object, you typically want to get the number, string, or boolean rather than a JsonElement. For this reason, JsonObject comes with several variations of the get method that allow you to avoid having to call the asString() method.
+When getting values out of an object, you typically want to get the number, string, or boolean rather than a JsonElement. For this reason, JsonObject comes with several variations of the get method that allow you to avoid having to call the asString() method. There also are several variants of maybeGet that return an Optional. This is useful if you are not sure the value is there and want to avoid having to do null checks.
 
 ```java
 // given {"foo":{"bar":"foobar"},"bar":42}
@@ -172,6 +172,7 @@ When getting values out of an object, you typically want to get the number, stri
 o.get("foo") // returns a JsonElement
 o.get("foo","bar") // returns a JsonElement using varargs labels
 o.get("foo","bar").asString() // returns the String "foobar"
+o.maybeGetString("foo","bar").ifPresent(value -> System.out.println(value)) // returns Optional and if present prints it
 
 // get primitives of a specific type
 o.getString("foo","bar") // returns the String "foobar" without having to call asString()
@@ -180,6 +181,7 @@ o.getString("bar") // returns the String "42", it converts the number to a strin
 o.getString("foo") // throws JsonTypeMismatchException because the returned value is not a JsonPrimitive
 o.getLong("bar") // returns the long 42
 o.getInt("bar") // returns the int 42
+o.maybeGetInt("bar").ifPresent(intValue -> System.out.println(intValue)) // prints 42
 o.getBoolean("bar") // throws JsonTypeMismatchException because the returned value is not a boolean
 o.getDouble("bar") // returns the int 42.0
 
@@ -208,6 +210,14 @@ Or you can use the new Java 8 streams:
 object.forEach(k,v) -> {
 ...
 }
+
+// or stream over elemnts in a json Array
+someArray.stream().forEach(element -> ...); // as inherited from ArrayList
+someArray.streamInts().forEach(i -> ...); // same but maps elements to ints
+someArray.streamObjects().forEach(object -> ...); // maps to JsonObject
+
+// etc
+
 ```
 
 ```java
@@ -277,6 +287,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.34
+  - Add maybeGet, maybeGetString, maybeGetObject, etc. accessors that return an `Optional`. You can use this as an alternative to the existing accessors that may return null.
 - 2.33
   - Add parseJsonLines() to JsonParser to allow easy processing of jsonlines.org style input. Returns a `Stream<JsonObject>` that you can process without having to buffer everything in memory.
 - 2.30 - 2.32
