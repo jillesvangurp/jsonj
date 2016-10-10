@@ -320,35 +320,35 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     }
 
     public Optional<String> maybeGetString(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asString());
+        return maybeGet(labels).map(e -> e.asString());
     }
 
     public Optional<Integer> maybeGetInt(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asInt());
+        return maybeGet(labels).map(e -> e.asInt());
     }
 
     public Optional<Long> maybeGetLong(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asLong());
+        return maybeGet(labels).map(e -> e.asLong());
     }
 
     public Optional<Number> maybeGetNumber(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asNumber());
+        return maybeGet(labels).map(e -> e.asNumber());
     }
 
     public Optional<Boolean> maybeGetBoolean(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asBoolean());
+        return maybeGet(labels).map(e -> e.asBoolean());
     }
 
     public Optional<JsonArray> maybeGetArray(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asArray());
+        return maybeGet(labels).map(e -> e.asArray());
     }
 
     public Optional<JsonSet> maybeGetSet(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asSet());
+        return maybeGet(labels).map(e -> e.asSet());
     }
 
     public Optional<JsonObject> maybeGetObject(String...labels) {
-        return Optional.ofNullable(get(labels)).map(e -> e.asObject());
+        return maybeGet(labels).map(e -> e.asObject());
     }
 
     /**
@@ -977,7 +977,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return intMap.size();
     }
 
-    @SuppressWarnings("null")
     @Override
     public @Nonnull Collection<JsonElement> values() {
         return intMap.values();
@@ -1037,7 +1036,6 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
         return o;
     }
 
-    @SuppressWarnings("null")
     private static void flatten(@Nonnull JsonObject root, @Nonnull String path, @Nonnull String separator, JsonElement element) {
         JsonType type = element.type();
         switch (type) {
