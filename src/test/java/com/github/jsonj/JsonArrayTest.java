@@ -174,7 +174,7 @@ public class JsonArrayTest {
     public void shouldMaybeGetThings() {
         assertThat(array("1","2").maybeGet(0).isPresent()).isTrue();
         assertThat(array("1","2").maybeGet(5).isPresent()).isFalse();
-        assertThat(array("1","2").maybeGetInt(1).get()).isEqualTo(2); // gets the value and converts to integer as required
+        assertThat(array("1","2").maybeGetString(1).get()).isEqualTo("2");
     }
 
     public void shouldSupportJavaSerialization() throws IOException, ClassNotFoundException {
