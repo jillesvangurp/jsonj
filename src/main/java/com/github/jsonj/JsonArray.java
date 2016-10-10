@@ -78,7 +78,6 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      * @param p a predicate
      * @return array of elements matching p
      */
-    @SuppressWarnings("null")
     public @Nonnull JsonArray filter(@Nonnull Predicate<JsonElement> p) {
         return stream().filter(p).collect(JsonjCollectors.array());
     }
@@ -241,6 +240,46 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         }
         // the element was not found
         return null;
+    }
+
+    public Optional<JsonElement> maybeGet(int index) {
+        if(index>=size()) {
+            // prevent index out of bounds exception
+            return Optional.empty();
+        }
+        return Optional.ofNullable(get(index));
+    }
+
+    public Optional<String> maybeGetString(int index) {
+        return maybeGet(index).map(e -> e.asString());
+    }
+
+    public Optional<Integer> maybeGetInt(int index) {
+        return maybeGet(index).map(e -> e.asInt());
+    }
+
+    public Optional<Long> maybeGetLong(int index) {
+        return maybeGet(index).map(e -> e.asLong());
+    }
+
+    public Optional<Number> maybeGetNumber(int index) {
+        return maybeGet(index).map(e -> e.asNumber());
+    }
+
+    public Optional<Boolean> maybeGetBoolean(int index) {
+        return maybeGet(index).map(e -> e.asBoolean());
+    }
+
+    public Optional<JsonArray> maybeGetArray(int index) {
+        return maybeGet(index).map(e -> e.asArray());
+    }
+
+    public Optional<JsonSet> maybeGetSet(int index) {
+        return maybeGet(index).map(e -> e.asSet());
+    }
+
+    public Optional<JsonObject> maybeGetObject(int index) {
+        return maybeGet(index).map(e -> e.asObject());
     }
 
     public JsonElement first() {
@@ -594,7 +633,6 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         super.ensureCapacity(minCapacity);
     }
 
-    @SuppressWarnings("null")
     @Override
     public @Nonnull Iterator<JsonElement> iterator() {
         if(immutable) {
@@ -685,53 +723,44 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      */
     public @Nonnull Iterable<JsonObject> objects() {
         final JsonArray parent=this;
-        return new Iterable<JsonObject>() {
+        return () -> {
+            final Iterator<JsonElement> iterator = parent.iterator();
+            return new Iterator<JsonObject>() {
 
-            @Override
-            public Iterator<JsonObject> iterator() {
-                final Iterator<JsonElement> iterator = parent.iterator();
-                return new Iterator<JsonObject>() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+                @Override
+                public JsonObject next() {
+                    return iterator.next().asObject();
+                }
 
-                    @Override
-                    public JsonObject next() {
-                        return iterator.next().asObject();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iterator.remove();
-                    }
-                };
-            }
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         };
     }
 
-    @SuppressWarnings("null")
     public @Nonnull Stream<JsonObject> streamObjects() {
         return stream().map(e -> e.asObject());
     }
 
-    @SuppressWarnings("null")
     public @Nonnull Stream<JsonArray> streamArrays() {
         return stream().map(e -> e.asArray());
     }
 
-    @SuppressWarnings("null")
     public @Nonnull Stream<String> streamStrings() {
         return stream().map(e -> e.asString());
     }
 
-    @SuppressWarnings("null")
     public @Nonnull Stream<JsonElement> map(Function<JsonElement,JsonElement> f) {
         return stream().map(f);
     }
 
-    @SuppressWarnings("null")
     public @Nonnull Stream<JsonObject> mapObjects(Function<JsonObject, JsonObject> f) {
         return streamObjects().map(f);
     }
@@ -750,29 +779,25 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      */
     public @Nonnull Iterable<JsonArray> arrays() {
         final JsonArray parent=this;
-        return new Iterable<JsonArray>() {
+        return () -> {
+            final Iterator<JsonElement> iterator = parent.iterator();
+            return new Iterator<JsonArray>() {
 
-            @Override
-            public Iterator<JsonArray> iterator() {
-                final Iterator<JsonElement> iterator = parent.iterator();
-                return new Iterator<JsonArray>() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+                @Override
+                public JsonArray next() {
+                    return iterator.next().asArray();
+                }
 
-                    @Override
-                    public JsonArray next() {
-                        return iterator.next().asArray();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iterator.remove();
-                    }
-                };
-            }
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         };
     }
 
@@ -784,29 +809,25 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      */
     public @Nonnull Iterable<String> strings() {
         final JsonArray parent=this;
-        return new Iterable<String>() {
+        return () -> {
+            final Iterator<JsonElement> iterator = parent.iterator();
+            return new Iterator<String>() {
 
-            @Override
-            public Iterator<String> iterator() {
-                final Iterator<JsonElement> iterator = parent.iterator();
-                return new Iterator<String>() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+                @Override
+                public String next() {
+                    return iterator.next().asString();
+                }
 
-                    @Override
-                    public String next() {
-                        return iterator.next().asString();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iterator.remove();
-                    }
-                };
-            }
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         };
     }
 
@@ -818,29 +839,25 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      */
     public @Nonnull Iterable<Double> doubles() {
         final JsonArray parent=this;
-        return new Iterable<Double>() {
+        return () -> {
+            final Iterator<JsonElement> iterator = parent.iterator();
+            return new Iterator<Double>() {
 
-            @Override
-            public Iterator<Double> iterator() {
-                final Iterator<JsonElement> iterator = parent.iterator();
-                return new Iterator<Double>() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+                @Override
+                public Double next() {
+                    return iterator.next().asDouble();
+                }
 
-                    @Override
-                    public Double next() {
-                        return iterator.next().asDouble();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iterator.remove();
-                    }
-                };
-            }
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         };
     }
 
@@ -852,29 +869,25 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      */
     public @Nonnull Iterable<Long> longs() {
         final JsonArray parent=this;
-        return new Iterable<Long>() {
+        return () -> {
+            final Iterator<JsonElement> iterator = parent.iterator();
+            return new Iterator<Long>() {
 
-            @Override
-            public Iterator<Long> iterator() {
-                final Iterator<JsonElement> iterator = parent.iterator();
-                return new Iterator<Long>() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+                @Override
+                public Long next() {
+                    return iterator.next().asLong();
+                }
 
-                    @Override
-                    public Long next() {
-                        return iterator.next().asLong();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iterator.remove();
-                    }
-                };
-            }
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         };
     }
 
@@ -886,29 +899,25 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
      */
     public @Nonnull Iterable<Integer> ints() {
         final JsonArray parent=this;
-        return new Iterable<Integer>() {
+        return () -> {
+            final Iterator<JsonElement> iterator = parent.iterator();
+            return new Iterator<Integer>() {
 
-            @Override
-            public Iterator<Integer> iterator() {
-                final Iterator<JsonElement> iterator = parent.iterator();
-                return new Iterator<Integer>() {
+                @Override
+                public boolean hasNext() {
+                    return iterator.hasNext();
+                }
 
-                    @Override
-                    public boolean hasNext() {
-                        return iterator.hasNext();
-                    }
+                @Override
+                public Integer next() {
+                    return iterator.next().asInt();
+                }
 
-                    @Override
-                    public Integer next() {
-                        return iterator.next().asInt();
-                    }
-
-                    @Override
-                    public void remove() {
-                        iterator.remove();
-                    }
-                };
-            }
+                @Override
+                public void remove() {
+                    iterator.remove();
+                }
+            };
         };
     }
 }
