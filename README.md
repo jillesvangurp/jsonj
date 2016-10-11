@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.35</version>
+    <version>2.36</version>
 </dependency>
 ```
 
@@ -287,6 +287,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.36
+  - JsonBuilder, JsonObject, and JsonArray now know how to handle Optionals. This solves a minor issue where Optional instances end up being handled as primitive strings (toString gets called on the Optional). Now it does the right thing and gets the value or if not there it uses a null primitive.
 - 2.35
   - Minor improvement to recently added json lines support in the parser. Now we ignore empty lines and comment lines starting with `#`.
 - 2.34
