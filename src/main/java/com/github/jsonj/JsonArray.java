@@ -150,6 +150,15 @@ public class JsonArray extends ArrayList<JsonElement> implements JsonElement {
         }
     }
 
+    public void add(Optional<?>...maybeObjects) {
+        for (Optional<?> mo : maybeObjects) {
+            if(mo.isPresent()) {
+                addObject(mo.get());
+            }
+        }
+    }
+
+
     /**
      * Variant of add that adds one or more booleans.
      * @param booleans values

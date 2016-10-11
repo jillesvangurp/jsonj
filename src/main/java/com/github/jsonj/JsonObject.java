@@ -217,6 +217,16 @@ public class JsonObject implements Map<String, JsonElement>, JsonElement {
     public JsonElement put(@Nonnull String key, Object value) {
         if(value instanceof JsonDataObject) {
             return put(key,((JsonDataObject) value).getJsonObject());
+        } else if(value instanceof Optional<?>) {
+            Optional<?> maybeValue = (Optional<?>)value;
+            if(maybeValue.isPresent()) {
+                return put(key,maybeValue.get());
+            } else {
+                return put(key,JsonBuilder.nullValue());
+            }
+        } else if(value instanceof JsonElement) {
+            // can happen when handling cast, non generic objects
+            return put(key, (JsonElement)value);
         } else {
             return put(key, primitive(value));
         }

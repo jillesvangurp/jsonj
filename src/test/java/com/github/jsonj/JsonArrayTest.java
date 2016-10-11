@@ -39,6 +39,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -61,6 +62,10 @@ public class JsonArrayTest {
     public void shouldReturnNull() {
         JsonElement element = array(primitive("foo"), object().put("bar", true).get()).get("x");
         AssertJUnit.assertNull(element);
+    }
+
+    public void shouldSupportArrayOfOptionals() {
+        assertThat(array(Optional.of(array(1,2)),Optional.of(3))).isEqualTo(array(array(1,2),3));
     }
 
     @DataProvider

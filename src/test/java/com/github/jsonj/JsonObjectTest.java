@@ -42,6 +42,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -373,6 +374,19 @@ public class JsonObjectTest {
 
         JsonObject object = new JsonObject(simpleMap);
         assertThat(object.getString("one")).isEqualTo("xxxxx");
+    }
+
+    public void shouldSupportOptional() {
+        JsonObject o = object(
+            field("o1", Optional.of(1)),
+            field("o2", Optional.empty())
+        );
+        o.put("o3", Optional.of(array(1,2,3)));
+
+        System.err.println(o.prettyPrint());
+        assertThat(o.get("o1").isNumber()).isTrue();
+        assertThat(o.get("o2").isNull()).isTrue();
+        assertThat(o.get("o3").isArray()).isTrue();
     }
 
     public void shouldFlatten() {

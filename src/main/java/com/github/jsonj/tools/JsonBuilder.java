@@ -30,6 +30,7 @@ import com.github.jsonj.JsonSet;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 
 /**
@@ -261,7 +262,8 @@ public class JsonBuilder {
         return jjArray;
     }
 
-    public static @Nonnull <T> JsonArray array(@SuppressWarnings("unchecked") @Nonnull T... array) {
+    @SafeVarargs
+    public static @Nonnull <T> JsonArray array(@Nonnull T... array) {
         JsonArray jjArray = new JsonArray();
         for(T e: array) {
             jjArray.add(fromObject(e));
@@ -509,7 +511,7 @@ public class JsonBuilder {
      */
     public static @Nonnull JsonPrimitive primitive(final Object value) {
         if(value instanceof JsonPrimitive) {
-            return ((JsonPrimitive) value);
+            return (JsonPrimitive) value;
         }
         return new JsonPrimitive(value);
     }
@@ -531,7 +533,15 @@ public class JsonBuilder {
             return new JsonArray((Collection)o);
         } else if(o instanceof JsonDataObject) {
             return ((JsonDataObject) o).getJsonObject();
+        } else if(o instanceof Optional<?>) {
+            Optional<?> maybeObject = (Optional<?>) o;
+            if(maybeObject.isPresent()) {
+                return fromObject(maybeObject.get());
+            } else {
+                return nullValue();
+            }
+        } else {
+            return primitive(o);
         }
-        return primitive(o);
     }
 }
