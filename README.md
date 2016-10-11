@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.34</version>
+    <version>2.35</version>
 </dependency>
 ```
 
@@ -287,6 +287,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.35
+  - Minor improvement to recently added json lines support in the parser. Now we ignore empty lines and comment lines starting with `#`.
 - 2.34
   - Add maybeGet, maybeGetString, maybeGetObject, etc. accessors that return an `Optional`. You can use this as an alternative to the existing accessors that may return null.
 - 2.33
