@@ -41,6 +41,7 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Parser based on json-simple. This class is thread safe so you can safely
@@ -161,7 +162,12 @@ public class JsonParser {
                         if(line == null) {
                             return false;
                         } else {
-                            next = parseObject(line);
+                            if(StringUtils.isNotBlank(line) && !line.startsWith("#")) { // lets support comments while we're at it
+                                next = parseObject(line);
+                            } else {
+                                // skip empty lines or comment lines
+                                return hasNext();
+                            }
                         }
                     } catch (IOException e) {
                         throw new IllegalStateException("error reading", e);

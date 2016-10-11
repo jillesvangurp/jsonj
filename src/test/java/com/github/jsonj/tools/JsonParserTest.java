@@ -112,15 +112,11 @@ public class JsonParserTest {
 
         Queue<Callable<Boolean>> tasks = new ConcurrentLinkedQueue<Callable<Boolean>>();
         for(int i = 0; i<100000; i++) {
-            tasks.add(new Callable<Boolean>() {
-
-                @Override
-                public Boolean call() throws Exception {
-                    JsonElement output;
-                    output = jsonParser.parse(input);
-                    String serialized = JsonSerializer.serialize(output, false);
-                    return input.equals(serialized);
-                }
+            tasks.add(() -> {
+                JsonElement output;
+                output = jsonParser.parse(input);
+                String serialized = JsonSerializer.serialize(output, false);
+                return input.equals(serialized);
             });
         }
         List<Future<Boolean>> results = tp.invokeAll(tasks);
@@ -186,7 +182,11 @@ public class JsonParserTest {
     public void shouldStreamJson() {
         String input="";
         for(int i=0;i<10;i++) {
+            input+="# this is a comment\n";
             input+=object(field("id",i)) + "\n";
+            input+="\t\n"; // a few variations of whitespace
+            input+="    \n";
+            input+="\n";
         }
         Stream<JsonObject> stream = jsonParser.parseJsonLines(new StringReader(input));
         JsonArray all = stream.collect(JsonjCollectors.array());
