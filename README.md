@@ -2,7 +2,7 @@
 
 # Introduction
 
-JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluid API. The core idea behind JsonJ is to provide sensible implementations of the handful of native types in json. These implementations leverage things like generics, Java 8 streams, varargs, the Collections framework and other things that are characteristic of modern Java.
+JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluent API. The core idea behind JsonJ is to provide sensible implementations of the handful of native types in json. These implementations leverage things like generics, Java 8 streams, varargs, the Collections framework and other things that are characteristic of modern Java.
 
 There are several reasons why you might like jsonj
 
