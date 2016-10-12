@@ -234,7 +234,26 @@ array(1,2,3).asObject() // throws JsonTypeMismatchException
 
 ## Parsing and serialization
 
-- A thread safe `JsonParser` class is provided that uses jackson's streaming parser.
+```
+// A thread safe `JsonParser` class is provided that uses jackson's streaming parser.
+
+JsonParser parser=new JsonParser() // make this a spring bean, you don't need more than 1 of these in your vm.
+
+JsonElement element=parser.parse("[1,2,3]");
+JsonElement element=parser.parse(new FileInputStream("myfile.json"));
+JsonObject object=parser.parseObject(new FileInputStream("anotherfile.json"));
+
+String serialized=object.toString();
+String pretty=object.prettyPrint();
+
+Writer w = ....;
+object.serialize(w);
+// obviously
+assertThat(object.equals(parser.parse(object.toString()))).isTrue();
+
+```
+
+
 - You can serialize using `toString()` or `prettyPrint()` or `serialize()` on any JsonElement, or you can use the `JsonSerializer` class directly.
 - There's a HoconParser, YamlParser, YamlSerializer, JsonjPlistParser, and JsonjPlistSerializer as well.
 
@@ -300,7 +319,6 @@ JsonJ implements several things that ensure it uses much less memory than might 
   - flatten method in jsonobject
 - 2.29
   - Small performance enhancement to json set with id strategy
--
   2.28
   - Improve number handling. We now instantiate BigDecimal or BigInteger if the parsed number text length goes over a threshold. This means we no longer get E notation for longer decimal numbers. We still use Long or Double when this is possible so we don't waste memory unless it is necessary.
 - 2.27
