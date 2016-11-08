@@ -10,8 +10,8 @@ import javax.annotation.Nonnull;
  * Internal handler class used for the JsonParser and YamlParser
  */
 public class JacksonHandler {
-    public static @Nonnull JsonElement parseContent(com.fasterxml.jackson.core.JsonParser parser) throws IOException, com.fasterxml.jackson.core.JsonParseException {
-        JsonHandler handler = new JsonHandler();
+    public static @Nonnull JsonElement parseContent(com.fasterxml.jackson.core.JsonParser parser, JsonjSettings settings) throws IOException, com.fasterxml.jackson.core.JsonParseException {
+        JsonHandler handler = new JsonHandler(settings);
 
         LinkedList<Boolean> stack = new LinkedList<>();
         JsonToken nextToken;

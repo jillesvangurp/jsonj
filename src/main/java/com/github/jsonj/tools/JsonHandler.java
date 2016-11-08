@@ -5,6 +5,7 @@ import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
 import com.github.jsonj.MapBasedJsonObject;
+import com.github.jsonj.SimpleIntMapJsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
 import java.util.LinkedList;
 
@@ -12,6 +13,11 @@ final class JsonHandler {
     // use a simple stack mechanism to reconstruct the tree
     LinkedList<JsonElement> stack = new LinkedList<>();
     boolean isObject = false;
+    private final JsonjSettings settings;
+
+    public JsonHandler(JsonjSettings settings) {
+        this.settings = settings;
+    }
 
     public JsonElement get() {
         // the remaining element on the stack is the fully parsed
@@ -30,7 +36,11 @@ final class JsonHandler {
 
     public boolean startObject() {
         isObject = true;
-        stack.add(new JsonObject());
+        if(settings.useEfficientStringBasedJsonObject()) {
+            stack.add(new SimpleIntMapJsonObject());
+        } else {
+            stack.add(new JsonObject());
+        }
         return true;
     }
 
@@ -69,7 +79,7 @@ final class JsonHandler {
             JsonObject container = stack.peekLast().asObject();
             String key = e.asPrimitive().asString();
             container.put(key, value);
-            if(container.size()>100 && !MapBasedJsonObject.class.equals(container.getClass())) {
+            if(container.size()>settings.upgradeThresholdToMapBasedJsonObject() && !MapBasedJsonObject.class.equals(container.getClass())) {
                 JsonElement removed = stack.pollLast();
                 MapBasedJsonObject newContainer = new MapBasedJsonObject(removed.asObject());
                 stack.add(newContainer);

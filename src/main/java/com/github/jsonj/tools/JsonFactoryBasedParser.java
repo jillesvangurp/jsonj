@@ -27,7 +27,7 @@ public interface JsonFactoryBasedParser {
     default JsonElement parse(Reader r) {
         try {
             com.fasterxml.jackson.core.JsonParser parser = factory().createParser(r);
-            return JacksonHandler.parseContent(parser);
+            return JacksonHandler.parseContent(parser, JsonParser.DEFAULT_SETTINGS);
         } catch (com.fasterxml.jackson.core.JsonParseException e) {
             throw new JsonParseException(e);
         } catch (IOException e) {

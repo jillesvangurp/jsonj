@@ -50,19 +50,37 @@ import org.apache.commons.lang3.StringUtils;
  * Experimental alternative for JsonParser based on jackson's Stream parser.
  */
 public class JsonParser {
+    public static final JsonjSettings DEFAULT_SETTINGS = new JsonjSettings() {
+    };
+
+    public static final JsonjSettings EFFICIENT_STRING_MAP_SETTINGS = new JsonjSettings() {
+        @Override
+        public boolean useEfficientStringBasedJsonObject() {
+            return true;
+        }
+    };
 
     private final JsonFactory jsonFactory;
+    private final JsonjSettings settings;
 
     public JsonParser() {
+        jsonFactory = new JsonFactory();
+        settings=DEFAULT_SETTINGS;
+    }
+
+    public JsonParser(JsonjSettings settings) {
+        this.settings=settings;
         jsonFactory = new JsonFactory();
     }
 
     /**
+     * @param settings
      * @param features
      *            varargs of jackson features to enable, e.g.
      *            com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS
      */
-    public JsonParser(Feature... features) {
+    public JsonParser(JsonjSettings settings, Feature... features) {
+        this.settings=settings;
         jsonFactory = new JsonFactory();
         for(Feature f : features) {
             jsonFactory.enable(f);
@@ -80,7 +98,7 @@ public class JsonParser {
         try {
             com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(s);
             try {
-                return JacksonHandler.parseContent(parser);
+                return JacksonHandler.parseContent(parser, settings);
             } finally {
                 parser.close();
             }
@@ -115,7 +133,7 @@ public class JsonParser {
     public JsonElement parse(final Reader r) throws IOException {
         com.fasterxml.jackson.core.JsonParser parser = jsonFactory.createParser(r);
         try {
-            return JacksonHandler.parseContent(parser);
+            return JacksonHandler.parseContent(parser, settings);
         } catch (com.fasterxml.jackson.core.JsonParseException e) {
             throw new JsonParseException(e);
         } finally {
