@@ -634,7 +634,7 @@ public class SimpleIntMapJsonObject extends JsonObject {
         for (String label : labels) {
             decendent = parent.get(label);
             if (decendent == null && index < labels.length - 1 && parent.isObject()) {
-                decendent = new JsonObject();
+                decendent = new SimpleIntMapJsonObject();
                 parent.put(label, decendent);
             } else if (index == labels.length - 1) {
                 if (decendent == null) {
@@ -672,7 +672,7 @@ public class SimpleIntMapJsonObject extends JsonObject {
         for (String label : labels) {
             decendent = parent.get(label);
             if (decendent == null && index < labels.length - 1 && parent.isObject()) {
-                decendent = new JsonObject();
+                decendent = new SimpleIntMapJsonObject();
                 parent.put(label, decendent);
             } else if (index == labels.length - 1) {
                 if (decendent == null) {
@@ -715,11 +715,11 @@ public class SimpleIntMapJsonObject extends JsonObject {
         for (String label : labels) {
             decendent = parent.get(label);
             if (decendent == null && index < labels.length - 1 && parent.isObject()) {
-                decendent = new JsonObject();
+                decendent = new SimpleIntMapJsonObject();
                 parent.put(label, decendent);
             } else if (index == labels.length - 1) {
                 if (decendent == null) {
-                    decendent = new JsonObject();
+                    decendent = new SimpleIntMapJsonObject();
                     parent.put(label, decendent);
                     return decendent.asObject();
                 } else {
@@ -785,7 +785,7 @@ public class SimpleIntMapJsonObject extends JsonObject {
     @SuppressWarnings("unchecked")
     @Override
     public JsonObject deepClone() {
-        JsonObject object = new JsonObject();
+        JsonObject object = new SimpleIntMapJsonObject();
         Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
         for (Entry<String, JsonElement> entry : es) {
             JsonElement e = entry.getValue().deepClone();
@@ -1080,7 +1080,7 @@ public class SimpleIntMapJsonObject extends JsonObject {
 
     @Override
     public JsonObject flatten(@Nonnull String separator) {
-        JsonObject o = new JsonObject();
+        JsonObject o = new SimpleIntMapJsonObject();
         flatten(o,"",separator,this);
         return o;
     }
