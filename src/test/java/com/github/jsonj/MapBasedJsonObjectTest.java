@@ -35,6 +35,16 @@ public class MapBasedJsonObjectTest {
         assertThat(parsed).isEqualTo(jsonObject);
     }
 
+    public void shouldParseAsMapBasedJsonObject() {
+        JsonObject jsonObject = new JsonObject();
+        for(int i=0;i<300;i++) {
+            jsonObject.put("key_"+i, i);
+        }
+        JsonElement parsed = parser.parse(jsonObject.toString());
+        // because > 100 keys
+        assertThat(parsed).isInstanceOf(MapBasedJsonObject.class);
+    }
+
     public void shouldPreserveNestedStructureWhenUpgradingToMapBasedJsonObject() {
         JsonObject nested=new JsonObject();
         for(int i=0;i<500;i++) {
