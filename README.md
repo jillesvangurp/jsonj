@@ -8,7 +8,7 @@ There are several reasons why you might like jsonj
 
 - The provided JsonObject, JsonArray, JsonSet, and JsonPrimitive classes are all you need for type safe and null safe manipulation of complex json structures.
 - It comes with convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
-- Memory efficient: you can squeeze millions of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects.
+- Memory efficient: you can squeeze large amounts of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects.
 - Easy to use and lacks the complexity of other solutions. All you do is JsonObject o = parseObject(...) and o.toString() or o.serialize(..).
 - There are no annotations or model classes. This makes jsonj great for quickly prototyping some logic around any bit of json encountered.
 - A JsonDataObject interface is provided (that includes default methods) that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin. This gives you the best of both worlds and it is easy to reuse functionality between different domain classes.
@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.36</version>
+    <version>2.37</version>
 </dependency>
 ```
 
@@ -293,9 +293,12 @@ If you use jruby, you can seemlessly integrate jsonj using [jsonj-integration](h
 
 JsonJ implements several things that ensure it uses much less memory than might otherwise be the case:
 
-- it uses my EfficientString library for object keys. This means instances are reused and stored as UTF8. Assuming you have millions of objects that use a handful of keys like 'id', 'name', etc., You only store those byte arrays once.
-- it uses UTF8 byte arrays for storing String primitives. This is more efficient than Java's own String class, which uses utf-16.
-- it uses a custom Map implementation that uses two ArrayLists. This uses a lot less memory than e.g. a LinkedHashMap. The downside is that key lookup is slower for objects with large amounts of keys. For small amounts it is actually somewhat faster. Generally, Json objects only have a handful of keys thus this is mostly a fair tradeoff that saves a lot of memory. **For larger numbers of keys**, you can use `MapBasedJsonObject`. The parser automatically uses that for larger objects with > 100 keys. Both implementations have the same API otherwise and there is no difference in using them. LinkedHashMap does of course use a lot more memory but it stays usable well into the millions of keys.
+- it has several `JsonObject` implementations that have different memory and performance characteristics. You can control the behavior from the parser settings and mostly you don't need to worry about which is used.
+- `JsonObject`. This is the default implementation. It uses a custom `Map` implementation with two arrays for the keys and values. This ensures insertion order is reflected when iterating and performs well for small objects.
+- SimpleIntMapJsonObject uses my EfficientString library for object keys. This means key instances are reused and stored as UTF8. Assuming you have millions of objects that use a handful of keys like 'id', 'name', etc., You only store those byte arrays once and the objects refer these by an integer id. Don't use this implementation if you expect millions of different keys because you may run out of memory.
+- `MapBasedJsonObject`. Because neither `JsonObject` nor `SimpleIntMapJsonObject` scale to large numbers of keys, the parser switches to this implementation automatically when the number of keys exceeds the configurable threshold (default is 100). This implementation uses a simple LinkedHashMap instead. This uses way more memory but scales to much larger amounts of keys than either of the other implementations.
+- Both `SimpleIntMapJsonObject` and `JsonObject` use UTF8 byte arrays for storing String primitive values. This is more efficient than Java's own String class, which uses utf-16.
+
 
 ## Odd features you probably don't care about
 
@@ -306,6 +309,9 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.37
+  - Introduce a new JsonObject implementation that does not rely on EfficientString.
+  - Introduce optional settings for JsonParser to control what implementation is used. You can switch back to the SimpleIntMapJsonObject that was the default before this release.
 - 2.36
   - JsonBuilder, JsonObject, and JsonArray now know how to handle Optionals. This solves a minor issue where Optional instances end up being handled as primitive strings (toString gets called on the Optional). Now it does the right thing and gets the value or if not there it uses a null primitive.
 - 2.35
