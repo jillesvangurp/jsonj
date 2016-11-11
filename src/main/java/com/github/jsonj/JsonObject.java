@@ -344,13 +344,14 @@ public class JsonObject implements IJsonObject {
         return simpleMap.values();
     }
 
+    @Override
     public JsonObject flatten(@Nonnull String separator) {
         JsonObject o = new JsonObject();
         flatten(o,"",separator,this);
         return o;
     }
 
-    private void flatten(@Nonnull JsonObject root, @Nonnull String path, @Nonnull String separator, JsonElement element) {
+    protected void flatten(@Nonnull JsonObject root, @Nonnull String path, @Nonnull String separator, JsonElement element) {
         JsonType type = element.type();
         switch (type) {
         case array:

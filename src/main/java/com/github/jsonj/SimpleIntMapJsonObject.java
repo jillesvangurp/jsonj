@@ -426,34 +426,6 @@ public class SimpleIntMapJsonObject extends JsonObject {
         return o;
     }
 
-    private static void flatten(@Nonnull JsonObject root, @Nonnull String path, @Nonnull String separator, JsonElement element) {
-        JsonType type = element.type();
-        switch (type) {
-        case array:
-            JsonArray arr = element.asArray();
-            for(int i=0; i<arr.size();i++) {
-                if(path.length()>0) {
-                    flatten(root,path+separator+i,separator,arr.get(i));
-                } else {
-                    flatten(root,""+i,separator,arr.get(i));
-                }
-            }
-            break;
-        case object:
-            if(path.length()>0) {
-                element.asObject().forEach((key, value) -> flatten(root,path+separator+key,separator,value));
-            } else {
-                element.asObject().forEach((key, value) -> flatten(root,key,separator,value));
-            }
-
-            break;
-
-        default:
-            root.put(path, element);
-            break;
-        }
-    }
-
     @Override
     void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // when using object serialization, write the json bytes
