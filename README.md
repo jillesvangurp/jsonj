@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.37</version>
+    <version>2.38</version>
 </dependency>
 ```
 
@@ -309,6 +309,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.38
+  - Introduce shared interface with default methods for the three JsonObject implementations and strip the classes of duplicated implementations. This should be fully backward compatible.
 - 2.37
   - Introduce a new JsonObject implementation that does not rely on EfficientString.
   - Introduce optional settings for JsonParser to control what implementation is used. You can switch back to the SimpleIntMapJsonObject that was the default before this release.
