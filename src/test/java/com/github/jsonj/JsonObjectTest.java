@@ -46,7 +46,6 @@ import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
@@ -323,47 +322,6 @@ public class JsonObjectTest {
         JsonObject o = object(field("x",42));
         o.put("jdo", jdo);
         assertThat(o.getString("jdo","foo")).isEqualTo("bar");
-    }
-
-    public void shouldRecurseOverAllNestedMapElements() {
-        JsonObject object = object(
-                field("foo", "bar"),
-                field("foo2", "bar"),
-                field("l1", array(object(field("f",1)))),
-                field("l2", array(object(field("f",1)))),
-                field("o2", object(field("f2",42)))
-        );
-        AtomicInteger counter = new AtomicInteger();
-        object.forEachPrimitiveRecursive((k,v) -> {
-            counter.incrementAndGet();
-        });
-        assertThat(counter.get()).isEqualTo(5);
-    }
-
-    public void shouldRecursivelyMapValues() {
-        JsonObject object = object(
-                field("foo", 42),
-                field("foo2", 42),
-                field("l1", array(object(field("f",42)))),
-                field("l2", array(object(field("f",42)))),
-                field("o2", object(field("f2",42)))
-        );
-        object.mapPrimitiveFieldsRecursively((k,v) -> {
-            return primitive(v.asInt()+1);
-        });
-        object.forEachPrimitiveRecursive((k,v) -> {
-            assertThat(v.asInt()).isEqualTo(43);
-        });
-    }
-
-    public void shouldMapEachElementToSameObject() {
-        JsonObject object = object(
-                field("foo", 42),
-                field("foo2", 42));
-        object.map((k,v)-> primitive(v.asInt()+1));
-        object.forEachPrimitiveRecursive((k,v) -> {
-            assertThat(v.asInt()).isEqualTo(43);
-        });
     }
 
     public void shouldConvertSimpleHashMapToJsonObject() {

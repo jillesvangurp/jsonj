@@ -74,7 +74,7 @@ public class JsonParser {
     }
 
     /**
-     * @param settings
+     * @param settings settings object
      * @param features
      *            varargs of jackson features to enable, e.g.
      *            com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS
