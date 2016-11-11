@@ -3,9 +3,6 @@ package com.github.jsonj;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 
-import com.github.jsonj.tools.JsonSerializer;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -115,26 +112,6 @@ public class MapBasedJsonObject extends JsonObject {
     @Override
     public Collection<JsonElement> values() {
         return map.values();
-    }
-
-    @Override
-    public void serialize(Writer w) throws IOException {
-        w.append(JsonSerializer.OPEN_BRACE);
-
-        Iterator<Entry<String, JsonElement>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<String, JsonElement> entry = iterator.next();
-            JsonElement value = entry.getValue();
-            w.append(JsonSerializer.QUOTE);
-            w.append(JsonSerializer.jsonEscape(entry.getKey()));
-            w.append(JsonSerializer.QUOTE);
-            w.append(JsonSerializer.COLON);
-            value.serialize(w);
-            if (iterator.hasNext()) {
-                w.append(JsonSerializer.COMMA);
-            }
-        }
-        w.append(JsonSerializer.CLOSE_BRACE);
     }
 
     @Override

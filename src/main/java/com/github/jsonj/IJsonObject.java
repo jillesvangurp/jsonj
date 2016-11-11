@@ -5,6 +5,8 @@ import static com.github.jsonj.tools.JsonBuilder.primitive;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
@@ -68,6 +70,27 @@ public interface IJsonObject extends Map<String,JsonElement>,JsonElement {
     @Override
     default @Nonnull String prettyPrint() {
         return JsonSerializer.serialize(this, true);
+    }
+
+    @Override
+    default void serialize(Writer w) throws IOException {
+        w.append(JsonSerializer.OPEN_BRACE);
+
+        Iterator<Entry<String, JsonElement>> iterator = entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, JsonElement> entry = iterator.next();
+            String key = entry.getKey();
+            JsonElement value = entry.getValue();
+            w.append(JsonSerializer.QUOTE);
+            w.append(JsonSerializer.jsonEscape(key));
+            w.append(JsonSerializer.QUOTE);
+            w.append(JsonSerializer.COLON);
+            value.serialize(w);
+            if (iterator.hasNext()) {
+                w.append(JsonSerializer.COMMA);
+            }
+        }
+        w.append(JsonSerializer.CLOSE_BRACE);
     }
 
     @Override

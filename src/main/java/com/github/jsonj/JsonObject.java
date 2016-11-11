@@ -27,7 +27,6 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import com.github.jsonj.tools.JsonParser;
 import com.github.jsonj.tools.JsonSerializer;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -83,27 +82,6 @@ public class JsonObject implements IJsonObject {
     @Override
     public String toString() {
         return JsonSerializer.serialize(this, false);
-    }
-
-    @Override
-    public void serialize(Writer w) throws IOException {
-        w.append(JsonSerializer.OPEN_BRACE);
-
-        Iterator<Entry<String, JsonElement>> iterator = simpleMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<String, JsonElement> entry = iterator.next();
-            String key = entry.getKey();
-            JsonElement value = entry.getValue();
-            w.append(JsonSerializer.QUOTE);
-            w.append(JsonSerializer.jsonEscape(key));
-            w.append(JsonSerializer.QUOTE);
-            w.append(JsonSerializer.COLON);
-            value.serialize(w);
-            if (iterator.hasNext()) {
-                w.append(JsonSerializer.COMMA);
-            }
-        }
-        w.append(JsonSerializer.CLOSE_BRACE);
     }
 
     @Override
