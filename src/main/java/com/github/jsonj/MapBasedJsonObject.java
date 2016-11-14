@@ -13,7 +13,10 @@ import java.util.function.Supplier;
 import org.apache.commons.lang3.Validate;
 
 /**
- * More traditional Map based implementation of JsonObject
+ * This implementation of JsonObject uses a LinkedHashMap. This uses more memory but tends to be faster for objects with a large number of keys.
+ *
+ * Since this is relatively rare, the parser currently automatically uses this implementation if the number of keys exceeds a configurable threshold
+ * (default for this is 100).
  */
 public class MapBasedJsonObject extends JsonObject {
     private static final long serialVersionUID = 8208686487292876195L;

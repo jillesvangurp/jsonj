@@ -37,7 +37,10 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Representation of json objects.
+ * Default implementation for JsonObjects. Uses a memory efficient (for small amounts of keys) map implementation based
+ * on two lists with the keys and values. For historic reasons, this class needs to be called JsonObject and have a corresponding constructor.
+ * Other implementations need to extend this class for the same reason because we have several methods that return a JsonObject in the API. Most
+ * of the common stuff has been pulled up into the IJsonObject interface in the form of default methods.
  */
 public class JsonObject implements IJsonObject {
     private static final long serialVersionUID = 497820087656073803L;

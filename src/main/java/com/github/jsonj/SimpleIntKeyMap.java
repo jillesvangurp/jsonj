@@ -15,8 +15,9 @@ import java.util.Set;
 import org.apache.commons.lang3.Validate;
 
 /**
- * Performant array list based map for small number of entries. Get performs linearly for number of entries however, it
- * uses vastly less memory and it is actually fast enough for small numbers of entries.
+ * Alternative implementation of JsonObject that until 2.37 was the default implementation. Like the current implementation, it uses two lists
+ * of the keys and values. However, it wraps the keys with an EfficientString, which allows us to use an int as a reference to the key. This is far
+ * more memory efficient for relatively small numnber of keys and large amounts of objects.
  */
 public class SimpleIntKeyMap<V> implements Map<Integer, V>, Serializable {
 
