@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 
 /**
@@ -160,5 +161,41 @@ public interface JsonDataObject extends Serializable {
 
     default void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         getJsonObject().readObject(in);
+    }
+
+    default Optional<JsonElement> maybeGet(String...labels) {
+        return Optional.ofNullable(get(labels));
+    }
+
+    default Optional<String> maybeGetString(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asString());
+    }
+
+    default Optional<Integer> maybeGetInt(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asInt());
+    }
+
+    default Optional<Long> maybeGetLong(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asLong());
+    }
+
+    default Optional<Number> maybeGetNumber(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asNumber());
+    }
+
+    default Optional<Boolean> maybeGetBoolean(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asBoolean());
+    }
+
+    default Optional<JsonArray> maybeGetArray(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asArray());
+    }
+
+    default Optional<JsonSet> maybeGetSet(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asSet());
+    }
+
+    default Optional<JsonObject> maybeGetObject(String...labels) {
+        return getJsonObject().maybeGet(labels).map(e -> e.asObject());
     }
 }
