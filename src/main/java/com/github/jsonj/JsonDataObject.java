@@ -1,7 +1,5 @@
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.primitive;
-
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
 import java.io.IOException;
@@ -40,7 +38,7 @@ public interface JsonDataObject extends Serializable {
 
     default JsonElement put(@Nonnull String key, Object value) {
         verifyMutable();
-        return getJsonObject().put(key, primitive(value));
+        return getJsonObject().put(key, value);
     }
 
     default JsonElement put(@Nonnull String key, JsonElement value) {
