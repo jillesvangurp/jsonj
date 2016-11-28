@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.38</version>
+    <version>2.39</version>
 </dependency>
 ```
 
@@ -309,6 +309,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.39
+  - Align put behavior of JsonDataObject with that of JsonObject. You can now put any object instead of just primitives. Fixes a bug where putting another JsonDataObject resulted in the string serialization of the object being added as a primitive instead of the object.
 - 2.38
   - Introduce shared interface with default methods for the three JsonObject implementations and strip the classes of duplicated implementations. This should be fully backward compatible.
 - 2.37
