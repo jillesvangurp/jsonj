@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Formattable;
 import java.util.Formatter;
@@ -113,7 +115,11 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
         if(type == JsonType.number) {
             return ((Number)value).longValue();
         } else {
-            throw new JsonTypeMismatchException("not a number '"+value+"'");
+            try {
+                return Long.valueOf(asString());
+            } catch (NumberFormatException e) {
+                throw new JsonTypeMismatchException("not a long '"+value+"'");
+            }
         }
     }
 
@@ -122,7 +128,11 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
         if(type == JsonType.number) {
             return ((Number)value).intValue();
         } else {
-            throw new JsonTypeMismatchException("not a number '"+value+"'");
+            try {
+                return Integer.valueOf(asString());
+            } catch (NumberFormatException e) {
+                throw new JsonTypeMismatchException("not a integer '"+value+"'");
+            }
         }
     }
 
@@ -131,7 +141,11 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
         if(type == JsonType.number) {
             return ((Number)value).floatValue();
         } else {
-            throw new JsonTypeMismatchException("not a number '"+value+"'");
+            try {
+                return Float.valueOf(asString());
+            } catch (NumberFormatException e) {
+                throw new JsonTypeMismatchException("not a float '"+value+"'");
+            }
         }
     }
 
@@ -140,16 +154,25 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
         if(type == JsonType.number) {
             return ((Number)value).doubleValue();
         } else {
-            throw new JsonTypeMismatchException("not a number '"+value+"'");
+            try {
+                return Double.valueOf(asString());
+            } catch (NumberFormatException e) {
+                throw new JsonTypeMismatchException("not a double '"+value+"'");
+            }
         }
     }
 
     @Override
     public Number asNumber() {
         if(type == JsonType.number) {
-            return ((Number)value).doubleValue();
+            return (Number)value;
         } else {
-            throw new JsonTypeMismatchException("not a number '"+value+"'");
+            try {
+                // note, this may not work as you want for BigDecimals/BigIntegers.
+                return NumberFormat.getInstance(Locale.ENGLISH).parse(asString());
+            } catch (ParseException e) {
+                throw new JsonTypeMismatchException("not a parsable Number '"+value+"'");
+            }
         }
     }
 
@@ -162,7 +185,6 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
         }
     }
 
-    @SuppressWarnings("null")
     @Override
     public String asString() {
         if( null == value ) {

@@ -149,4 +149,12 @@ public class JsonPrimitiveTest {
     public void shouldUseAssertJ() {
         assertThat(primitive(1)).isEqualTo(1).isNotEqualTo(2);
     }
+
+    public void shouldParseStringWhenNeeded() {
+        JsonElement e = new JsonPrimitive("42"); // a string
+        assertThat(e.asInt()).isEqualTo(42);
+        assertThat(e.asFloat()).isEqualTo(42.0f);
+        assertThat(e.asString()).isEqualTo("42");
+        assertThat(e.asNumber().toString()).isEqualTo("42");
+    }
 }
