@@ -24,7 +24,7 @@ There are probably more reasons you can find to like JsonJ, why not give it a tr
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.40</version>
+    <version>2.41</version>
 </dependency>
 ```
 
@@ -309,6 +309,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - BSON support is there as well based on bson4jackson.
 
 # Changelog
+- 2.41
+  - Smarter handling of numeric strings. You can now use `asInt()`, `asDouble()`, etc on quoted numeric values without failing with a type exception.
 - 2.40
   - Proxy the new maybeGet* methods added in 2.34 to JsonDataObject as well.
 - 2.39
