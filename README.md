@@ -2,21 +2,7 @@
 
 # Introduction
 
-JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java without mappings or model classes. Instead JsonJ backs the very simple json types using a fluent API. The core idea behind JsonJ is to provide sensible implementations of the handful of native types in json. These implementations leverage things like generics, Java 8 streams, varargs, the Collections framework and other things that are characteristic of modern Java.
-
-There are several reasons why you might like jsonj
-
-- The provided JsonObject, JsonArray, JsonSet, and JsonPrimitive classes are all you need for type safe and null safe manipulation of complex json structures.
-- It comes with convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
-- Memory efficient: you can squeeze large amounts of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects.
-- Easy to use and lacks the complexity of other solutions. All you do is JsonObject o = parseObject(...) and o.toString() or o.serialize(..).
-- There are no annotations or model classes. This makes jsonj great for quickly prototyping some logic around any bit of json encountered.
-- A JsonDataObject interface is provided (that includes default methods) that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin. This gives you the best of both worlds and it is easy to reuse functionality between different domain classes.
-- It relies on the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
-- In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them. Also adding support for more jackson plugins is easy.
-- [JsonLines](http://jsonlines.org/) support via `Stream<JsonObject> JsonParser.parseJsonLines(Reader r)`
-
-There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
+JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java. JsonJ backs the very simple json types using a fluent API. Jackson's streaming parser is used for parsing and it uses things like generics, Java 8 streams, varargs, the Collections framework and other modern Java constructs to make life easier dealing with json.
 
 # Get JsonJ from Maven Central
 
@@ -32,164 +18,135 @@ Note. always check for the latest version. I do not always update the readme.
 
 Java 8 is required as of version 2. For Java 7 and earlier, you can use the 1.x releases.
 
-# JsonJ at Inbot
+# Examples
 
-I developed JsonJ on the side while I still was in Nokia as an ideal way to handle json. Once I left Nokia, I started using it for my own projects, including my startup Localstream. When Localstream was acquired by [Inbot](http://inbot.io), I started using it inside the Inbot backend where it now is the only way we deal with json. All our API requests are parsed using jsonj, all our internal communication with Elasticsearch uses jsonj, and all manipulating and picking apart of this json is done using jsonj. We typically have millions of json objects cached in memory.
+## Parsing
 
-Since we also do Javascript, we wanted to get some of the same convenience provided in jsonj there as well; so we created [jsonjs](https://github.com/Inbot/jsonjs). Jsonjs is a thin wrapper around javascript objects that provides a similar API to the JsonObject class in jsonj.
+JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances. 
 
+```
+// Create a parser (you need just 1 instance for your application)
+JsonParser parser = new JsonParser();
 
-## Design overview and API
+// Parse some json
+JsonElement element = parser.parse("[1,2,3]");
+// when using streams, we assume you are using UTF-8
+JsonObject object = parser.parseObject(inputStream);
+// or just use a reader
+JsonElement element = parser.parse(reader);
 
-The purpose of the JsonJ framework is to allow you to write code that manipulates json data structures that has a low amount of verbosity compared to other frameworks.
+// Jsonj also supports yaml, bson, and several other tree like syntaxes through Jackson's plugin infrastructure.
+YamlParser yamlParser = new YamlParser();
+JsonElement anotherElement = yamlParser.parse(inputStream)
+```
 
-The JsonJ API has been finetuned over several years of using it for real work. I have done my best to eliminate the need for any code that feels like it is overly repetitive or verbose (aka the *DRY principle*). Any time I write code using JsonJ that feels like I'm repeating myself, I fix it.
+## Serializing
 
-I regard this as the key selling point of the library. When manipulating and creating json structures programmatically, it is important that you don't have to jump through hoops to extract elements, iterate over things, etc. To facilitate this, the framework provides a large amount of convenient methods that help *prevent verbosity* in the form of unnecessary class casts, null checks, type conversions, generic types, etc. No other Json framework for Java comes close to the level of usability of this framework when it comes to this. Most leave you to either develop your own classes or with the bare bones API of the Java collections framework.
+```
+JsonObject o=parser.parse(inputStream);
+String pretty=o.prettyPrint();
+String oneLine=o.toString();
+o.serialize(writer); 
+```
 
-JsonJ provides a few easy to understand classes that extend Java’s Collections framework. Extending the Collections framework means using a familiar, and powerful API that most Java coders already know how to use. The following classes are provided:
+## Json manipulation
 
-- `public class JsonObject implements Map<String,JsonElement>, JsonElement`
-- `public class JsonArray extends ArrayList<JsonElement> implements JsonElement`
-- `public class JsonSet extends JsonArray` (because sometimes having duplicate free lists is a nice thing)
-- `public class JsonPrimitive implements JsonElement`
-
-As the class signatures suggest, these classes provide a type safe alternative to simply using generic maps/lists of Objects since everything implements JsonElement.
-
-The `JsonElement` interface specifies a lot of convenience methods that allow you to do easy type checks and to convert to/from Java native type (when needed), etc. For example `String s = e.asArray().last().asObject().getArray("key").get(3).asString()` actually digs out a string from a list inside an object that is the last element in another list without requiring type casts. The as- methods convert to common types or throw an unchecked exception if the conversion is impossible and there are also is- methods for checking the type conditionally. This gets rid of a lot of type checks, type casts, and other ugly code.
-
-Additionally a lot of methods are polymorphic and accept different types of objects (unlike the methods in the Collections framework). For example, the `add` method on JsonArray is polymorphic and automatically generates primitives if you add Strings, Booleans, or Numbers. The `put` on JsonObject behaves the same. The `add` method support varargs, so you can add multiple elements in one call.
-
-## JsonBuilder
-
-To facilitate creation of json objects, arrays, and primitives a builder class is included that makes creation of nested json object structures as easy as it gets in Java. It is recommended to **use static imports and to add this class as a favorite in eclipse to facilitate autocompletion**. JsonBuilder is a one stop shop for constructing very complex json objects effortlessly.
-
-### Factory methods without builders
-
-JsonBuilder started out as an ordinary builder and you can still use it as such. However, I find factory methods are a much cleaner way of constructing objects, arrays, and sets.
-
-```java
-import static com.github.jsonj.tools.JsonBuilder.array;
-import static com.github.jsonj.tools.JsonBuilder.field;
-import static com.github.jsonj.tools.JsonBuilder.object;
-
-...
-
-JsonObject o=object(
-    field("aList",array(
-        1,
-        2,
-        object(field("meaningoflife",42)),
-        "no more builder"))
-    ),
-    field("another", "element"),
-    field("aSet",set(1,2,3),
-    field("nestedlists",array(
-       array(1,2),
-       array(3,4)
-     ))
+```
+// easy object and array creation using simple static factory methods, varargs, and smart polymorph argument processing
+JsonObject o = object(
+  field("hello","world"), 
+  field("another_field",array("of","mixed","types",42, 42.0,true,false,null)),
+  field("nested",object(field("nested_field",42)))
 );
-```
 
-The `object` methods supports a varargs element of the type `Map.Entry`, which is the type you normally get when iterating over a Map entryset. To support creating those, there is the `field` method, which returns a `Entry<String,JsonElement>` instance that you can simply `add` to the `JsonObject` as well.
+// basic element lookup
+JsonElement e = o.get("hello"); // JsonPrimitive with value "world"
+JsonElement e2 = o.get("nested"); // JsonObject
+JsonElement e3 = o.get("nested","nested_field"); // JsonPrimitive with value 42
 
-Notice how you can mix integers, strings, objects in a typesafe way. They are all converted for you to JsonElement using the fromObject method in JsonBuilder which converts objects in the most appropriate JsonJ equivalent. So Booleans, Integers, Doubles, Strings, etc. all become JsonPrimitives. Any JsonElement implementations are used as is and `Map` or `List` implementations get converted to JsonObject and JsonArray instances.
+// type safe value extraction
+Integer value = o.getInt("nested","nested_field"); // 42
+Integer noValue = o.getInt("nested","idontexist"); // null
+Integer defaultValue = o.getInt("idontexist", 42); // null
+Optional<Integer> o.maybeGetInt("nested","idontexist"); // Optional.empty();
 
-Finally, the `array` method constructs a JsonArray using its varargs elements. Naturally it supports the same behavior of doing the right thing with any kind of object.
+// there are several variations of these for strings, booleans, longs, doubles, floats, and Number.
 
-### Classic builder pattern
+// convert JsonElements
+JsonElement e= ....
+int val=e.asInt(); // throws JsonTypeMismatchException if the element is not a JsonPrimitive or cannot be converted to an int.
+JsonObject object = e.asObject(); // throws JsonTypeMismatchException if e.isObject() == false
+JsonArray object =  e.asArray(); // throws JsonTypeMismatchException if e.isArray() == false
 
-If you prefer, you can also use the builder pattern to construct json objects. You create a builder using JsonBuilder.object() and then you can simply chain put method calls that all return a `JsonBuilder` and then using the `get()` method to get to the constructed object.
-
-```java
-import static com.github.jsonj.tools.JsonBuilder.array;
-import static com.github.jsonj.tools.JsonBuilder.object;
-...
-
-JsonObject o=object()
-  .put("aList",array(
-    "lets start with a Json list of mixed Json types, all type safe and Generic",
-    1,
-    2,
-    object()
-      .put("meaningoflife",42),
-      "note that the nested builder’s get() method is called for you; it understands what to do with the builder")
-    )
-  )
- .put("here", "is a simple string field")
- .put("aSet",set("a set does not exist in json; it has only arrays","but sometimes it is useful to have sets", "in JsonJ a set is just a simple variation of a list", "and of course it implements Set<JsonElement>")
- .put("nestedlists",array(
-    array(1,2),
-    array(3,4)
-  ))
- .get();
-```
-
-### Misc. other builder features
-
-The builder class also provides methods to facilitate converting from existing Maps, Lists, and other objects. For example, the fromObject method takes any Java object and tries to do the right thing.
-
-## Manipulating Json Programmatically
-
-The default `add` and `put` methods in `List` and `Map` have been made polymorphic in `JsonArray`, `JsonSet`, and `JsonObject`. So, they understand how to do the right thing for different types.
-
-```java
-JsonArray a = array();
-a.add(primitive(1));
-a.add(1);
-a.add("1");
-a.add(1.0);
-
-JsonObject o = new JsonObject();
-// these four lines do the same thing
-o.put("field", new JsonPrimitive(42)));
-o.put("field", primitive(42));
-o.put("field", 42);
-o.add(field("field",42));
-// {"field":42}
+// on the fly nested object and array creation
+//creates a five level deep array at o.l1.l2.l3.l4.a1=[1,2,3] 
+o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(1,2,3); 
+// adds three more elements to the array
+o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(4,5,6); 
 
 ```
 
-You can easily create and manipulate nested objects or arrays with `getOrCreateObject`, `getOrCreateArray`, and `getOrCreateSet`. These methods only work on objects and save you from having to recursively add objects and check for their existence while you do so. If a parent doesn't exist, it actually is created for you.
+## Collections
 
-```java
-JsonObject object = new JsonObject()
-// -> {}
-object.getOrCreateObject("f","o","o").add(field("foo","bar"));
-// -> {"f":{"o":{"o":{"foo":"bar"}}}}
-object.getOrCreateArray("b","a","r").add(1,2,3);
-// -> {"f":{"o":{"o":{"foo":"bar"}}},"b":{"a":{"r":[1,2,3]}}}
+```
+// objects are Map<String,JsonElement>
+// so this works, as well as all of the Map API in java 8.
+object.forEach((key,element) -> {...}); // easy iteration over entries in the Map<String,JsonElement) 
+
+// likewise, JsonArray implements List<JsonElement>
+// so you can do stream processing
+JsonArray result = object.getOrCreateArray("array").stream().map(element -> element.asObject().getString("nested_field")).collect(JsonJCollectors.array());
+
+// Java has sets and they are useful, JsonSet implements Set<Element>
+// asSet converts the list to a set and removes duplicate elements
+// inserts of duplicate elements replace the old value
+JsonSet set = object.getOrCreateArray("array").asSet();
+// by default JsonSet uses element equals for identity but you can change this
+JsonSet set2 = object.getOrCreateArray("array")
+   .asSet()
+   // return true if left and right elements are equal, false otherwise);
+   .applyIdStrategy((left,right) -> ...); 
+
+// or use the simple id field strategy for the common case where you 
+// have an array of objects with an id field
+// compares objects on their id field, throws JsonTypeMismatchException 
+// if elements are not objects.
+JsonSet set3 = object.getOrCreateArray("array").asSet().applyIdStrategy("id"); 
 ```
 
-## Getting values out of objects
+## Polymorphism and varargs
 
-When getting values out of an object, you typically want to get the number, string, or boolean rather than a JsonElement. For this reason, JsonObject comes with several variations of the get method that allow you to avoid having to call the asString() method. There also are several variants of maybeGet that return an Optional. This is useful if you are not sure the value is there and want to avoid having to do null checks.
+JsonJ is all about making life easy. So it uses varargs wherever it makes sense and polymorhism to make most type conversions unnecessary.
 
-```java
-// given {"foo":{"bar":"foobar"},"bar":42}
-
-// get a JsonElement
-o.get("foo") // returns a JsonElement
-o.get("foo","bar") // returns a JsonElement using varargs labels
-o.get("foo","bar").asString() // returns the String "foobar"
-o.maybeGetString("foo","bar").ifPresent(value -> System.out.println(value)) // returns Optional and if present prints it
-
-// get primitives of a specific type
-o.getString("foo","bar") // returns the String "foobar" without having to call asString()
-o.getString("idontexist") // returns null
-o.getString("bar") // returns the String "42", it converts the number to a string for you
-o.getString("foo") // throws JsonTypeMismatchException because the returned value is not a JsonPrimitive
-o.getLong("bar") // returns the long 42
-o.getInt("bar") // returns the int 42
-o.maybeGetInt("bar").ifPresent(intValue -> System.out.println(intValue)) // prints 42
-o.getBoolean("bar") // throws JsonTypeMismatchException because the returned value is not a boolean
-o.getDouble("bar") // returns the int 42.0
-
-// polymorphic get method with default value; does not support varargs.
-o.get("xyz", 0) // returns the int 0 (default int value for the missing property)
-o.get("bar", 666l) // returns the long 42 because o has a field bar and a default value that is a long
-o.get("hasProperty", false) // returns false because o does not have a boolean field hasProperty
 ```
+
+JsonArray array=array(); // factory method for new JsonArray();
+// array() has several polymorph implementations that support varargs as well.
+array = array("foo","bar") // creates a new array with two JsonPrimitives. 
+
+// JsonArray and JsonSet have several add methods
+array.add(primitive(1)); // adds 1
+array.add(1); // does the same and converts 1 to a JsonPrimitive for you
+// varargs are nice.
+array.add(2,3,4);
+array.add(true) // adds a JsonPrimitive with value true
+array.add("hello") // add a string primitive
+
+JsonObject map=new JsonObject();
+// these all do the same ...
+map.put("field", primitive(42));
+map.put("field",42);
+map.put("field",new JsonPrimitive(42));
+
+// Maps are lists of entries, so you can add entries.
+// use the field factory method to create entries
+// field is polymorph and tries to do the right thing, just like JsonArray add.
+Entry<String,JsonElement> entry=field("field",42);
+map.add(entry);
+map.add(field("1",1),field("2",2)); // add supports varargs of course.
+
+```
+You can find the `array`, `set`, `field`, and `object` methods in the `JsonBuilder` if your IDE supports this (eclipse), you'll want to configure this as a favourite to add the static imports for this.
 
 ## Iterating over stuff
 
@@ -203,6 +160,8 @@ for(int i: array(1,2,3).ints()) {
   ..
 }
 ```
+## Java 8 Streams
+
 Or you can use the new Java 8 streams:
 
 ```java
@@ -232,62 +191,21 @@ array("foo").ints() // throws JsonTypeMismatchException
 array(1,2,3).asObject() // throws JsonTypeMismatchException
 ```
 
-## Parsing and serialization
+# More Reasons to use JsonJ
 
-```
-// A thread safe `JsonParser` class is provided that uses jackson's streaming parser.
+There are several reasons why you might like jsonj
 
-JsonParser parser=new JsonParser() // make this a spring bean, you don't need more than 1 of these in your vm.
+- The provided JsonObject, JsonArray, JsonSet, and JsonPrimitive classes are all you need for type safe and null safe manipulation of complex json structures.
+- It comes with convenient builder classes for quickly constructing complex json datastructures without going through the trouble of having to create model classes for your particular flavor of json, piecing together lists, maps, and other types and then serializing those, or generally having to do a lot of type casts, null checks, generics juggling, etc.
+- Memory efficient: you can squeeze large amounts of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects.
+- Easy to use and lacks the complexity of other solutions. All you do is JsonObject o = parseObject(...) and o.toString() or o.serialize(..).
+- There are no annotations or model classes. This makes jsonj great for quickly prototyping some logic around any bit of json encountered.
+- A JsonDataObject interface is provided (that includes default methods) that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin. This gives you the best of both worlds and it is easy to reuse functionality between different domain classes.
+- It relies on the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
+- In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them. Also adding support for more jackson plugins is easy.
+- [JsonLines](http://jsonlines.org/) support via `Stream<JsonObject> JsonParser.parseJsonLines(Reader r)`
 
-JsonElement element=parser.parse("[1,2,3]");
-JsonElement element=parser.parse(new FileInputStream("myfile.json"));
-JsonObject object=parser.parseObject(new FileInputStream("anotherfile.json"));
-
-String serialized=object.toString();
-String pretty=object.prettyPrint();
-
-Writer w = ....;
-object.serialize(w);
-// obviously
-assertThat(object.equals(parser.parse(object.toString()))).isTrue();
-
-```
-
-
-- You can serialize using `toString()` or `prettyPrint()` or `serialize()` on any JsonElement, or you can use the `JsonSerializer` class directly.
-- There's a HoconParser, YamlParser, YamlSerializer, JsonjPlistParser, and JsonjPlistSerializer as well.
-
-If there's jackson dataformat support for it you can easily create more parsers. This doesn't make sense for all of them but for some like hocon or yaml it does.
-
-This is all the hocon specific code jsonj has:
-
-```
-public class HoconParser implements JsonFactoryBasedParser {
-    private final HoconFactory factory = new HoconFactory();
-
-    public HoconParser() {
-    }
-
-    @Override
-    public JsonFactory factory() {
-        return factory;
-    }
-}
-```
-
-The default methods in `JsonFactoryBasedParser` provide parse methods that you can use to parse streams, readers, or strings. Writing serializers is a bit more work but not that complicated typically. Pull requests are welcome of course.
-
-## Java 8
-
-Java 8 added lambda functions, default methods on interfaces, and the streaming API. While 1.x already works fine with Java 8 due to the fact that JsonJ fully supports the Collections framework. JsonJ 2.x adds several convenient  methods that make this more user friendly. You can call streamObjects on arrays, which allows you to process json arrays of json objects instead of JsonElement instances. This saves you one asObject() call on each element. There is a new JsonjCollectors class that provides collectors for JsonArray and JsonSet that are capable of collecting Objects of any type supported by fromObject into JsonSet or JsonArray. Likewise both these classes have a new constructor that takes a stream.
-
-## Unit testing using Assertj
-
-As of 2.5, I've started adding support for custom jsonj assertion classes to support unit testing using assertj. This is a work in progress and I will be adding functionality here as I need it. This simplifies unit testing code that handles or returns jsonj instances. Note, as of 2.5 a lot of the unit tests are still using hamcrest as I have not converted the tests yet. I welcome pull requests for this :-).
-
-## JRuby integration
-
-If you use jruby, you can seemlessly integrate jsonj using [jsonj-integration](https://github.com/jillesvangurp/jsonj-integration). This module uses monkey patching to add various methods to classes that allow you to convert between ruby style lists and hashes and JsonJ classes. Additionally, it adds [] and []= accessors to JsonArray, JsonSet, and JsonObject, which allows you to pretend it is all ruby. Finally, it adds `to_json` and `to_s` methods that do the right thing in Ruby as well. I use this module to mix Java and Ruby in one project and this comes in quite handy.
+There are probably more reasons you can find to like JsonJ, why not give it a try? Let me know if you like it (or not). Let me know it should be changed in some way.
 
 ## Memory efficient
 
@@ -298,15 +216,6 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - SimpleIntMapJsonObject uses my EfficientString library for object keys. This means key instances are reused and stored as UTF8. Assuming you have millions of objects that use a handful of keys like 'id', 'name', etc., You only store those byte arrays once and the objects refer these by an integer id. Don't use this implementation if you expect millions of different keys because you may run out of memory.
 - `MapBasedJsonObject`. Because neither `JsonObject` nor `SimpleIntMapJsonObject` scale to large numbers of keys, the parser switches to this implementation automatically when the number of keys exceeds the configurable threshold (default is 100). This implementation uses a simple LinkedHashMap instead. This uses way more memory but scales to much larger amounts of keys than either of the other implementations.
 - Both `SimpleIntMapJsonObject` and `JsonObject` use UTF8 byte arrays for storing String primitive values. This is more efficient than Java's own String class, which uses utf-16.
-
-
-## Odd features you probably don't care about
-
-- `JsonElement` implements `Serializable` so you can serialize jsonj objects using Java’s builtin serialization, if you really want to use that (hint, you shouldn’t) in a cross JVM way since it simply serializes to json.
-- A utility class is included that allows you to convert json to and from XML, and to create DOM trees from json object structures. This can come in handy if you want to use e.g. xpath to query your json structures. You need to add the optional dependency on xom for this to work.
-- PLIST - You can serialize to and parse from binary plists. This was added to support some IOS specific usecases. You need to add the optional maven dependency on dd-plist for this to work.
-- YAML is supported with its own parser and serializer, both based on Jackson's jackson-dataformat-yaml.
-- BSON support is there as well based on bson4jackson.
 
 # Changelog
 - 2.41
