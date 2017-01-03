@@ -4,6 +4,8 @@
 
 JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java. JsonJ backs the very simple json types using a fluent API. Jackson's streaming parser is used for parsing and it uses things like generics, Java 8 streams, varargs, the Collections framework and other modern Java constructs to make life easier dealing with json.
 
+The core use case for jsonj is quickly prototyping with complex json data structures without getting bogged down in creating endless amounts of model classes. Model classes are nice if you have a stable, and well defined domain but can be a pain in the ass when this is not the case.
+
 # Get JsonJ from Maven Central
 
 ```
@@ -20,6 +22,8 @@ Java 8 is required as of version 2. For Java 7 and earlier, you can use the 1.x 
 
 # Examples
 
+JsonJ has a ton of features and there's plenty more to discover beyond what is shown here. 
+
 ## Parsing
 
 JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances. 
@@ -35,7 +39,9 @@ JsonObject object = parser.parseObject(inputStream);
 // or just use a reader
 JsonElement element = parser.parse(reader);
 
-// Jsonj also supports yaml, bson, and several other tree like syntaxes through Jackson's plugin infrastructure.
+// Jsonj also supports yaml, bson, hocon, and several other tree like syntaxes through Jackson's plugin infrastructure.
+
+// for example:
 YamlParser yamlParser = new YamlParser();
 JsonElement anotherElement = yamlParser.parse(inputStream)
 ```
