@@ -20,6 +20,10 @@ Note. always check for the latest version. I do not always update the readme.
 
 Java 8 is required as of version 2. For Java 7 and earlier, you can use the 1.x releases.
 
+# License
+
+The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do in your hands. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
+
 # Examples
 
 JsonJ has a ton of features and there's plenty more to discover beyond what is shown here. 
@@ -401,45 +405,3 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - 0.2 Several bug fixes
 - 0.1 First release
 
-
-# FAQ
-
-## What’s with the name
-
-It’s pronounced json-j, or jasonjay. It doesn’t mean anything in particular other than”json for java“, or something. Well, trying to come up with a name that is not already used is quite a challenge and I wanted to stuff the acronym json in there, keep it short, and not have the first hit on Google be something else than this. So, JsonJ it is.
-
-## For whom is this framework intended
-
-Anyone who plans to write a lot of business logic in Java that manipulates json data structures and who doesn’t wish to write model classes in Java to hide the fact that json is being used. If you are like me, you feel somewhat stuck having to deal with awkward json frameworks while all the cool Ruby,Python, and Javascript kids get to use a serialization that is natively supported in their language. This framework is for you.
-
-## Will there be a Java 8 version of JsonJ with closures?
-
-Version 2 is Java 8 specific and provides integration with the new Streams api.
-
-## Would JsonJ make sense in other languages?
-
-It depends. Given that support for json data structures is native in python, ruby, and javascript, you would expect you won't need it. Yet a lot of the more advanced stuff in jsonj would be kind of nice to have still. For example, `s=object['f']['o']['o']` in Ruby can fail if element 'f' does not exist where as `object.getString("f","o","o")` won't throw an exception in that case. Given that, why not have something like `s=object['f','o','o']` that fails in a similarly graceful way? *Update* I've done some experiments in javascript related to this: [jsonjs](https://github.com/Inbot/jsonjs).
-
-## I found a bug, what should I do
-
-File a bug on this github project, or just email/im me directly. Either way, if I agree something is broken, I will fix it. Alternatively, feel free to clone & own. That’s what github is all about.
-
-## How to build JsonJ
-
-`mvn clean install` should do the trick with maven 3.x (and probably 2.x as well).
-
-## Where is the documentation?
-
-Javadoc is generated during the build. After building you can find it in `./target/apidocs/index.html`
-Additionally, look at the tests. Particularly [this one here](src/test/java/com/github/jsonj/ShowOffTheFrameworkTest.java) shows off most of the features this framework has.
-
-# License
-
-The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.a. the expat license. The rationale for choosing this license is that I want to maximize your freedom to do whatever you want with the code while limiting my liability for the damage this code could potentially do in your hands. I do appreciate attribution but not enough to require it in the license (beyond the obligatory copyright notice).
-
-# Acknowledgements
-
-1.  I’ve been greatly influenced by the classes representing the json primitives in the GSon framework. If only they implemented Map and List and weren’t final. But lovely framework and would use it again.
-2.  This code is very loosely based on work I did at work with several colleagues some years ago. No code was copy pasted but I definitely took some ideas and improved on them. You know who you are. Thanks.
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jillesvangurp/jsonj/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
