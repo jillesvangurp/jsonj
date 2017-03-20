@@ -55,4 +55,13 @@ public class MapBasedJsonObjectTest {
         JsonObject parsed = parser.parseObject(input);
         assertThat(parsed).isEqualTo(o);
     }
+
+    public void shouldNotRevertToJsonObjectWhenCloning() {
+        JsonObject jsonObject = new MapBasedJsonObject();
+        for(int i=0;i<1000;i++) {
+            jsonObject.put("key_"+i, i);
+        }
+        assertThat(jsonObject.deepClone()).isInstanceOf(MapBasedJsonObject.class);
+        assertThat(jsonObject.immutableClone()).isInstanceOf(MapBasedJsonObject.class);
+    }
 }
