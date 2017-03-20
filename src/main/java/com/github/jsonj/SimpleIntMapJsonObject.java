@@ -61,6 +61,11 @@ public class SimpleIntMapJsonObject extends JsonObject {
     public SimpleIntMapJsonObject() {
     }
 
+    @Override
+    protected JsonObject createNew() {
+        return new SimpleIntMapJsonObject();
+    }
+
     @SuppressWarnings("rawtypes")
     public SimpleIntMapJsonObject(@Nonnull Map existing) {
         Iterator iterator = existing.entrySet().iterator();
@@ -173,30 +178,6 @@ public class SimpleIntMapJsonObject extends JsonObject {
     @Override
     public Object clone() {
         return deepClone();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public JsonObject deepClone() {
-        JsonObject object = new SimpleIntMapJsonObject();
-        Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
-        for (Entry<String, JsonElement> entry : es) {
-            JsonElement e = entry.getValue().deepClone();
-            object.put(entry.getKey(), e);
-        }
-        return object;
-    }
-
-    @Override
-    public JsonObject immutableClone() {
-        SimpleIntMapJsonObject object = new SimpleIntMapJsonObject();
-        Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
-        for (Entry<String, JsonElement> entry : es) {
-            JsonElement e = entry.getValue().immutableClone();
-            object.put(entry.getKey(), e);
-        }
-        object.intMap.makeImmutable();
-        return object;
     }
 
     @Override

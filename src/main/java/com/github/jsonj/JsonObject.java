@@ -55,6 +55,10 @@ public class JsonObject implements IJsonObject {
     public JsonObject() {
     }
 
+    protected JsonObject createNew() {
+        return new JsonObject();
+    }
+
     @SuppressWarnings("rawtypes")
     public JsonObject(@Nonnull Map existing) {
         Iterator iterator = existing.entrySet().iterator();
@@ -134,7 +138,7 @@ public class JsonObject implements IJsonObject {
     @SuppressWarnings("unchecked")
     @Override
     public JsonObject deepClone() {
-        JsonObject object = new JsonObject();
+        JsonObject object = createNew();
         Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
         for (Entry<String, JsonElement> entry : es) {
             JsonElement e = entry.getValue().deepClone();
@@ -145,7 +149,7 @@ public class JsonObject implements IJsonObject {
 
     @Override
     public JsonObject immutableClone() {
-        JsonObject object = new JsonObject();
+        JsonObject object = createNew();
         Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
         for (Entry<String, JsonElement> entry : es) {
             JsonElement e = entry.getValue().immutableClone();
@@ -327,7 +331,7 @@ public class JsonObject implements IJsonObject {
 
     @Override
     public JsonObject flatten(@Nonnull String separator) {
-        JsonObject o = new JsonObject();
+        JsonObject o = createNew();
         flatten(o,"",separator,this);
         return o;
     }

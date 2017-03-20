@@ -15,8 +15,9 @@ import org.apache.commons.lang3.Validate;
 /**
  * This implementation of JsonObject uses a LinkedHashMap. This uses more memory but tends to be faster for objects with a large number of keys.
  *
- * Since this is relatively rare, the parser currently automatically uses this implementation if the number of keys exceeds a configurable threshold
- * (default for this is 100).
+ * Since this is relatively rare, the parser currently automatically uses this implementation if the number of keys exceeds a
+ * configurable threshold (default for this is 100).
+ *
  */
 public class MapBasedJsonObject extends JsonObject {
     private static final long serialVersionUID = 8208686487292876195L;
@@ -25,6 +26,11 @@ public class MapBasedJsonObject extends JsonObject {
 
     public MapBasedJsonObject() {
         this(()->new LinkedHashMap<>());
+    }
+
+    @Override
+    protected JsonObject createNew() {
+        return new MapBasedJsonObject();
     }
 
     public MapBasedJsonObject(Supplier<Map<String,JsonElement>> mapSupplier) {
@@ -120,17 +126,5 @@ public class MapBasedJsonObject extends JsonObject {
     @Override
     public MapBasedJsonObject toMapBasedJsonObject() {
         return this;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public JsonObject deepClone() {
-        JsonObject object = new MapBasedJsonObject();
-        Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
-        for (Entry<String, JsonElement> entry : es) {
-            JsonElement e = entry.getValue().deepClone();
-            object.put(entry.getKey(), e);
-        }
-        return object;
     }
 }
