@@ -46,6 +46,7 @@ import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.testng.Assert;
@@ -57,11 +58,11 @@ public class JsonObjectTest {
     @DataProvider
     public Object[][] equalPairs() {
         return new Object[][] {
-                { object().put("a", object().put("b", object().put("c", "d").get()).get()).get(),
-                    object().put("a", object().put("b", object().put("c", "d").get()).get()).get() },
-                    { object().get(), object().get() },
-                    { object().put("a", "a").put("b", 42).put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get(),
-                        object().put("b", 42).put("a", "a").put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get() } };
+            { object().put("a", object().put("b", object().put("c", "d").get()).get()).get(),
+                object().put("a", object().put("b", object().put("c", "d").get()).get()).get() },
+            { object().get(), object().get() },
+            { object().put("a", "a").put("b", 42).put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get(),
+                object().put("b", 42).put("a", "a").put("c", true).put("d", array("foo", "bar")).put("e", primitive((String) null)).get() } };
     }
 
     @Test(dataProvider = "equalPairs")
@@ -80,11 +81,21 @@ public class JsonObjectTest {
     @DataProvider
     public Object[][] unEqualPairs() {
         return new Object[][] {
-                { object().put("a", "b").get(),
-                    object().put("a", "b").put("b", 42).get() },
-                    { object().put("a", "b").get(), null },
-                    { object().put("a", "b").get(), primitive(42) },
-                    { object().put("a", 42).get(), object().put("a", 41).get() } };
+            { object().put("a", "b").get(),
+                object().put("a", "b").put("b", 42).get() },
+            { object().put("a", "b").get(), null },
+            { object().put("a", "b").get(), primitive(42) },
+            { object().put("a", 42).get(), object().put("a", 41).get() } };
+    }
+
+    @DataProvider
+    public Object[][] objectConstructors() {
+
+        return new Supplier[][]{
+            {() -> new JsonObject()},
+            {() -> new MapBasedJsonObject()},
+            {() -> new SimpleIntMapJsonObject()}
+        };
     }
 
     @Test(dataProvider = "unEqualPairs")
@@ -100,8 +111,9 @@ public class JsonObjectTest {
         assertThat(o.maybeGetString("a", "b", "c").get()).isEqualTo("d");
     }
 
-    public void shouldCreateArray() {
-        JsonObject object = new JsonObject();
+    @Test(dataProvider="objectConstructors")
+    public void shouldCreateArray(Supplier<JsonObject> supplier) {
+        JsonObject object = supplier.get();
         JsonArray createdArray = object.getOrCreateArray("a","b","c");
         createdArray.add("1");
         Assert.assertTrue(object.getArray("a","b","c").contains("1"), "array should have been added to the object");
@@ -118,8 +130,9 @@ public class JsonObjectTest {
         object.getOrCreateArray("a","b");
     }
 
-    public void shouldCreateObject() {
-        JsonObject object = new JsonObject();
+    @Test(dataProvider="objectConstructors")
+    public void shouldCreateObject(Supplier<JsonObject> supplier) {
+        JsonObject object = supplier.get();
         JsonObject createdObject = object.getOrCreateObject("a","b","c");
         createdObject.put("foo", "bar");
         Assert.assertTrue(object.getString("a","b","c", "foo").equals("bar"), "object should have been added");
@@ -181,12 +194,13 @@ public class JsonObjectTest {
         assertTrue(object.equals(object2));
     }
 
-    public void shouldPutBuilder() {
+    @Test(dataProvider="objectConstructors")
+    public void shouldPutBuilder(Supplier<JsonObject> supplier) {
         JsonBuilder builder = object().put("foo", "bar");
         JsonObject object1 = object().put("foobar",builder).get();
-        JsonObject object2 = new JsonObject();
+        JsonObject object2 = supplier.get();
         object2.put("foobar", builder);
-        JsonObject object3 = new JsonObject();
+        JsonObject object3 = supplier.get();
         object3.put("foobar", fromObject(builder));
 
         assertThat(object1, is(object2));
@@ -234,13 +248,15 @@ public class JsonObjectTest {
     //        assertThat(object.getArray("list").get(0).asString(), is("stuff"));
     //    }
 
-    public void shouldSupportConcurrentlyCreatingNewKeys() throws InterruptedException {
+    @Test(dataProvider="objectConstructors")
+    public void shouldSupportConcurrentlyCreatingNewKeys(Supplier<JsonObject> supplier) throws InterruptedException {
         // note. this test did never actually trigger the race condition so only limited confidence here.
         // this is the best I've come up with so far for actually triggering the conditions this breaks
+        EfficientString.clear(); // clear to avoid clashes with other tests
         int factor = 666;
         int startIndex = EfficientString.nextIndex();
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
-        final JsonObject o = new JsonObject();
+        final JsonObject o = supplier.get();
         // this should create some potential for the race condition to trigger since it rapidly creates the same keys
         int total = 100000;
         for(int i=0;i<total;i++) {
@@ -259,8 +275,9 @@ public class JsonObjectTest {
         assertThat(EfficientString.nextIndex()-startIndex, Matchers.greaterThan(total/factor));
     }
 
-    public void shouldGetPrimitiveDefaultValues() {
-        JsonObject object = object().get();
+    @Test(dataProvider="objectConstructors")
+    public void shouldGetPrimitiveDefaultValues(Supplier<JsonObject> supplier) {
+        JsonObject object = supplier.get();
         assertThat(object.get("field", 42), is(42));
         assertThat(object.get("field", 42l), is(42l));
         assertThat(object.get("field", 42.0), is(42.0));
@@ -331,6 +348,7 @@ public class JsonObjectTest {
         simpleMap.put("three", "xxxxx");
 
         JsonObject object = new JsonObject(simpleMap);
+
         assertThat(object.getString("one")).isEqualTo("xxxxx");
     }
 
@@ -341,7 +359,6 @@ public class JsonObjectTest {
         );
         o.put("o3", Optional.of(array(1,2,3)));
 
-        System.err.println(o.prettyPrint());
         assertThat(o.get("o1").isNumber()).isTrue();
         assertThat(o.get("o2").isNull()).isTrue();
         assertThat(o.get("o3").isArray()).isTrue();
