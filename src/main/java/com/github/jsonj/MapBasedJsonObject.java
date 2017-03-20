@@ -121,4 +121,16 @@ public class MapBasedJsonObject extends JsonObject {
     public MapBasedJsonObject toMapBasedJsonObject() {
         return this;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public JsonObject deepClone() {
+        JsonObject object = new MapBasedJsonObject();
+        Set<java.util.Map.Entry<String, JsonElement>> es = entrySet();
+        for (Entry<String, JsonElement> entry : es) {
+            JsonElement e = entry.getValue().deepClone();
+            object.put(entry.getKey(), e);
+        }
+        return object;
+    }
 }
