@@ -12,7 +12,7 @@ The core use case for jsonj is quickly prototyping with complex json data struct
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.41</version>
+    <version>2.42</version>
 </dependency>
 ```
 
@@ -26,11 +26,11 @@ The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.
 
 # Examples
 
-JsonJ has a ton of features and there's plenty more to discover beyond what is shown here. 
+JsonJ has a ton of features and there's plenty more to discover beyond what is shown here.
 
 ## Parsing
 
-JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances. 
+JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances.
 
 ```
 // Create a parser (you need just 1 instance for your application)
@@ -56,7 +56,7 @@ JsonElement anotherElement = yamlParser.parse(inputStream)
 JsonObject o=parser.parse(inputStream);
 String pretty=o.prettyPrint();
 String oneLine=o.toString();
-o.serialize(writer); 
+o.serialize(writer);
 ```
 
 ## Json manipulation
@@ -64,7 +64,7 @@ o.serialize(writer);
 ```
 // easy object and array creation using simple static factory methods, varargs, and smart polymorph argument processing
 JsonObject o = object(
-  field("hello","world"), 
+  field("hello","world"),
   field("another_field",array("of","mixed","types",42, 42.0,true,false,null)),
   field("nested",object(field("nested_field",42)))
 );
@@ -89,10 +89,10 @@ JsonObject object = e.asObject(); // throws JsonTypeMismatchException if e.isObj
 JsonArray object =  e.asArray(); // throws JsonTypeMismatchException if e.isArray() == false
 
 // on the fly nested object and array creation
-//creates a five level deep array at o.l1.l2.l3.l4.a1=[1,2,3] 
-o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(1,2,3); 
+//creates a five level deep array at o.l1.l2.l3.l4.a1=[1,2,3]
+o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(1,2,3);
 // adds three more elements to the array
-o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(4,5,6); 
+o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(4,5,6);
 
 ```
 
@@ -101,7 +101,7 @@ o.getOrCreateObject("l1","l2","l3").getOrCreateArray("l4","a1").add(4,5,6);
 ```
 // objects are Map<String,JsonElement>
 // so this works, as well as all of the Map API in java 8.
-object.forEach((key,element) -> {...}); // easy iteration over entries in the Map<String,JsonElement) 
+object.forEach((key,element) -> {...}); // easy iteration over entries in the Map<String,JsonElement)
 
 // likewise, JsonArray implements List<JsonElement>
 // so you can do stream processing
@@ -115,13 +115,13 @@ JsonSet set = object.getOrCreateArray("array").asSet();
 JsonSet set2 = object.getOrCreateArray("array")
    .asSet()
    // return true if left and right elements are equal, false otherwise);
-   .applyIdStrategy((left,right) -> ...); 
+   .applyIdStrategy((left,right) -> ...);
 
-// or use the simple id field strategy for the common case where you 
+// or use the simple id field strategy for the common case where you
 // have an array of objects with an id field
-// compares objects on their id field, throws JsonTypeMismatchException 
+// compares objects on their id field, throws JsonTypeMismatchException
 // if elements are not objects.
-JsonSet set3 = object.getOrCreateArray("array").asSet().applyIdStrategy("id"); 
+JsonSet set3 = object.getOrCreateArray("array").asSet().applyIdStrategy("id");
 ```
 
 ## Polymorphism and varargs
@@ -132,7 +132,7 @@ JsonJ is all about making life easy. So it uses varargs wherever it makes sense 
 
 JsonArray array=array(); // factory method for new JsonArray();
 // array() has several polymorph implementations that support varargs as well.
-array = array("foo","bar") // creates a new array with two JsonPrimitives. 
+array = array("foo","bar") // creates a new array with two JsonPrimitives.
 
 // JsonArray and JsonSet have several add methods
 array.add(primitive(1)); // adds 1
@@ -228,6 +228,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Both `SimpleIntMapJsonObject` and `JsonObject` use UTF8 byte arrays for storing String primitive values. This is more efficient than Java's own String class, which uses utf-16.
 
 # Changelog
+- 2.42
+  - Make sure deepClone and immutableClone use the same JsonObject class as the object being cloned. This solves some performance issues where it regresses to using JsonObject instead of MapBasedJsonObject when cloning a big instance.
 - 2.41
   - Smarter handling of numeric strings. You can now use `asInt()`, `asDouble()`, etc on quoted numeric values without failing with a type exception.
 - 2.40
@@ -404,4 +406,3 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - 0.3 Several new methods added in JsonArray and JsonObject; fixed the parser bug where nested arrays and objects were not handled correctly.
 - 0.2 Several bug fixes
 - 0.1 First release
-
