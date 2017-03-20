@@ -354,4 +354,13 @@ public class JsonObjectTest {
         assertThat(flattened.getInt("x:y:1")).isEqualTo(2);
         assertThat(flattened.getString("x:y:2:foo")).isEqualTo("bar");
     }
+
+    public void shouldHandleBooleanOnLongField() {
+        JsonObject o = object(field("deleted",1l));
+        assertThat(o.get("deleted",false)).isTrue();
+        o.put("deleted", 0);
+        assertThat(o.get("deleted",false)).isFalse();
+        o.put("deleted", true);
+        assertThat(o.get("deleted",false)).isTrue();
+    }
  }
