@@ -21,6 +21,7 @@
  */
 package com.github.jsonj;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,18 +37,21 @@ public interface JsonElement extends Cloneable, Serializable {
     /**
      * @return the type of this json element
      */
+    @JsonIgnore
     @Nonnull JsonType type();
 
     /**
      * @return a JsonObject
      * @throws JsonTypeMismatchException if the element is not an object
      */
+    @JsonIgnore
     @Nonnull JsonObject asObject();
 
     /**
      * @return a JsonArray
      * @throws JsonTypeMismatchException if the element is not an array
      */
+    @JsonIgnore
     @Nonnull JsonArray asArray();
 
     /**
@@ -69,16 +73,19 @@ public interface JsonElement extends Cloneable, Serializable {
     /**
      * @return true if the JsonElement is a JsonObject.
      */
+    @JsonIgnore
     boolean isObject();
 
     /**
      * @return true if the JsonElement is a JsonArray
      */
+    @JsonIgnore
     boolean isArray();
 
     /**
      * @return true if the JsonElement is a JsonPrimitive
      */
+    @JsonIgnore
     boolean isPrimitive();
 
     /**
@@ -90,6 +97,7 @@ public interface JsonElement extends Cloneable, Serializable {
     /**
      * @return true if the JsonElement is effectively empty.
      */
+    @JsonIgnore
     boolean isEmpty();
 
     /**
@@ -109,21 +117,25 @@ public interface JsonElement extends Cloneable, Serializable {
     /**
      * @return true if the element is a json number (double or long)
      */
+    @JsonIgnore
     boolean isNumber();
 
     /**
      * @return true if the element is a boolean
      */
+    @JsonIgnore
     boolean isBoolean();
 
     /**
      * @return true if the element is a json null
      */
+    @JsonIgnore
     boolean isNull();
 
     /**
      * @return true if the element is a string
      */
+    @JsonIgnore
     boolean isString();
 
     default void serialize(@Nonnull OutputStream out) throws IOException {
@@ -150,5 +162,6 @@ public interface JsonElement extends Cloneable, Serializable {
         throw new JsonTypeMismatchException("not a primitive");
     }
 
+    @JsonIgnore
     boolean isMutable();
 }

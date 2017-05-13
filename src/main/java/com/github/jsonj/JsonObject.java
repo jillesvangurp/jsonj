@@ -45,7 +45,7 @@ import org.apache.commons.lang3.Validate;
 public class JsonObject implements IJsonObject {
     private static final long serialVersionUID = 497820087656073803L;
 
-    // use during serialization
+    // used only during java object deserialization
     private static JsonParser parser = null;
 
     private final SimpleStringKeyMap<JsonElement> simpleMap = new SimpleStringKeyMap<>();

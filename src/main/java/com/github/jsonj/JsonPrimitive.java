@@ -21,6 +21,7 @@
  */
 package com.github.jsonj;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
 import java.io.IOException;
@@ -223,9 +224,16 @@ public class JsonPrimitive implements JsonElement, Serializable, Formattable {
     /**
      * @return the raw value as an Object.
      */
+    @JsonValue
     public Object value() {
-        return value;
+        if(isString()) {
+            return asString();
+        } else {
+            return value;
+        }
     }
+
+
 
     @Override
     public String toString() {
