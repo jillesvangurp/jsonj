@@ -2,9 +2,13 @@
 
 # Introduction
 
-JsonJ is a fast performing library for working with [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java. JsonJ backs the very simple json types using a fluent API. Jackson's streaming parser is used for parsing and it uses things like generics, Java 8 streams, varargs, the Collections framework and other modern Java constructs to make life easier dealing with json.
+JsonJ is a fast performing addon library to Jackson for working with schemaless [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java. JsonJ backs the very simple json types using a fluent API.
 
-The core use case for jsonj is quickly prototyping with complex json data structures without getting bogged down in creating endless amounts of model classes. Model classes are nice if you have a stable, and well defined domain but can be a pain in the ass when this is not the case.
+Jackson's streaming parser is used for parsing and it uses things like generics, Java 8 streams, varargs, the Collections framework and other modern Java constructs to make life easier dealing with json.
+
+As of 2.43, JsonJ also fully supports the Jackson ObjectMapper. Simply use the jsonj types and jackson will serialize/deserialize as you are used to. You can mix this with using strongly typed model classes.
+
+The core use case for jsonj is quickly prototyping with complex json data structures without getting bogged down in creating endless amounts of model classes. Model classes are nice if you have a stable, and well defined domain but can be a royal pain in the ass when this is not the case and the json is relatively complex and more or less schema less.
 
 # Get JsonJ from Maven Central
 
@@ -28,9 +32,10 @@ The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.
 
 JsonJ has a ton of features and there's plenty more to discover beyond what is shown here.
 
-## Parsing
+## Using the JsonJ parser
 
-JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances.
+
+JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances. This is the fastest way to parse json.
 
 ```
 // Create a parser (you need just 1 instance for your application)
@@ -48,6 +53,68 @@ JsonElement element = parser.parse(reader);
 // for example:
 YamlParser yamlParser = new YamlParser();
 JsonElement anotherElement = yamlParser.parse(inputStream)
+```
+
+## Using the Jackson ObjectMapper
+
+As of 2.43, the Jackson ObjectMapper is fully supported.
+
+```
+JsonObject myObject=...;
+String serialized = objectMapper.writeValueAsString(myObject);
+JsonObject deSerialized = objectMapper.readValue(serialized, JsonObject.class);
+// myObject.equals(deSerialized);
+
+```
+
+This also means you can mix jsonj with pojos in your models:
+
+For example, this will work as you'd hope:
+
+```
+class Foo {
+    private String attribute;
+    private int anotherAttribute;
+    private JsonObject nestedJsonj;
+
+    public String getAttribute() {
+        return attribute;
+    }
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
+    public int getAnotherAttribute() {
+        return anotherAttribute;
+    }
+    public void setAnotherAttribute(int anotherAttribute) {
+        this.anotherAttribute = anotherAttribute;
+    }
+    public JsonObject getNestedJsonj() {
+        return nestedJsonj;
+    }
+    public void setNestedJsonj(JsonObject nestedJsonj) {
+        this.nestedJsonj = nestedJsonj;
+    }
+}
+
+Foo foo = new Foo();
+foo.setAttribute("Hi wrld");
+foo.setAnotherAttribute(42);
+JsonObject nested = object(
+    field("meaning_of_life",42),
+    field("a",42.0),
+    field("b",true),
+    field("c",array(42,"foo",3.14,true,null)),
+    field("d",object(field("a",1)))
+);
+foo.setNestedJsonj(nested);
+
+String serialized = objectMapper.writeValueAsString(foo);
+JsonObject object = parser.parseObject(serialized);
+assertThat(object.getString("attribute")).isEqualTo("Hi wrld");
+assertThat(object.getInt("anotherAttribute")).isEqualTo(42);
+assertThat(object.getObject("nestedJsonj")).isEqualTo(nested);
+
 ```
 
 ## Serializing
@@ -210,6 +277,7 @@ There are several reasons why you might like jsonj
 - Memory efficient: you can squeeze large amounts of json objects in a modest amount of RAM. This is nice if you are doing big data processing projects.
 - Easy to use and lacks the complexity of other solutions. All you do is JsonObject o = parseObject(...) and o.toString() or o.serialize(..).
 - There are no annotations or model classes. This makes jsonj great for quickly prototyping some logic around any bit of json encountered.
+- You can use the Jackson ObjectMapper with jsonj and have a `class Foo {JsonObject someNestedField; int bar; String foo}` mapped as you would want. This allows you to have hybrid schema less Jsonj and strongly typed pojos.
 - A JsonDataObject interface is provided (that includes default methods) that allows you to easily create domain objects based on JsonObject. This interface provides a lot of default methods and acts a mixin. This gives you the best of both worlds and it is easy to reuse functionality between different domain classes.
 - It relies on the excellent [Jackson](https://github.com/FasterXML/jackson-core) parser for parsing data structures and you might already use jackson.
 - In addition to the popular json format it also supports parsing and serializing to *[Hocon](https://github.com/jclawson/jackson-dataformat-hocon), [BSON](https://github.com/michel-kraemer/bson4jackson), [plist](https://github.com/3breadt/dd-plist), and [YAML](https://github.com/FasterXML/jackson-dataformat-yaml)*. So you can deal with tree like data structures and pretend they are all the same. For hocon we currently don't have serialization. Mostly this support is done via jackson plugins. They all drive the same jackson handler in jsonj. So, barring downstream parsing issues; you get the same functionality with each of them. Also adding support for more jackson plugins is easy.
