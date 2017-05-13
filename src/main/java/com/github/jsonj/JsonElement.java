@@ -22,6 +22,7 @@
 package com.github.jsonj;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,7 +34,9 @@ import javax.annotation.Nonnull;
 /**
  * Super type of all Json elements (object, list, and primitive).
  */
+@JsonDeserialize(using=JacksonObjectDeserializer.class)
 public interface JsonElement extends Cloneable, Serializable {
+
     /**
      * @return the type of this json element
      */

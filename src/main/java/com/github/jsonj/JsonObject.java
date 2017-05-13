@@ -42,6 +42,7 @@ import org.apache.commons.lang3.Validate;
  * Other implementations need to extend this class for the same reason because we have several methods that return a JsonObject in the API. Most
  * of the common stuff has been pulled up into the IJsonObject interface in the form of default methods.
  */
+
 public class JsonObject implements IJsonObject {
     private static final long serialVersionUID = 497820087656073803L;
 
