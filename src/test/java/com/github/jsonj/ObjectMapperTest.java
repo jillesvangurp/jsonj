@@ -51,7 +51,23 @@ public class ObjectMapperTest {
     public void shouldSurviveSerializeDeserializeAndBeEqual(JsonElement element) throws IOException {
         String serialized = objectMapper.writeValueAsString(element);
         assertThat(parser.parse(serialized)).isEqualTo(element);
-        JsonElement deSerialized = objectMapper.readValue(serialized, JsonObject.class);
+        JsonElement deSerialized = objectMapper.readValue(serialized, JsonElement.class);
         assertThat(deSerialized).isEqualTo(element);
+
+        if(element.isArray()) {
+            JsonArray e = objectMapper.readValue(serialized, JsonArray.class);
+            assertThat(e).isEqualTo(element);
+        }
+
+        if(element.isObject()) {
+            JsonObject e = objectMapper.readValue(serialized, JsonObject.class);
+            assertThat(e).isEqualTo(element);
+        }
+
+        if(element.isPrimitive()) {
+            JsonPrimitive e = objectMapper.readValue(serialized, JsonPrimitive.class);
+            assertThat(e).isEqualTo(element);
+        }
+
     }
 }
