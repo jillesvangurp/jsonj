@@ -12,7 +12,7 @@ The core use case for jsonj is quickly prototyping with complex json data struct
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.42</version>
+    <version>2.43</version>
 </dependency>
 ```
 
