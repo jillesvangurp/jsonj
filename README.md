@@ -6,9 +6,9 @@ JsonJ is a fast performing addon library to Jackson for working with schemaless 
 
 Jackson's streaming parser is used for parsing and it uses things like generics, Java 8 streams, varargs, the Collections framework and other modern Java constructs to make life easier dealing with json.
 
-As of 2.43, JsonJ also fully supports the Jackson ObjectMapper. Simply use the jsonj types and jackson will serialize/deserialize as you are used to. You can mix this with using strongly typed model classes.
+As of 2.43, JsonJ also fully supports the Jackson ObjectMapper. Simply use the jsonj types (`JsonObject`, `JsonArray`, and `JsonPrimitive`) and jackson will serialize/deserialize as you are used to. So you can mix jsonj objects this with using strongly typed model classes.
 
-The core use case for jsonj is quickly prototyping with complex json data structures without getting bogged down in creating endless amounts of model classes. Model classes are nice if you have a stable, and well defined domain but can be a royal pain in the ass when this is not the case and the json is relatively complex and more or less schema less.
+The core use case for jsonj is quickly prototyping with complex json data structures without getting bogged down in creating endless amounts of model classes. Model classes are nice if you have a stable, and well defined domain but can be a royal pain in the ass when this is not the case and your json is relatively complex and more or less schema less.
 
 # Get JsonJ from Maven Central
 
@@ -32,7 +32,7 @@ The license is the [MIT license](http://en.wikipedia.org/wiki/MIT_License), a.k.
 
 JsonJ has a ton of features and there's plenty more to discover beyond what is shown here.
 
-## Using the JsonJ parser
+## Parsing
 
 
 JsonJ uses Jackson's streaming parser with a custom handler to parse json into JsonElement instances. This is the fastest way to parse json.
@@ -115,14 +115,21 @@ assertThat(object.getString("attribute")).isEqualTo("Hi wrld");
 assertThat(object.getInt("anotherAttribute")).isEqualTo(42);
 assertThat(object.getObject("nestedJsonj")).isEqualTo(nested);
 
+// or of course
+
+Foo fooParsed = objectMapper.readValue(serialized, Foo.class);
+// etc.
 ```
 
 ## Serializing
 
 ```
 JsonObject o=parser.parse(inputStream);
-String pretty=o.prettyPrint();
+// Jsonj objects know how to serialize themselves
 String oneLine=o.toString();
+// pretty printing is nice when reading json
+String pretty=o.prettyPrint();
+// you can also serialize straight to a writer of course.
 o.serialize(writer);
 ```
 
