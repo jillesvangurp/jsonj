@@ -16,7 +16,7 @@ The core use case for jsonj is quickly prototyping with complex json data struct
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.43</version>
+    <version>2.44</version>
 </dependency>
 ```
 
@@ -303,6 +303,10 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Both `SimpleIntMapJsonObject` and `JsonObject` use UTF8 byte arrays for storing String primitive values. This is more efficient than Java's own String class, which uses utf-16.
 
 # Changelog
+- 2.44
+  - Test release to verify my pgp key for sonatype is still ok (new laptop). Effectively the same as the previous release.
+- 2.43
+  - objectmapper related tests and minor features
 - 2.42
   - Make sure deepClone and immutableClone use the same JsonObject class as the object being cloned. This solves some performance issues where it regresses to using JsonObject instead of MapBasedJsonObject when cloning a big instance.
 - 2.41
