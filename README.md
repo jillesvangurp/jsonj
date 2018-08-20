@@ -303,6 +303,8 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Both `SimpleIntMapJsonObject` and `JsonObject` use UTF8 byte arrays for storing String primitive values. This is more efficient than Java's own String class, which uses utf-16.
 
 # Changelog
+- 2.45
+  - Simple TOML support to convert toml to JsonObject and back.
 - 2.44
   - Test release to verify my pgp key for sonatype is still ok (new laptop). Effectively the same as the previous release.
 - 2.43
