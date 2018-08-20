@@ -3,14 +3,10 @@ package com.github.jsonj.toml;
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
-import com.github.jsonj.tools.JsonBuilder;
-import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
