@@ -27,11 +27,12 @@ import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
 import com.github.jsonj.JsonSet;
+
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 
 /**
  * Builder class for json objects. If you plan to work a lot with jsonj, you will

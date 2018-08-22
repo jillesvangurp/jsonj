@@ -27,6 +27,9 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,8 +43,6 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.annotation.Nonnull;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Parser based on json-simple. This class is thread safe so you can safely

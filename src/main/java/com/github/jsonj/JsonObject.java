@@ -21,11 +21,11 @@
  */
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.fromObject;
-import static com.github.jsonj.tools.JsonBuilder.nullValue;
-
 import com.github.jsonj.tools.JsonParser;
 import com.github.jsonj.tools.JsonSerializer;
+import org.apache.commons.lang3.Validate;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
@@ -33,8 +33,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nonnull;
-import org.apache.commons.lang3.Validate;
+
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 
 /**
  * Default implementation for JsonObjects. Uses a memory efficient (for small amounts of keys) map implementation based

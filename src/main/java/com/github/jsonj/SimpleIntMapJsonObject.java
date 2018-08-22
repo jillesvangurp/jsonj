@@ -21,12 +21,12 @@
  */
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.fromObject;
-import static com.github.jsonj.tools.JsonBuilder.nullValue;
-
 import com.github.jsonj.tools.JsonParser;
 import com.github.jsonj.tools.JsonSerializer;
 import com.jillesvangurp.efficientstring.EfficientString;
+import org.apache.commons.lang3.Validate;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -36,8 +36,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nonnull;
-import org.apache.commons.lang3.Validate;
+
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 
 /**
  * Representation of json objects. This class extends LinkedHashMap and may be used as such. In addition a lot of

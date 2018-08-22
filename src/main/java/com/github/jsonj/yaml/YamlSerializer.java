@@ -1,14 +1,14 @@
 package com.github.jsonj.yaml;
 
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.github.jsonj.JsonElement;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
-
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import com.github.jsonj.JsonElement;
 
 public class YamlSerializer {
     private final YAMLFactory factory = new YAMLFactory();

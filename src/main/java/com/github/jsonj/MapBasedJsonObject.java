@@ -1,7 +1,6 @@
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.fromObject;
-import static com.github.jsonj.tools.JsonBuilder.nullValue;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +9,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
-import org.apache.commons.lang3.Validate;
+
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 
 /**
  * This implementation of JsonObject uses a LinkedHashMap. This uses more memory but tends to be faster for objects with a large number of keys.

@@ -1,8 +1,5 @@
 package com.github.jsonj.plist;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import com.dd.plist.BinaryPropertyListWriter;
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -13,6 +10,9 @@ import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class JsonJPlistSerializer {
 

@@ -1,17 +1,18 @@
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.primitive;
-
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.annotation.Nonnull;
+
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 public interface IJsonObject extends Map<String,JsonElement>,JsonElement {
 

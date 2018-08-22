@@ -1,7 +1,5 @@
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.nullValue;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -11,9 +9,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
 
 public class JacksonObjectDeserializer extends JsonDeserializer<JsonElement> {
 

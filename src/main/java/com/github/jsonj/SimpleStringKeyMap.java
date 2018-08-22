@@ -1,5 +1,7 @@
 package com.github.jsonj;
 
+import org.apache.commons.lang3.Validate;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +14,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Performant array list based map for small number of entries. Get performs linearly for number of entries however, it

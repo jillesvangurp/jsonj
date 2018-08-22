@@ -24,12 +24,13 @@ package com.github.jsonj;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.Writer;
-import javax.annotation.Nonnull;
 
 /**
  * Super type of all Json elements (object, list, and primitive).

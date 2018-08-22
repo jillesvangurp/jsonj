@@ -24,6 +24,9 @@ package com.github.jsonj;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.github.jsonj.exceptions.JsonTypeMismatchException;
 import com.github.jsonj.tools.JsonSerializer;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
@@ -34,8 +37,6 @@ import java.util.Arrays;
 import java.util.Formattable;
 import java.util.Formatter;
 import java.util.Locale;
-import javax.annotation.Nonnull;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Representation of json primitives.

@@ -7,6 +7,7 @@ import com.github.jsonj.JsonPrimitive;
 import com.github.jsonj.MapBasedJsonObject;
 import com.github.jsonj.SimpleIntMapJsonObject;
 import com.github.jsonj.exceptions.JsonParseException;
+
 import java.util.LinkedList;
 
 final class JsonHandler {

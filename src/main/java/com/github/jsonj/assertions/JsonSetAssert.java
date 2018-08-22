@@ -1,10 +1,9 @@
 package com.github.jsonj.assertions;
 
-import static com.github.jsonj.tools.JsonBuilder.fromObject;
-
+import com.github.jsonj.JsonSet;
 import org.assertj.core.api.AbstractAssert;
 
-import com.github.jsonj.JsonSet;
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
 
 public class JsonSetAssert extends AbstractAssert<JsonSetAssert, JsonSet> {
 

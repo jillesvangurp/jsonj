@@ -23,6 +23,10 @@ package com.github.jsonj.tools;
 
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonType;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.Validate;
+
+import javax.annotation.Nonnull;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -34,9 +38,6 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
-import javax.annotation.Nonnull;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Utility class to serialize Json.

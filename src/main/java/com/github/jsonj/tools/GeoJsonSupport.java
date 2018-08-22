@@ -1,14 +1,15 @@
 package com.github.jsonj.tools;
 
-import static com.github.jsonj.tools.JsonBuilder.array;
-import static com.github.jsonj.tools.JsonBuilder.object;
-import static com.github.jsonj.tools.JsonBuilder.primitive;
-
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
-import javax.annotation.Nonnull;
 import org.apache.commons.lang3.Validate;
+
+import javax.annotation.Nonnull;
+
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.object;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 /**
  * GeoJson uses multi dimensional arrays to support points, lines, polygons, multi polygons, etc. This class offers some

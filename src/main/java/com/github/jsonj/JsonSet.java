@@ -21,16 +21,17 @@
  */
 package com.github.jsonj;
 
+import com.github.jsonj.tools.JsonBuilder;
+
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.fromObject;
 import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
-
-import com.github.jsonj.tools.JsonBuilder;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import javax.annotation.Nonnull;
 
 /**
  * Representation of json arrays that behaves like a set.

@@ -3,15 +3,15 @@ package com.github.jsonj;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 
 /**
  * Mixin style java interface with a lot of default methods that you can use to easily wrap JsonObject objects with

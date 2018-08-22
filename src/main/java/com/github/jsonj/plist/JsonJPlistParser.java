@@ -1,8 +1,12 @@
 package com.github.jsonj.plist;
 
-import static com.github.jsonj.tools.JsonBuilder.array;
-import static com.github.jsonj.tools.JsonBuilder.nullValue;
-import static com.github.jsonj.tools.JsonBuilder.primitive;
+import com.dd.plist.Base64;
+import com.dd.plist.BinaryPropertyListParser;
+import com.dd.plist.NSObject;
+import com.dd.plist.PropertyListFormatException;
+import com.github.jsonj.JsonArray;
+import com.github.jsonj.JsonElement;
+import com.github.jsonj.JsonObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,13 +15,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import com.dd.plist.Base64;
-import com.dd.plist.BinaryPropertyListParser;
-import com.dd.plist.NSObject;
-import com.dd.plist.PropertyListFormatException;
-import com.github.jsonj.JsonArray;
-import com.github.jsonj.JsonElement;
-import com.github.jsonj.JsonObject;
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.nullValue;
+import static com.github.jsonj.tools.JsonBuilder.primitive;
 
 public class JsonJPlistParser {
     public static JsonElement parse(InputStream is) throws IOException {

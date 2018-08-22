@@ -1,8 +1,7 @@
 package com.github.jsonj.assertions;
 
-import org.assertj.core.api.AbstractAssert;
-
 import com.github.jsonj.JsonArray;
+import org.assertj.core.api.AbstractAssert;
 
 public class JsonArrayAssert extends AbstractAssert<JsonArrayAssert, JsonArray> {
     JsonArrayAssert(JsonArray actual) {

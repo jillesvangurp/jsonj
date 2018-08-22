@@ -2,9 +2,10 @@ package com.github.jsonj.tools;
 
 import com.fasterxml.jackson.core.JsonToken;
 import com.github.jsonj.JsonElement;
+
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.LinkedList;
-import javax.annotation.Nonnull;
 
 /**
  * Internal handler class used for the JsonParser and YamlParser

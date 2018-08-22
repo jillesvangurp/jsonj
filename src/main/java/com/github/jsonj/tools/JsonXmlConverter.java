@@ -21,23 +21,20 @@
  */
 package com.github.jsonj.tools;
 
-import java.util.Map.Entry;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.IllegalNameException;
-import nu.xom.converters.DOMConverter;
-
-import org.w3c.dom.DOMImplementation;
-
 import com.github.jsonj.JsonArray;
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonObject;
 import com.github.jsonj.JsonPrimitive;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.IllegalNameException;
+import nu.xom.converters.DOMConverter;
+import org.w3c.dom.DOMImplementation;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.Map.Entry;
 
 /**
  * Helper class to get a DOM representation of a json element. This may be

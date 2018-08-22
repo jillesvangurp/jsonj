@@ -1,7 +1,6 @@
 package com.github.jsonj;
 
-import static com.github.jsonj.tools.JsonBuilder.fromObject;
-
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -9,7 +8,8 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import javax.annotation.Nonnull;
+
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
 
 public class JsonjCollectors {
     public static @Nonnull Collector<Object, JsonSet, JsonSet> set() {

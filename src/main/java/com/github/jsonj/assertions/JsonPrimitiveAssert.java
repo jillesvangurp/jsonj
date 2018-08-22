@@ -1,11 +1,10 @@
 package com.github.jsonj.assertions;
 
-import static com.github.jsonj.tools.JsonBuilder.fromObject;
-
-import org.assertj.core.api.AbstractAssert;
-
 import com.github.jsonj.JsonElement;
 import com.github.jsonj.JsonPrimitive;
+import org.assertj.core.api.AbstractAssert;
+
+import static com.github.jsonj.tools.JsonBuilder.fromObject;
 
 public class JsonPrimitiveAssert extends AbstractAssert<JsonPrimitiveAssert, JsonPrimitive> {
     JsonPrimitiveAssert(JsonPrimitive actual) {
