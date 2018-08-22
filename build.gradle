@@ -101,6 +101,11 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+}
+
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
     from javadoc
