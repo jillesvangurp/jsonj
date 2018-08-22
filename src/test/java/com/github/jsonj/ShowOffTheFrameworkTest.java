@@ -26,9 +26,12 @@ import static com.github.jsonj.tools.JsonBuilder.nullValue;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static com.github.jsonj.tools.JsonBuilder.primitive;
 import static com.github.jsonj.tools.JsonSerializer.serialize;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertTrue;
 
 import com.github.jsonj.tools.JsonParser;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.testng.annotations.Test;
 
@@ -127,13 +130,15 @@ public class ShowOffTheFrameworkTest {
         JsonElement json = jsonParser.parse(serialized);
 
         // and write it straight to some stream
-        serialize(System.out, json, false);
-        System.out.println();
-
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        serialize(bos, json, false);
         // or pretty print it like this
-        System.out.println(serialize(json, true));
 
-        assert serialize(object).equals(serialize(jsonParser.parse(serialize(object))));
+        String pretty=serialize(json, true);
+
+        assertThat( pretty).isEqualTo(serialize(jsonParser.parse(pretty),true));
+        assertThat(new String(bos.toByteArray(),"UTF-8")).isEqualTo(serialize(jsonParser.parse(bos.toString("UTF-8"))));
+        assertThat(serialize(object)).isEqualTo(serialize(jsonParser.parse(serialize(object))));
 
         assertTrue(object.equals(jsonParser.parse(serialize(object))),
                 "input is the same as output");

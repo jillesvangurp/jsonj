@@ -121,7 +121,6 @@ public class BsonTest {
         BsonSerializer.serialize(o, bos);
         bos.flush();
         byte[] bytes = bos.toByteArray();
-        System.out.println(o.toString().length() + " -> " + bytes.length);
 
         BsonParser parser = new BsonParser();
         ByteArrayInputStream is = new ByteArrayInputStream(bytes);

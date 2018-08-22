@@ -56,9 +56,9 @@ public class JsonBuilderTest {
         Map m = new HashMap();
         List l = new LinkedList();
         l.add("some string");
-        l.add(new Integer(1));
+        l.add(Integer.valueOf(1));
         m.put("list", l);
-        m.put("nr", new Double(0.2));
+        m.put("nr", Double.valueOf(0.2));
         assertThat(fromObject(m).asObject(), is(object().put("nr", 0.2).put("list", array(primitive("some string"), primitive(1))).get()));
     }
 

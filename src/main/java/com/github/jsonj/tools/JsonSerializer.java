@@ -165,6 +165,8 @@ public class JsonSerializer {
             serialize(w, json, pretty);
         } else {
             json.serialize(w);
+            // subtle bug where not flushing this results in empty string when serializing to a ByteArrayOutputStream
+            w.flush();
             bufferedOut.flush();
         }
     }

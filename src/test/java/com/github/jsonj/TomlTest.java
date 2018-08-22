@@ -2,14 +2,11 @@ package com.github.jsonj;
 
 import com.github.jsonj.toml.TomlParser;
 import com.github.jsonj.toml.TomlSerializer;
-import com.github.jsonj.tools.JsonBuilder;
-import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 import java.time.ZoneId;
-import java.util.Map;
 import java.util.TimeZone;
 
 import static com.github.jsonj.tools.JsonBuilder.array;

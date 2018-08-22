@@ -34,6 +34,7 @@ import com.github.jsonj.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matchers;
 import org.testng.AssertJUnit;
@@ -110,7 +111,7 @@ public class JsonSerializerTest {
         object.serialize(bos);
         byte[] string = bos.toByteArray();
         assertThat(string.length, Matchers.greaterThan(0));
-        assertThat(jsonParser.parse(bos.toString()), is(object));
+        assertThat(jsonParser.parse(bos.toString(StandardCharsets.UTF_8.name())), is(object));
     }
 
     @Test(dataProvider="strings")

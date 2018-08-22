@@ -40,7 +40,9 @@ import com.github.jsonj.exceptions.JsonParseException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -147,7 +149,7 @@ public class JsonParserTest {
     }
 
     private void parseResource(String resource) throws IOException {
-        jsonParser.parse(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(resource)));
+        jsonParser.parse(new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream(resource), StandardCharsets.UTF_8));
     }
 
     @Test(expectedExceptions=JsonParseException.class)
@@ -158,8 +160,7 @@ public class JsonParserTest {
     public void shouldParseEmoji() {
         String stringWithEmoji = "\"qweqw \\ud83d\\ude00 a\"";
         JsonElement parsed = jsonParser.parse(stringWithEmoji);
-        System.out.println(parsed);
-        assertThat(parsed.toString().toLowerCase(), is(stringWithEmoji));
+        assertThat(parsed.toString().toLowerCase(Locale.ROOT), is(stringWithEmoji));
     }
 
     public void shouldParseHugeObjects() {
