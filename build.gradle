@@ -183,14 +183,20 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
+configurations {
+    // adds the compileOnly dependencies
+    testImplementation.extendsFrom compileOnly
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     compile "com.google.code.findbugs:jsr305:3.0.2"
     compile "org.apache.commons:commons-lang3:3.8"
     compile "com.jillesvangurp:efficientstring:1.12"
-    compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
+    // most of this is optional, just add them to your project if you need features that depend on these
+    compileOnly "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    compileOnly "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+    compileOnly "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
     compileOnly "xom:xom:1.2.5"
     compileOnly "de.undercouch:bson4jackson:2.9.2"
     compileOnly "com.googlecode.plist:dd-plist:1.21"
@@ -199,14 +205,6 @@ dependencies {
     // compileOnly because we export custom jsonj assertions
     compileOnly "org.assertj:assertj-core:3.11.0"
 
-    // we need our tests to work with these optional dependencies
-    testCompile "xom:xom:1.2.5"
-    testCompile "de.undercouch:bson4jackson:2.9.2"
-    testCompile "com.googlecode.plist:dd-plist:1.21"
-    testCompile "com.jasonclawson:jackson-dataformat-hocon:1.1.0"
-    testCompile "com.moandjiezana.toml:toml4j:0.7.2"
-
-    testCompile "org.assertj:assertj-core:3.11.0"
     testCompile "io.inbot:inbot-utils:1.28"
     testCompile "org.testng:testng:6.14.3"
     testCompile "org.hamcrest:hamcrest-all:1.3"
