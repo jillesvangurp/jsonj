@@ -1,8 +1,6 @@
 package com.github.jsonj
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonUnwrapped
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.jsonj.tools.JsonBuilder.`object`
 import com.github.jsonj.tools.JsonBuilder.array
@@ -13,9 +11,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
-import com.fasterxml.jackson.annotation.JsonAnySetter
-
-
 
 class ObjectMapperTest {
     lateinit var objectMapper: ObjectMapper
@@ -66,7 +61,6 @@ class ObjectMapperTest {
             val e = objectMapper.readValue<JsonPrimitive>(serialized, JsonPrimitive::class.java)
             assertThat(e).isEqualTo(element)
         }
-
     }
 
     data class Foo(
@@ -96,7 +90,7 @@ class ObjectMapperTest {
         assertThat(`object`.getObject("nestedJsonj")).isEqualTo(nested)
     }
 
-    data class Bar(@JsonIgnore val obj: JsonObject= JsonObject(), val foo: Int, val bar: String) : JsonDataObject {
+    data class Bar(@JsonIgnore val obj: JsonObject = JsonObject(), val foo: Int, val bar: String) : JsonDataObject {
         override fun getJsonObject(): JsonObject {
             return obj
         }

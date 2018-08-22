@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.60'
+        kotlinVersion = '1.2.61'
         junitVersion = '5.2.0'
         jacksonVersion = '2.9.6'
     }
@@ -10,7 +10,6 @@ buildscript {
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
-        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.8.3"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0' // gradle dependencyUpdates -Drevision=release
         classpath "de.thetaphi:forbiddenapis:2.5"
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.14.0'
@@ -19,7 +18,6 @@ buildscript {
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.dokka'
-apply plugin: 'docker-compose'
 apply plugin: 'project-report' // useful for gradle htmlDependencyReport
 apply plugin: 'com.diffplug.gradle.spotless'
 apply plugin: "de.thetaphi.forbiddenapis"
@@ -186,22 +184,32 @@ repositories {
 }
 
 dependencies {
-    compile "com.google.code.findbugs:jsr305:3.0.0"
-    compile "org.apache.commons:commons-lang3:3.4"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    compile "com.google.code.findbugs:jsr305:3.0.2"
+    compile "org.apache.commons:commons-lang3:3.8"
     compile "com.jillesvangurp:efficientstring:1.12"
-    compile "com.fasterxml.jackson.core:jackson-core:2.9.6"
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.6"
-    compile "xom:xom:1.2.5"
-    compile "de.undercouch:bson4jackson:2.7.0"
-    compile "com.googlecode.plist:dd-plist:1.16"
-    compile "com.jasonclawson:jackson-dataformat-hocon:1.1.0"
-    compile "com.moandjiezana.toml:toml4j:0.7.2"
-    compile "org.assertj:assertj-core:3.4.1"
-    testCompile "io.inbot:inbot-utils:1.10"
-    testCompile "org.testng:testng:6.9.10"
+    compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion"
+    compileOnly "xom:xom:1.2.5"
+    compileOnly "de.undercouch:bson4jackson:2.9.2"
+    compileOnly "com.googlecode.plist:dd-plist:1.21"
+    compileOnly "com.jasonclawson:jackson-dataformat-hocon:1.1.0"
+    compileOnly "com.moandjiezana.toml:toml4j:0.7.2"
+    // compileOnly because we export custom jsonj assertions
+    compileOnly "org.assertj:assertj-core:3.11.0"
+
+    // we need our tests to work with these optional dependencies
+    testCompile "xom:xom:1.2.5"
+    testCompile "de.undercouch:bson4jackson:2.9.2"
+    testCompile "com.googlecode.plist:dd-plist:1.21"
+    testCompile "com.jasonclawson:jackson-dataformat-hocon:1.1.0"
+    testCompile "com.moandjiezana.toml:toml4j:0.7.2"
+
+    testCompile "org.assertj:assertj-core:3.11.0"
+    testCompile "io.inbot:inbot-utils:1.28"
+    testCompile "org.testng:testng:6.14.3"
     testCompile "org.hamcrest:hamcrest-all:1.3"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 compileKotlin {
