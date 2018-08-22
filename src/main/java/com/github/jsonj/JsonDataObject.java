@@ -1,5 +1,9 @@
 package com.github.jsonj;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.jsonj.tools.JsonBuilder;
 import com.github.jsonj.tools.JsonSerializer;
 import java.io.IOException;
@@ -22,8 +26,10 @@ import javax.annotation.Nonnull;
  * If you need immutable domain objects, simply use JsonObject.immutableClone.
  */
 public interface JsonDataObject extends Serializable {
+    @JsonAnyGetter
     @Nonnull JsonObject getJsonObject();
 
+    @JsonIgnore
     default boolean isMutable() {
         return getJsonObject().isMutable();
     }
@@ -37,6 +43,7 @@ public interface JsonDataObject extends Serializable {
         return JsonSerializer.serialize(getJsonObject(), true);
     }
 
+    @JsonAnySetter
     default JsonElement put(@Nonnull String key, Object value) {
         verifyMutable();
         return getJsonObject().put(key, value);
@@ -150,7 +157,7 @@ public interface JsonDataObject extends Serializable {
     default JsonObject getOrCreateObject(final String... labels) {
         return getJsonObject().getOrCreateObject(labels);
     }
-
+    @JsonIgnore
     default boolean isEmpty() {
         return getJsonObject().isEmpty();
     }

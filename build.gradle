@@ -184,9 +184,10 @@ dependencies {
     compile "com.google.code.findbugs:jsr305:3.0.0"
     compile "org.apache.commons:commons-lang3:3.4"
     compile "com.jillesvangurp:efficientstring:1.12"
-    compile "com.fasterxml.jackson.core:jackson-core:2.7.4"
+    compile "com.fasterxml.jackson.core:jackson-core:2.9.6"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.6"
     compile "xom:xom:1.2.5"
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.4"
     compile "de.undercouch:bson4jackson:2.7.0"
     compile "com.googlecode.plist:dd-plist:1.16"
     compile "com.jasonclawson:jackson-dataformat-hocon:1.1.0"
@@ -195,4 +196,16 @@ dependencies {
     testCompile "io.inbot:inbot-utils:1.10"
     testCompile "org.testng:testng:6.9.10"
     testCompile "org.hamcrest:hamcrest-all:1.3"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
