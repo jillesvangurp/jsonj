@@ -8,3 +8,6 @@
 .DS_Store
 .idea
 *iml
+out
+build
+.gradle

@@ -1,0 +1,143 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+if (project.hasProperty("signing.keyId")) {
+
+/*
+   fix ~/gradle.properties
+        # lass eight chars of the key you get with gpg --list-keys
+        signing.keyId=29B280D7
+        signing.password=XXXXXXX
+        signing.secretKeyRingFile=/Users/jillesvangurp/.gnupg/secring.gpg
+
+        ossrhUsername=jillesvangurp
+        ossrhPassword=XXXXXXX
+
+   export GRADLE_USER_HOME=/Users/jillesvangurp
+
+   to release:
+   bump the version number below
+   gradle clean
+   gradle build
+   gradle uploadArchives
+
+   goto https://oss.sonatype.org/#stagingRepositories
+   find the newly uploaded repo
+   close it, wait for it ... refresh .... release .... wait some more, shit should be rolling out
+
+   set snapshot version for next version
+ */
+
+    apply plugin: 'signing'
+    signing {
+        sign configurations.archives
+    }
+}
+
+group = 'com.jillesvangurp'
+archivesBaseName = "jsonj"
+version = '2.46'
+
+description = """Randomized names for companies and persons for use in tests"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+test {
+    useTestNG {
+        parallel = "classes"
+        threadCount = 15
+    }
+    testLogging {
+        // Make sure output from
+        // standard out or error is shown
+        // in Gradle output.
+        showStandardStreams = true
+    }
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+if (project.hasProperty("ossrhUsername")) {
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.project {
+                    name 'Inbot Testfixtures'
+                    packaging 'jar'
+                    // optionally artifactId can be defined here
+                    description 'Helper class for human readable randmized names and email addresses'
+                    url 'https://github.com/jillesvangurp/jsonj'
+
+                    scm {
+                        connection 'scm:git:git@github.com:inbot/jsonj.git'
+                        developerConnection 'scm:git:git@github.com:inbot/jsonj.git'
+                        url 'git://git@github.com:jillesvangurp/jsonj.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT license'
+                            url 'https://github.com/jillesvangurp/jsonj/blob/master/LICENSE'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'jillesvangurp'
+                            name 'Jilles van Gurp'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/public/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+    compile "com.google.code.findbugs:jsr305:3.0.0"
+    compile "org.apache.commons:commons-lang3:3.4"
+    compile "com.jillesvangurp:efficientstring:1.12"
+    compile "com.fasterxml.jackson.core:jackson-core:2.7.4"
+    compile "xom:xom:1.2.5"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.4"
+    compile "de.undercouch:bson4jackson:2.7.0"
+    compile "com.googlecode.plist:dd-plist:1.16"
+    compile "com.jasonclawson:jackson-dataformat-hocon:1.1.0"
+    compile "com.moandjiezana.toml:toml4j:0.7.2"
+    compile "org.assertj:assertj-core:3.4.1"
+    testCompile "io.inbot:inbot-utils:1.10"
+    testCompile "org.testng:testng:6.9.10"  
+    testCompile "org.hamcrest:hamcrest-all:1.3"
+}
