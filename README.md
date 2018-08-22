@@ -16,7 +16,7 @@ The core use case for jsonj is quickly prototyping with complex json data struct
 <dependency>
     <groupId>com.jillesvangurp</groupId>
     <artifactId>jsonj</artifactId>
-    <version>2.44</version>
+    <version>2.50</version>
 </dependency>
 ```
 
@@ -303,6 +303,10 @@ JsonJ implements several things that ensure it uses much less memory than might 
 - Both `SimpleIntMapJsonObject` and `JsonObject` use UTF8 byte arrays for storing String primitive values. This is more efficient than Java's own String class, which uses utf-16.
 
 # Changelog
+- 2.50
+  - Get rid of maven in favor of gradle, make project ready for Kotlin
+  - Add some kotlin specific code and extensions
+  - Make JsonDataObject work with jackson ObjectMapper so you can seemlessly start migrating to hybrid jsonj/pojos.
 - 2.45
   - Simple TOML support to convert toml to JsonObject and back.
 - 2.44
