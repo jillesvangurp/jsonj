@@ -76,7 +76,7 @@ if (project.hasProperty("signing.keyId")) {
 
    goto https://oss.sonatype.org/#stagingRepositories
    find the newly uploaded repo
-   close it, wait for it ... refresh .... release .... wait some more, shit should be rolling out
+   close it, wait for it (takes a minute after it closes) ... refresh .... release .... wait some more, shit should be rolling out
 
    set snapshot version for next version
  */
