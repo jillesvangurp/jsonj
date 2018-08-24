@@ -5,6 +5,8 @@ import com.github.jsonj.tools.JsonBuilder.array
 import com.github.jsonj.tools.JsonBuilder.nullValue
 import com.github.jsonj.tools.JsonBuilder.primitive
 import org.apache.commons.lang3.StringUtils
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.util.Locale
 import kotlin.reflect.KClass
 import kotlin.reflect.KParameter
@@ -66,8 +68,20 @@ fun <T : Any> JsonObject.construct(clazz: KClass<T>): T {
 
     primaryConstructor!!.parameters.forEach {
         val name = it.name.orEmpty()
-        if (it.type.isSubtypeOf(Number::class.starProjectedType)) {
+        if (it.type.isSubtypeOf(Int::class.starProjectedType)) {
+            paramz.put(it, flexGet(name)?.asInt())
+        } else if (it.type.isSubtypeOf(Long::class.starProjectedType)) {
+            paramz.put(it, flexGet(name)?.asLong())
+        } else if (it.type.isSubtypeOf(Float::class.starProjectedType)) {
+            paramz.put(it, flexGet(name)?.asFloat())
+        } else if (it.type.isSubtypeOf(Double::class.starProjectedType)) {
+            paramz.put(it, flexGet(name)?.asDouble())
+        } else if (it.type.isSubtypeOf(BigInteger::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asNumber())
+        } else if (it.type.isSubtypeOf(BigDecimal::class.starProjectedType)) {
+            paramz.put(it, flexGet(name)?.asNumber())
+        } else if (it.type.isSubtypeOf(Long::class.starProjectedType)) {
+            paramz.put(it, flexGet(name)?.asLong())
         } else if (it.type.isSubtypeOf(String::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asString())
         } else if (it.type.isSubtypeOf(Boolean::class.starProjectedType)) {
