@@ -89,7 +89,7 @@ if (project.hasProperty("signing.keyId")) {
 
 group = 'com.jillesvangurp'
 archivesBaseName = "jsonj"
-version = '2.51'
+version = '2.52'
 
 description = """A fluent Java API for manipulating json data structures """
 
