@@ -58,6 +58,11 @@ fun JsonObject.flexGet(name: String, ignoreCase: Boolean = true, ignoreUnderscor
     }
 }
 
+fun <T : Enum<*>> enumVal(clazz: KClass<T>, value: String): T? {
+    val enumConstants = clazz.java.enumConstants
+    return enumConstants.filter { value == it.name }.first()
+}
+
 /**
  * @param clazz a kotlin class
  * @return a new instance of clazz populated with values from the json object matched on the property names (ignoring case and underscores).
@@ -86,6 +91,12 @@ fun <T : Any> JsonObject.construct(clazz: KClass<T>): T {
             paramz.put(it, flexGet(name)?.asString())
         } else if (it.type.isSubtypeOf(Boolean::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asBoolean())
+        } else if (it.type.isSubtypeOf(Enum::class.starProjectedType)) {
+            val enumName = flexGet(name)?.asString()
+            if (enumName != null) {
+                @Suppress("UNCHECKED_CAST") // we already checked but too hard for Kotlin to figure out
+                paramz.put(it, enumVal(it.type.jvmErasure as KClass<Enum<*>>, enumName))
+            }
         } else {
             paramz.put(it, flexGet(name)?.asObject()?.construct(it.type.jvmErasure))
         }
@@ -106,10 +117,15 @@ fun <T : Any> JsonObject.fill(obj: T): JsonObject {
         val jsonName = toUnderscore(propertyName)
 
         val value = memberProperty.getter.call(obj)
-        val returnType = memberProperty.returnType
-        val jsonElement: JsonElement = jsonElement(returnType, value)
+        if (memberProperty.returnType.isSubtypeOf(Enum::class.starProjectedType)) {
+            val enumValue = value as Enum<*>
+            put(jsonName, enumValue.name)
+        } else {
+            val returnType = memberProperty.returnType
+            val jsonElement: JsonElement = jsonElement(returnType, value)
 
-        put(jsonName, jsonElement)
+            put(jsonName, jsonElement)
+        }
     }
     return this
 }
