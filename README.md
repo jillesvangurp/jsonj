@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/jillesvangurp/jsonj.svg)](https://travis-ci.org/jillesvangurp/jsonj)
-[![JitPack](https://jitpack.io/v/Inbot/inbot-stellar-kotlin-wrapper.svg)](https://jitpack.io/#jillesvangurp/jsonj)
+[![JitPack](https://jitpack.io/v/jillesvangurp/jsonj.svg)](https://jitpack.io/#jillesvangurp/jsonj)
 
 # Introduction
 
@@ -13,7 +13,7 @@ The core use case for jsonj is quickly prototyping with complex json data struct
 
 # Get JsonJ 
 
-After lots of frustration babysitting maven central deploys; we now release instantly on jitpack: [![JitPack](https://jitpack.io/v/Inbot/inbot-stellar-kotlin-wrapper.svg)](https://jitpack.io/#jillesvangurp/jsonj)
+After lots of frustration babysitting maven central deploys; we now release instantly on jitpack: [![JitPack](https://jitpack.io/v/jillesvangurp/jsonj.svg)](https://jitpack.io/#jillesvangurp/jsonj)
 
 Older releases may still be available on maven central. If a recent release on maven central is critical to you, ping me.
 
