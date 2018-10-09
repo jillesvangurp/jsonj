@@ -17,14 +17,6 @@ After lots of frustration babysitting maven central deploys; we now release inst
 
 Older releases may still be available on maven central. If a recent release on maven central is critical to you, ping me.
 
-```
-<dependency>
-    <groupId>com.jillesvangurp</groupId>
-    <artifactId>jsonj</artifactId>
-    <version>2.51</version>
-</dependency>
-```
-
 Note. always check for the latest version. I do not always update the readme.
 
 Java 8 is required as of version 2. For Java 7 and earlier, you can use the 1.x releases.
