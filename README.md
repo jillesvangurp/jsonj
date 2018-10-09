@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/jillesvangurp/jsonj.svg)](https://travis-ci.org/jillesvangurp/jsonj)
+[![JitPack](https://jitpack.io/v/Inbot/inbot-stellar-kotlin-wrapper.svg)](https://jitpack.io/#jillesvangurp/jsonj)
 
 # Introduction
 
@@ -10,7 +11,13 @@ As of 2.43, JsonJ also fully supports the Jackson ObjectMapper. Simply use the j
 
 The core use case for jsonj is quickly prototyping with complex json data structures without getting bogged down in creating endless amounts of model classes. Model classes are nice if you have a stable, and well defined domain but can be a royal pain in the ass when this is not the case and your json is relatively complex and more or less schema less.
 
-# Get JsonJ from Maven Central
+# Get JsonJ 
+
+After lots of frustration babysitting maven central deploys; we now release instantly on [jitpack.io](https://jitpack.io/v/Inbot/inbot-stellar-kotlin-wrapper.svg)](https://jitpack.io/#jillesvangurp/jsonj):
+
+- [![JitPack](https://jitpack.io/v/Inbot/inbot-stellar-kotlin-wrapper.svg)](https://jitpack.io/#jillesvangurp/jsonj)
+
+Older releases may still be available on maven central. If a recent release on maven central is critical to you, ping me.
 
 ```
 <dependency>
