@@ -16,6 +16,7 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.full.withNullability
 import kotlin.reflect.jvm.jvmErasure
 
 fun obj(init: JsonObject.() -> Unit): JsonObject {
@@ -51,10 +52,16 @@ fun JsonObject.arrayField(key: String, vararg values: Any) {
 fun JsonObject.flexGet(name: String, ignoreCase: Boolean = true, ignoreUnderscores: Boolean = true): JsonElement? {
     val key = keys.filter { normalize(it, ignoreCase, ignoreUnderscores) == normalize(name, ignoreCase, ignoreUnderscores) }
         .firstOrNull()
-    if (key != null) {
-        return get(key)
+    return if (key != null) {
+        val value = get(key)
+        if (value?.isNull() == true) {
+            // handle json null as null
+            null
+        } else {
+            value
+        }
     } else {
-        return null
+        null
     }
 }
 
@@ -73,25 +80,26 @@ fun <T : Any> JsonObject.construct(clazz: KClass<T>): T {
 
     primaryConstructor!!.parameters.forEach {
         val name = it.name.orEmpty()
-        if (it.type.isSubtypeOf(Int::class.starProjectedType)) {
+        val nonNullableType = it.type.withNullability(false)
+        if (nonNullableType.isSubtypeOf(Int::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asInt())
-        } else if (it.type.isSubtypeOf(Long::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asLong())
-        } else if (it.type.isSubtypeOf(Float::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(Float::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asFloat())
-        } else if (it.type.isSubtypeOf(Double::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(Double::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asDouble())
-        } else if (it.type.isSubtypeOf(BigInteger::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(BigInteger::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asNumber())
-        } else if (it.type.isSubtypeOf(BigDecimal::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(BigDecimal::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asNumber())
-        } else if (it.type.isSubtypeOf(Long::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asLong())
-        } else if (it.type.isSubtypeOf(String::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(String::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asString())
-        } else if (it.type.isSubtypeOf(Boolean::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(Boolean::class.starProjectedType)) {
             paramz.put(it, flexGet(name)?.asBoolean())
-        } else if (it.type.isSubtypeOf(Enum::class.starProjectedType)) {
+        } else if (nonNullableType.isSubtypeOf(Enum::class.starProjectedType)) {
             val enumName = flexGet(name)?.asString()
             if (enumName != null) {
                 @Suppress("UNCHECKED_CAST") // we already checked but too hard for Kotlin to figure out
@@ -144,13 +152,16 @@ private fun toUnderscore(propertyName: String): String {
 
 private fun jsonElement(returnType: KType, value: Any?): JsonElement {
     val jsonElement: JsonElement
-    if (value == null) return nullValue()
-    if (returnType.isSubtypeOf(Number::class.starProjectedType) ||
-        returnType.isSubtypeOf(String::class.starProjectedType) ||
-        returnType.isSubtypeOf(Boolean::class.starProjectedType)
+    if (value == null) {
+        return nullValue()
+    }
+    val nonNullableReturnType = returnType.withNullability(false)
+    if (nonNullableReturnType.isSubtypeOf(Number::class.starProjectedType) ||
+        nonNullableReturnType.isSubtypeOf(String::class.starProjectedType) ||
+        nonNullableReturnType.isSubtypeOf(Boolean::class.starProjectedType)
     ) {
         jsonElement = primitive(value)
-    } else if (returnType.isSubtypeOf(Collection::class.starProjectedType)) {
+    } else if (nonNullableReturnType.isSubtypeOf(Collection::class.starProjectedType)) {
         val arr = array()
         Collection::class.cast(value).forEach {
             if (it != null) {
@@ -158,7 +169,7 @@ private fun jsonElement(returnType: KType, value: Any?): JsonElement {
             }
         }
         jsonElement = arr
-    } else if (returnType.isSubtypeOf(Map::class.starProjectedType)) {
+    } else if (nonNullableReturnType.isSubtypeOf(Map::class.starProjectedType)) {
         val newObj = JsonObject()
         Map::class.cast(value).forEach {
             if (it.key != null) {

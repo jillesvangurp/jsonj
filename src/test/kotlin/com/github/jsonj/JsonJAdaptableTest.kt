@@ -9,6 +9,8 @@ enum class MyEnum { FOO, BAR }
 
 data class Foo(
     val message: String,
+    val message2: String?,
+    val message3: String?,
     val value: Int,
     val value2: Long,
     val value3: Float,
@@ -23,17 +25,25 @@ class JsonJAdaptableTest {
     @Test
     fun shouldConvert() {
         val foo = Foo(
-            "meaning",
-            42,
-            42,
-            42.0f,
-            42.0,
-            BigInteger.valueOf(2).pow(128),
-            BigDecimal.valueOf(42.666).pow(100),
-            true,
-            MyEnum.FOO
+            message = "meaning",
+            message2 = "foo",
+            message3 = null,
+            value = 42,
+            value2 = 42,
+            value3 = 42.0f,
+            value4 = 42.0,
+            value5 = BigInteger.valueOf(2).pow(128),
+            value6 = BigDecimal.valueOf(42.666).pow(100),
+            maybe = true,
+            numnun = MyEnum.FOO
         )
         val json = foo.asJsonObject()
-        assertThat(json.construct(Foo::class)).isEqualTo(foo)
+        val reconstructed = json.construct(Foo::class)
+        assertThat(foo.message2).isNotBlank()
+        assertThat(foo.message3).isNull()
+        assertThat(json.get("message3")).isNull()
+        assertThat(reconstructed.message2).isEqualTo("foo")
+        assertThat(reconstructed.message3).isNull()
+        assertThat(reconstructed).isEqualTo(foo)
     }
 }
