@@ -12,8 +12,8 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KParameter
 import kotlin.reflect.KType
 import kotlin.reflect.full.cast
+import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.starProjectedType
 import kotlin.reflect.full.withNullability
@@ -50,8 +50,9 @@ fun JsonObject.arrayField(key: String, vararg values: Any) {
  * @return the value of the first field matching the name or null
  */
 fun JsonObject.flexGet(name: String, ignoreCase: Boolean = true, ignoreUnderscores: Boolean = true): JsonElement? {
-    val key = keys.filter { normalize(it, ignoreCase, ignoreUnderscores) == normalize(name, ignoreCase, ignoreUnderscores) }
-        .firstOrNull()
+    val key =
+        keys.filter { normalize(it, ignoreCase, ignoreUnderscores) == normalize(name, ignoreCase, ignoreUnderscores) }
+            .firstOrNull()
     return if (key != null) {
         val value = get(key)
         if (value?.isNull() == true) {
@@ -120,19 +121,30 @@ fun <T : Any> JsonObject.construct(clazz: KClass<T>): T {
 fun <T : Any> JsonObject.fill(obj: T): JsonObject {
     val clazz = obj::class
 
-    for (memberProperty in clazz.memberProperties) {
+    for (memberProperty in clazz.declaredMemberProperties) {
         val propertyName = memberProperty.name
         val jsonName = toUnderscore(propertyName)
 
-        val value = memberProperty.getter.call(obj)
-        if (memberProperty.returnType.isSubtypeOf(Enum::class.starProjectedType)) {
-            val enumValue = value as Enum<*>
-            put(jsonName, enumValue.name)
-        } else {
-            val returnType = memberProperty.returnType
-            val jsonElement: JsonElement = jsonElement(returnType, value)
+        try {
+            val value = memberProperty.getter.call(obj)
+            if (memberProperty.returnType.isSubtypeOf(Enum::class.starProjectedType)) {
+                val enumValue = value as Enum<*>
+                put(jsonName, enumValue.name)
+            } else {
+                val returnType = memberProperty.returnType
+                val jsonElement: JsonElement = jsonElement(returnType, value)
 
-            put(jsonName, jsonElement)
+                put(jsonName, jsonElement)
+            }
+        } catch (e: UnsupportedOperationException) {
+            // function properties fail, skip those
+            if (!(e.message?.contains("internal synthetic class") ?: false)) {
+                throw e
+            } else {
+                @Suppress("UNCHECKED_CAST") // this seems to work ;-), ugly though
+                val fn = (memberProperty.call(obj) ?: throw e) as Function0<Any>
+                put(jsonName, fn.invoke())
+            }
         }
     }
     return this

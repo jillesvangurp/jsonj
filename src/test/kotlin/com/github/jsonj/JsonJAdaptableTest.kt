@@ -19,7 +19,10 @@ data class Foo(
     val value6: BigDecimal,
     val maybe: Boolean,
     val numnun: MyEnum
-) : JsonJAdaptable
+) : JsonJAdaptable {
+    val synthetic = { message.reversed() }
+    val lzy by lazy { message.reversed() }
+}
 
 class JsonJAdaptableTest {
     @Test
@@ -38,6 +41,9 @@ class JsonJAdaptableTest {
             numnun = MyEnum.FOO
         )
         val json = foo.asJsonObject()
+        println(json.prettyPrint())
+        // extra fields get ignored
+        json.put("idontexistasafield", 42)
         val reconstructed = json.construct(Foo::class)
         assertThat(foo.message2).isNotBlank()
         assertThat(foo.message3).isNull()
