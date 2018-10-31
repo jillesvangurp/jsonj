@@ -86,29 +86,29 @@ fun <T : Any> JsonObject.construct(clazz: KClass<T>): T {
             val nonNullableType = it.type.withNullability(false)
             if (nonNullableType.isSubtypeOf(Int::class.starProjectedType)) {
                 paramz.put(it, flexGet(name)?.asInt())
-            } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asLong())
-            } else if (nonNullableType.isSubtypeOf(Float::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(Float::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asFloat())
-            } else if (nonNullableType.isSubtypeOf(Double::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(Double::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asDouble())
-            } else if (nonNullableType.isSubtypeOf(BigInteger::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(BigInteger::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asNumber())
-            } else if (nonNullableType.isSubtypeOf(BigDecimal::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(BigDecimal::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asNumber())
-            } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asLong())
-            } else if (nonNullableType.isSubtypeOf(String::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(String::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asString())
-            } else if (nonNullableType.isSubtypeOf(Boolean::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(Boolean::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name)?.asBoolean())
-            } else if (nonNullableType.isSubtypeOf(Enum::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(Enum::class.starProjectedType.withNullability(true))) {
                 val enumName = flexGet(name)?.asString()
                 if (enumName != null) {
                     @Suppress("UNCHECKED_CAST") // we already checked but too hard for Kotlin to figure out
                     paramz.put(it, enumVal(it.type.jvmErasure as KClass<Enum<*>>, enumName))
                 }
-            } else if (nonNullableType.isSubtypeOf(JsonElement::class.starProjectedType)) {
+            } else if (nonNullableType.isSubtypeOf(JsonElement::class.starProjectedType.withNullability(true))) {
                 paramz.put(it, flexGet(name))
             } else {
                 paramz.put(it, flexGet(name)?.asObject()?.construct(it.type.jvmErasure))
