@@ -5,6 +5,7 @@ import com.github.jsonj.tools.JsonBuilder.array
 import com.github.jsonj.tools.JsonBuilder.nullValue
 import com.github.jsonj.tools.JsonBuilder.primitive
 import org.apache.commons.lang3.StringUtils
+import java.lang.IllegalStateException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.Locale
@@ -79,39 +80,45 @@ fun <T : Any> JsonObject.construct(clazz: KClass<T>): T {
     val primaryConstructor = clazz.primaryConstructor
     val paramz: MutableMap<KParameter, Any?> = mutableMapOf()
 
-    primaryConstructor!!.parameters.forEach {
-        val name = it.name.orEmpty()
-        val nonNullableType = it.type.withNullability(false)
-        if (nonNullableType.isSubtypeOf(Int::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asInt())
-        } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asLong())
-        } else if (nonNullableType.isSubtypeOf(Float::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asFloat())
-        } else if (nonNullableType.isSubtypeOf(Double::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asDouble())
-        } else if (nonNullableType.isSubtypeOf(BigInteger::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asNumber())
-        } else if (nonNullableType.isSubtypeOf(BigDecimal::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asNumber())
-        } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asLong())
-        } else if (nonNullableType.isSubtypeOf(String::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asString())
-        } else if (nonNullableType.isSubtypeOf(Boolean::class.starProjectedType)) {
-            paramz.put(it, flexGet(name)?.asBoolean())
-        } else if (nonNullableType.isSubtypeOf(Enum::class.starProjectedType)) {
-            val enumName = flexGet(name)?.asString()
-            if (enumName != null) {
-                @Suppress("UNCHECKED_CAST") // we already checked but too hard for Kotlin to figure out
-                paramz.put(it, enumVal(it.type.jvmErasure as KClass<Enum<*>>, enumName))
+    if (primaryConstructor != null) {
+        primaryConstructor.parameters.forEach {
+            val name = it.name.orEmpty()
+            val nonNullableType = it.type.withNullability(false)
+            if (nonNullableType.isSubtypeOf(Int::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asInt())
+            } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asLong())
+            } else if (nonNullableType.isSubtypeOf(Float::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asFloat())
+            } else if (nonNullableType.isSubtypeOf(Double::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asDouble())
+            } else if (nonNullableType.isSubtypeOf(BigInteger::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asNumber())
+            } else if (nonNullableType.isSubtypeOf(BigDecimal::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asNumber())
+            } else if (nonNullableType.isSubtypeOf(Long::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asLong())
+            } else if (nonNullableType.isSubtypeOf(String::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asString())
+            } else if (nonNullableType.isSubtypeOf(Boolean::class.starProjectedType)) {
+                paramz.put(it, flexGet(name)?.asBoolean())
+            } else if (nonNullableType.isSubtypeOf(Enum::class.starProjectedType)) {
+                val enumName = flexGet(name)?.asString()
+                if (enumName != null) {
+                    @Suppress("UNCHECKED_CAST") // we already checked but too hard for Kotlin to figure out
+                    paramz.put(it, enumVal(it.type.jvmErasure as KClass<Enum<*>>, enumName))
+                }
+            } else if (nonNullableType.isSubtypeOf(JsonElement::class.starProjectedType)) {
+                paramz.put(it, flexGet(name))
+            } else {
+                paramz.put(it, flexGet(name)?.asObject()?.construct(it.type.jvmErasure))
             }
-        } else {
-            paramz.put(it, flexGet(name)?.asObject()?.construct(it.type.jvmErasure))
         }
-    }
 
-    return primaryConstructor.callBy(paramz)
+        return primaryConstructor.callBy(paramz)
+    } else {
+        throw IllegalStateException("no primary constructor for ${clazz.qualifiedName}")
+    }
 }
 
 /**
@@ -168,7 +175,11 @@ private fun jsonElement(returnType: KType, value: Any?): JsonElement {
         return nullValue()
     }
     val nonNullableReturnType = returnType.withNullability(false)
-    if (nonNullableReturnType.isSubtypeOf(Number::class.starProjectedType) ||
+    if (nonNullableReturnType.isSubtypeOf(JsonElement::class.starProjectedType)) {
+        jsonElement = value as JsonElement
+    } else if (nonNullableReturnType.isSubtypeOf(JsonDataObject::class.starProjectedType)) {
+        jsonElement = (value as JsonDataObject).jsonObject
+    } else if (nonNullableReturnType.isSubtypeOf(Number::class.starProjectedType) ||
         nonNullableReturnType.isSubtypeOf(String::class.starProjectedType) ||
         nonNullableReturnType.isSubtypeOf(Boolean::class.starProjectedType)
     ) {

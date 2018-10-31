@@ -18,7 +18,8 @@ data class Foo(
     val value5: BigInteger,
     val value6: BigDecimal,
     val maybe: Boolean,
-    val numnun: MyEnum
+    val numnun: MyEnum,
+    val jsonObject: JsonObject
 ) : JsonJAdaptable {
     val synthetic = { message.reversed() }
     val lzy by lazy { message.reversed() }
@@ -38,7 +39,8 @@ class JsonJAdaptableTest {
             value5 = BigInteger.valueOf(2).pow(128),
             value6 = BigDecimal.valueOf(42.666).pow(100),
             maybe = true,
-            numnun = MyEnum.FOO
+            numnun = MyEnum.FOO,
+            jsonObject = obj { field("foo", "bar") }
         )
         val json = foo.asJsonObject()
         println(json.prettyPrint())
