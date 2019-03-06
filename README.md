@@ -197,7 +197,7 @@ JsonSet set3 = object.getOrCreateArray("array").asSet().applyIdStrategy("id");
 
 ## Polymorphism and varargs
 
-JsonJ is all about making life easy. So it uses varargs wherever it makes sense and polymorhism to make most type conversions unnecessary.
+JsonJ is all about making life easy. So it uses varargs wherever it makes sense and polymorphism to make most type conversions unnecessary.
 
 ```
 
