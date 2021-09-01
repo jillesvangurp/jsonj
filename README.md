@@ -3,6 +3,8 @@
 
 # Introduction
 
+I'm not actively using/developing this any more and have been using Kotlin in the last few years. So, if you need any changes to this project, feel free to fork and DIY.
+
 JsonJ is a fast performing addon library to Jackson for working with schemaless [json](http://www.rfc-editor.org/rfc/rfc7493.txt) in Java. JsonJ backs the very simple json types using a fluent API.
 
 Jackson's streaming parser is used for parsing and it uses things like generics, Java 8 streams, varargs, the Collections framework and other modern Java constructs to make life easier dealing with json.
